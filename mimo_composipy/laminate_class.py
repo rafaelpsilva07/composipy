@@ -1,5 +1,6 @@
 import numbers
 import numpy as np
+from .ply_class import Ply
 
 class Laminate:
     

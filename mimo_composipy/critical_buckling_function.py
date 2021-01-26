@@ -1,13 +1,19 @@
 # function
 
 import sympy as sp
+import numpy as np
 from scipy import linalg
 import matplotlib.pyplot as plt
+from ._plot_surface_function import _plot_surface
 
-def critcal_buckling(a, b, D, method = 'sin_series', n = 3, shape_plot = True):
+
+def critical_buckling(a, b, D, method = 'sin_series', n = 3, shape_plot = True):
 
     #Creating shape function
     Nw = [[]]
+    x = sp.symbols('x')
+    y = sp.symbols('y')
+    
 
     if method == 'sin_series':
         for i in range(n):
@@ -30,6 +36,7 @@ def critcal_buckling(a, b, D, method = 'sin_series', n = 3, shape_plot = True):
     print('it may take a while...')
     
     #Matrices construction
+    Ds = sp.Matrix(D)
     Nww_values = sp.Matrix([sp.diff(Nw_values,x,x),sp.diff(Nw_values,y,y),2*sp.diff(Nw_values,x,y)])
     print('Shape function ready!')
     KGx_values = np.array(sp.integrate(sp.integrate(sp.diff(Nw_values,x).T*sp.diff(Nw_values,x),(x,0,a)),(y,0,b)))

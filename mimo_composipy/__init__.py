@@ -1,6 +1,6 @@
-from ply_class import Ply
-from critcal_buckling_function import critcal_buckling
-from laminate_class import Laminate
+from .ply_class import Ply
+from .critical_buckling_function import critical_buckling
+from .laminate_class import Laminate
 
 
 if __name__ =='__main__':
