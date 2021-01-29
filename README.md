@@ -91,6 +91,6 @@ $$ plate_{length} = 360mm$$
 ```
 **The outputs are:**
 
-![instances_printing]()
+![instances_printing](https://github.com/rafaelpsilva07/mimo_composipy/blob/main/images/instance_properties.PNG)
 
-![buckling_results]()
+![buckling_results](https://github.com/rafaelpsilva07/mimo_composipy/blob/main/images/buckling_output.PNG)
