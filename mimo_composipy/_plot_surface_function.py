@@ -20,7 +20,7 @@ def _plot_surface(a,b, C_values, Nw_values ,n_divisions = 25):
 
     for i in range(n_divisions):
         for j in range(n_divisions): 
-            z[i,j] =  np.array(Nw_values.subs(x,a_array[i,j]).subs(y,b_array[i,j]),dtype=float)@C_values
+            z[i,j] =  np.array(Nw_values.subs(x,a_array[i,j]).subs(y,b_array[i,j])).astype('float')@C_values
     
     #Plotting
     fig = plt.figure()

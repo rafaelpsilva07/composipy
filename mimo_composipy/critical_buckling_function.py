@@ -47,8 +47,8 @@ def critical_buckling(a, b, D, method = 'sin_series', n = 3, shape_plot = True):
     print('[K] ready')
     
     #eigenproblem
-    A=np.array(K_values,dtype=float)
-    B=np.array(KGx_values,dtype=float)
+    A=np.array(K_values).astype('float')
+    B=np.array(KGx_values).astype('float')
     eig_values, eig_vectors = linalg.eig(A,B)
     
     #finding the min eigenvalue
