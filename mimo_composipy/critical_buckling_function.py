@@ -1,4 +1,5 @@
 # function
+# Old version of buckling_load function
 
 import sympy as sp
 import numpy as np
@@ -7,7 +8,13 @@ import matplotlib.pyplot as plt
 from ._plot_surface_function import _plot_surface
 
 
-def critical_buckling(a, b, D, method = 'sin_series', n = 3, shape_plot = True):
+def critical_buckling(a, b, D, method = 'sin_series', n = 3, shape_plot = False):
+'''
+===========================================
+This is the old version of the buckling_load function.
+Both functions provide same results, but buckling_load is optmized.
+===========================================
+'''
 
     #Creating shape function
     Nw = [[]]
@@ -53,7 +60,7 @@ def critical_buckling(a, b, D, method = 'sin_series', n = 3, shape_plot = True):
     
     #finding the min eigenvalue
     min_eigen_value = min((eig_values.real**2)**(1/2))
-    Nx = min_eigen_value*a
+    Nx = min_eigen_value*b
     print(f'buckling load is {Nx}')
     
     #Finding the corresponding C vector
