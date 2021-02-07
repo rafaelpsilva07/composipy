@@ -1,7 +1,7 @@
 from .ply_class import Ply
 from .critical_buckling_function import critical_buckling
 from .laminate_class import Laminate
-
+from .buckling_load_function import buckling_load
 
 if __name__ =='__main__':
     print('this script is being executed')
