@@ -9,12 +9,12 @@ from ._plot_surface_function import _plot_surface
 
 
 def critical_buckling(a, b, D, method = 'sin_series', n = 3, shape_plot = False):
-'''
-===========================================
-This is the old version of the buckling_load function.
-Both functions provide same results, but buckling_load is optmized.
-===========================================
-'''
+    '''
+    ===========================================
+    This is the old version of the buckling_load function.
+    Both functions provide same results, but buckling_load is optmized.
+    ===========================================
+    '''
 
     #Creating shape function
     Nw = [[]]
