@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="mimo_composipy", # Replace with your own username
-    version="0.1.1",
+    version="0.1.2",
     author="Rafael Pereira",
     author_email="rafaelpsilva07@gmail.com",
     description="This package intends to perform composite material calculations",
