@@ -26,7 +26,7 @@ def buckling_load(a, b, D, n = 3, shape_plot = False , eig = False):
 
     Use
 
-    buckling_load(a, b, D, n = 3, eig = True)
+    buckling_load(a, b, D, n = 3, shape_plot = False , eig = False)
     It returns the Nx load of the plate (float)
 
         - a ==> is plate lengh, paralell to the X direction and paralel to the load
