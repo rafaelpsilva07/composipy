@@ -19,42 +19,37 @@ https://pypi.org/project/mimo-composipy/
 
 
 
-# Realeases
+# Current Realease
 
-## v 0.1.1 (2021/02)
+## v 0.2.1 (2021/02)
 
-Basic release. It contains:
+Current release contains:
 
 - **Ply** instances to calculate a lamina macromechanical behavior
 - **Laminate** instances to perform laminate calculation
 - **buckling_load** function that calculates the critical buckling load of a composite plate
-- **critical_buckling** function that calculates the critical buckling load of a composite plate
+- **critical_buckling** function that calculates the critical buckling load of a composite plate (This is the first version of the function and it is not efficient)
 
+You can use the docstring to read the content of each one of these.
 
 # First steps
-
-% In your preamble
-
-\usepackage[hybrid]{markdown}
-
-% In the main body of your document
 
 ## Application example:
 In this example we're going to perform a buckling calculation from the scretch. Consider the following composite plate:
 
 ### Ply mechanical properties
-$$ E_1 = 129500 MPa $$
-$$ E_2 = 9370 MPa $$
-$$ v12 = 0.38 MPa $$
-$$ G12 = 5240 MPa $$
-$$ ply_{thickness} = 0.2 mm $$
+E_1 = 129500 MPa
+E_2 = 9370 MPa
+v12 = 0.38 MPa
+G12 = 5240 MPa
+ply_{thickness} = 0.2 mm
 
 ### Laminate stacking sequence
-$$ 90°/90°/0°/90°/90°/0°/90°/90° $$
+90°/90°/0°/90°/90°/0°/90°/90°
 
 ### Plate dimensions
-$$ plate_{width} = 360mm$$
-$$ plate_{length} = 360mm$$
+plate_{width} = 360mm
+plate_{length} = 360mm
 
 
 ## Coding solution
@@ -92,8 +87,6 @@ $$ plate_{length} = 360mm$$
 >>> print('\n')
 >>> print(laminate_1.D)
 
->>> #Calculating the critical buckling load and ploting the shape
->>> critical_buckling( plate_width, plate_lenght, laminate_1.D,method = 'polynomial',n=3)
->>> # method may be 'polinomial' or 'sin_series'
->>> # n is the degree of refinement
+>>> #Calculating the critical buckling load
+>>> bukling_load( plate_width, plate_lenght, laminate_1.D)
 ```
