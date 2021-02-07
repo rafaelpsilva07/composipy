@@ -2,7 +2,42 @@ import numpy as np
 import numbers
 
 class Ply:
-    '''This function builts a ply object'''
+    '''
+    ===========================================
+    The class
+
+    This class creates ply objects.
+    Some formulation characteristics are:
+        - Lamina macromechanical behavior formulations ares used (see References)
+        - Main reference is the chapter 2 of reference 2.
+    ===========================================
+
+    Use
+
+    Ply( e1, e2, v12, g12, thickness)
+    It creates a ply object, where:
+        - e1 ==> Young modulus in the 1 direction
+        - e2 ==> Young modulus in the 2 direction
+        - v12 ==> poisson modulus 12
+        - g12 ==> Shear modulus
+        - thickness ==> thickness of the ply
+
+    Example:
+    >>> from mimo_composipy import Ply
+    >>> ply_1 = Ply(129500, 9370, 0.38, 5240, 0.2)
+    >>> ply_1.Q_0
+    >>> #Shows the stiffness matrix of the lamina
+    Out:
+    array([[130867.31382151,   3598.19426713,      0.        ],
+       [  3598.19426713,   9468.93228191,      0.        ],
+       [     0.        ,      0.        ,   5240.        ]])
+
+    ===========================================
+
+    References:
+        1 - JONES, M. Robert. Mechanics of Composite Materials. Taylor & Francis: 2nd ed 1999.
+        2 - Analysis and Design of composite structures. Class notes. ITA 2020.
+    '''
     
     def __init__(self, e1, e2, v12, g12, thickness):
 

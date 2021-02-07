@@ -3,7 +3,43 @@ import numpy as np
 from .ply_class import Ply
 
 class Laminate:
-    
+    '''
+    ===========================================
+    The class
+
+    This class creates laminate object. It needs ply objects and the angle information.
+    Some formulation characteristics are:
+        - Laminate formulations ares used (see References)
+        - Main reference is the chapter 4 of reference 2.
+    ===========================================
+
+    Use
+
+    Laminate(layup)
+    It creates a laminate object, where:
+        - layup ==> indicates the stacking sequence of the laminate
+
+    The layup instance is composed of a list containing a tuple to each ply.
+    The tuple must contain the ply angle (float in degrees) with relation to the 1 direciton
+    and a ply object (of Ply class).
+    - [(angle_of_ply_1, ply_1),(angle_of_ply_2, ply_2), ... (angle_of_ply_n, ply_n)]
+
+    Example:
+    >>> layup_1 = [(90,ply_1),(90,ply_1),(0,ply_1),(90,ply_1),(90,ply_1),(0,ply_1),(90,ply_1),(90,ply_1)]
+    >>> laminate_1 = Laminate(layup_1)
+    >>> laminate_1.D # retunrs a array containing bending stiffness matrix [D] of the laminate
+    >>> laminate_1.A # retunrs a array containing stiffness matrix [A] of the laminate
+    >>> laminate_1.B # retunrs a array containing coupled stiffness matrix [B] of the laminate
+    >>> laminate_1.print_ABD() # method that prints ABD matrices of the laminate
+
+    ===========================================
+
+    References:
+        1 - JONES, M. Robert. Mechanics of Composite Materials. Taylor & Francis: 2nd ed 1999.
+        2 - Analysis and Design of composite structures. Class notes. ITA 2020.
+    '''
+
+
     def __init__(self,layup):
         
         if not isinstance(layup,list):

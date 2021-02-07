@@ -21,16 +21,23 @@ https://pypi.org/project/mimo-composipy/
 
 # Realeases
 
-## v 0.0.1 (2021/02)
+## v 0.1.1 (2021/02)
 
 Basic release. It contains:
 
 - **Ply** instances to calculate a lamina macromechanical behavior
 - **Laminate** instances to perform laminate calculation
+- **buckling_load** function that calculates the critical buckling load of a composite plate
 - **critical_buckling** function that calculates the critical buckling load of a composite plate
 
 
 # First steps
+
+% In your preamble
+
+\usepackage[hybrid]{markdown}
+
+% In the main body of your document
 
 ## Application example:
 In this example we're going to perform a buckling calculation from the scretch. Consider the following composite plate:
@@ -48,6 +55,7 @@ $$ 90°/90°/0°/90°/90°/0°/90°/90° $$
 ### Plate dimensions
 $$ plate_{width} = 360mm$$
 $$ plate_{length} = 360mm$$
+
 
 ## Coding solution
 ```python
@@ -89,8 +97,3 @@ $$ plate_{length} = 360mm$$
 >>> # method may be 'polinomial' or 'sin_series'
 >>> # n is the degree of refinement
 ```
-**The outputs are:**
-
-![instances_printing](https://github.com/rafaelpsilva07/mimo_composipy/blob/main/images/instance_properties.PNG)
-
-![buckling_results](https://github.com/rafaelpsilva07/mimo_composipy/blob/main/images/buckling_output.PNG)
