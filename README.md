@@ -1,7 +1,7 @@
 # Overview
 
 **mimo_composipy** is a python library to calculate composite plates using the classical laminate theory. This library is designed to be simple, userfriendly and helpfull.
-Now, you can perform a composite plate buckling calculation using 4 lines of python code.
+Now, you can perform a composite plate buckling calculation using a few lines of python code.
 
 
 This library is a creation of the **Techmimo project**, it is for learning purposes. 
@@ -92,6 +92,6 @@ plate_{length} = 360mm
 >>> buckling_load( plate_width, plate_lenght, laminate_1.D)
 ```
 
-Check it out with 4 lines of coding!
+Check it out with 5 lines of coding!
 
 ![Esquema](images/Exemplo_composipy.PNG)
