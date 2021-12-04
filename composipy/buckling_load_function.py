@@ -67,7 +67,13 @@ def buckling_load(a, b, D, n = 3, shape_plot = False , eig = False):
         for j_index in range(n):
             for k_index in range(n):
                 for l_index in range(n):
-                     cur_comp = integrated_component.subs(i,1+i_index).subs(j,1+j_index).subs(k,1+k_index).subs(l,1+l_index)
+                     cur_comp = integrated_component.subs([
+                         (i, 1+i_index),
+                         (j, 1+j_index),
+                         (k, 1+k_index),
+                         (l, 1+l_index)
+                     ])
+                     #subs(i,1+i_index).subs(j,1+j_index).subs(k,1+k_index).subs(l,1+l_index)
                      component_list.append(cur_comp)       
 
     KGx = np.array(component_list).reshape(n**2, n**2).astype(float)
@@ -102,7 +108,13 @@ def buckling_load(a, b, D, n = 3, shape_plot = False , eig = False):
         for j_index in range(n):
             for k_index in range(n):
                 for l_index in range(n):
-                    cur_comp = integrated_component.subs(i,1+i_index).subs(j,1+j_index).subs(k,1+k_index).subs(l,1+l_index)
+                    cur_comp = integrated_component.subs([
+                        (i, 1+i_index),
+                        (j, 1+j_index),
+                        (k, 1+k_index),
+                        (l, 1+l_index)
+                    ])
+                    #(i,1+i_index).subs(j,1+j_index).subs(k,1+k_index).subs(l,1+l_index)
                     component_list_K.append(cur_comp)
 
     K = np.array(component_list_K).reshape(n**2, n**2).astype(float)
