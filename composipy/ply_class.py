@@ -42,17 +42,13 @@ class Ply:
     def __init__(self, e1, e2, v12, g12, thickness):
 
         if not isinstance(e1,numbers.Real) or e1<0:
-            raise ValueError('e1 must be a positive number')
-            
+            raise ValueError('e1 must be a positive number')    
         if not isinstance(e2,numbers.Real) or e2<0:
             raise ValueError('e2 must be a positive number')
-        
         if not isinstance(v12,numbers.Real) or v12 <-0.5 or v12>0.5:
             raise ValueError('v12 must be a number between -0.5 and 0.5')
-            
         if not isinstance(g12,numbers.Real) or g12<0:
             raise ValueError('g12 must be a positive number')
-            
         if not isinstance(thickness,numbers.Real) or thickness<0:
             raise ValueError('thickness must be a positive number')
 
@@ -127,14 +123,21 @@ class Ply:
     @property
     def Q_0(self):
         if self._Q_0 is None:
-            self._Q_0 = np.array([[self.e1/(1-self.v12*self.v21),self.v12*self.e2/(1-self.v12*self.v21),0],
-                                        [self.v12*self.e2/(1-self.v12*self.v21),self.e2/(1-self.v12*self.v21),0],
-                                        [0,0,self.g12]])
+            self._Q_0 = np.array([
+                [self.e1/(1-self.v12*self.v21), self.v12*self.e2/(1-self.v12*self.v21), 0],
+                [self.v12*self.e2/(1-self.v12*self.v21), self.e2/(1-self.v12*self.v21), 0],
+                [0, 0, self.g12]])
         return self._Q_0
     
     def __repr__(self):
-        return f'Ply(e1={self.e1}, e2={self.e2}, e3={self.v12},\
- g12={self.g12}, thickness={self.thickness}) object'
+        return (
+            f'Ply definition \
+            \n============= \
+            \ne1 = {self.e1} \
+            \ne2 = {self.e2} \
+            \ne3 = {self.v12}\
+            \ng12 = {self.g12}\
+            \nthickness = {self.thickness}')
     
 #Comparisons
     def __eq__(self, other):

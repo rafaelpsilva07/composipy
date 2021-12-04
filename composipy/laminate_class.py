@@ -40,17 +40,18 @@ class Laminate:
     '''
 
 
-    def __init__(self,layup):
+    def __init__(self, layup):
         
-        if not isinstance(layup,list):
-            raise ValueError('layup must be a list of tuples.\
- Each tuple must contain a angle value and a Ply object')
+        if not isinstance(layup, list):
+            raise ValueError(
+                'layup must be a list of tuples.\
+                Each tuple must contain a angle value and a Ply object'
+                )
         
         for ply in layup:
-            if not isinstance(ply[0],numbers.Real):
+            if not isinstance(ply[0], numbers.Real):
                 raise ValueError(f'the angle must be a real number. Check {ply}')
-            if not isinstance(ply[1],Ply):
-                print(type(ply[1]))
+            if not isinstance(ply[1], Ply):
                 raise ValueError(f'the ply mus be a Ply object. Check {ply}')
             
         self.layup = layup
@@ -85,13 +86,17 @@ class Laminate:
                 c = np.cos(theta[0]*np.pi/180)
                 s = np.sin(theta[0]*np.pi/180)
 
-                T_real = np.array([[c**2,s**2,2*c*s],
-                                   [s**2,c**2,-2*c*s],
-                                   [-c*s,c*s,c**2-s**2]])
+                T_real = np.array([
+                    [c**2, s**2, 2*c*s],
+                    [s**2, c**2, -2*c*s],
+                    [-c*s, c*s, c**2-s**2]
+                    ])
 
-                T_engineering =  np.array([[c**2,s**2,c*s],
-                                           [s**2,c**2,-c*s],
-                                           [-2*c*s,2*c*s,c**2-s**2]])
+                T_engineering =  np.array([
+                    [c**2, s**2, c*s],
+                    [s**2, c**2, -c*s],
+                    [-2*c*s, 2*c*s, c**2-s**2]
+                    ])
 
                 self._Q_layup.append((np.linalg.inv(T_real))@theta[1].Q_0@T_engineering)
         return self._Q_layup
@@ -104,7 +109,7 @@ class Laminate:
             for i in enumerate(self.Q_layup):
                 zk1 = self.z_position[i[0]+1]
                 zk0 = self.z_position[i[0]]
-                self._A += (zk1 - zk0)*i[1]
+                self._A += (zk1-zk0) * i[1]
         return self._A
     
     @property
@@ -141,6 +146,8 @@ class Laminate:
 
 #Methods
     def print_ABD(self):
+        ''' This method prints ABD matrices'''
+
         print("[A] is:")
         print(self.A)
         print("\n")
@@ -149,4 +156,4 @@ class Laminate:
         print("\n")
         print("[D] is:")
         print(self.D)
-        
+        return None

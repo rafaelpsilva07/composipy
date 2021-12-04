@@ -5,6 +5,7 @@ import sympy as sp
 import numpy as np
 from scipy import linalg
 import matplotlib.pyplot as plt
+
 from ._plot_surface_function import _plot_surface
 from sympy import sin, cos, pi, Piecewise, Ne
 from ._pre_integrated_component import integration_KGx_component, integration_K_component
@@ -48,17 +49,14 @@ def buckling_load(a, b, D, n = 3, shape_plot = False , eig = False):
     '''
     #========================= KGX MATRIX CONSTRUCTION ============================
     # Symbolic values and variables
-    i,j,k,l = sp.symbols(['i','j','k','l'],positive=True)
-    x,y = sp.symbols(['x','y'])
+    i, j, k, l = sp.symbols(['i', 'j', 'k', 'l'], positive=True)
+    x, y = sp.symbols(['x', 'y'])
 
     # Shape function components
-    component1 = sp.sin((i)*sp.pi*x/a)*sp.sin((j)*sp.pi*y/b)
-    component2 = sp.sin((k)*sp.pi*x/a)*sp.sin((l)*sp.pi*y/b)
-    #component1 = x**(i)*y**(j)*(x-a)*(y-b)
-    #component2 = x**(k)*y**(l)*(x-a)*(y-b)
-    dx_component1 = sp.diff(component1,x)
-    dx_component2 = sp.diff(component2,x)
-    #integrated_component =  sp.integrate(sp.integrate(dx_component1*dx_component2,(x,0,a)),(y,0,b))
+    component1 = sp.sin((i)*sp.pi*x/a) * sp.sin((j)*sp.pi*y/b)
+    component2 = sp.sin((k)*sp.pi*x/a) * sp.sin((l)*sp.pi*y/b)
+    dx_component1 = sp.diff(component1, x)
+    dx_component2 = sp.diff(component2, x)
     integrated_component = eval(integration_KGx_component)
 
     # Construction of KGx
@@ -69,32 +67,31 @@ def buckling_load(a, b, D, n = 3, shape_plot = False , eig = False):
         for j_index in range(n):
             for k_index in range(n):
                 for l_index in range(n):
-                    #print(str(i_index+1)+str(j_index+1)+str(k_index+1)+str(l_index+1))
-                    cur_comp = integrated_component.subs(i,1+i_index).subs(j,1+j_index).subs(k,1+k_index).subs(l,1+l_index)
-                    component_list.append(cur_comp)       
+                     cur_comp = integrated_component.subs(i,1+i_index).subs(j,1+j_index).subs(k,1+k_index).subs(l,1+l_index)
+                     component_list.append(cur_comp)       
 
-    KGx = np.array(component_list).reshape(n**2,n**2).astype(float)
+    KGx = np.array(component_list).reshape(n**2, n**2).astype(float)
 
     #ToDo
     #Built KGy and KGxy functions
 
     #========================= K MATRIX CONSTRUCTION ============================
     # Unpack D
-    [D11,D12,D13],\
-    [D21,D22,D23],\
-    [D31,D32,D33] = D
+    [D11, D12, D13],\
+    [D21, D22, D23],\
+    [D31, D32, D33] = D
 
     # Shape function components (used in Nww constructions)
-    dxx_component1 = sp.diff(component1,x,x)
-    dxx_component2 = sp.diff(component2,x,x)
-    dyy_component1 = sp.diff(component1,y,y)
-    dyy_component2 = sp.diff(component2,y,y)
-    _2dxy_component1 = 2*sp.diff(component1,x,y)
-    _2dxy_component2 = 2*sp.diff(component2,x,y)
+    dxx_component1 = sp.diff(component1, x, x)
+    dxx_component2 = sp.diff(component2, x, x)
+    dyy_component1 = sp.diff(component1, y, y)
+    dyy_component2 = sp.diff(component2, y, y)
+    _2dxy_component1 = 2*sp.diff(component1, x, y)
+    _2dxy_component2 = 2*sp.diff(component2, x, y)
     component_K = _2dxy_component2*(D33*_2dxy_component1 + D13*dxx_component1 + D23*dyy_component1)\
-                + dxx_component2*(D31*_2dxy_component1 + D11*dxx_component1 + D21*dyy_component1) \
-                + dyy_component2*(D32*_2dxy_component1 + D12*dxx_component1 + D22*dyy_component1)
-    #integrated_component = sp.integrate(sp.integrate(component_K,(x,0,a)),(y,0,b))
+                  + dxx_component2*(D31*_2dxy_component1 + D11*dxx_component1 + D21*dyy_component1) \
+                  + dyy_component2*(D32*_2dxy_component1 + D12*dxx_component1 + D22*dyy_component1)
+
     integrated_component = eval(integration_K_component)
 
     #Construction of K
@@ -105,11 +102,10 @@ def buckling_load(a, b, D, n = 3, shape_plot = False , eig = False):
         for j_index in range(n):
             for k_index in range(n):
                 for l_index in range(n):
-                    #print(str(i_index+1)+str(j_index+1)+str(k_index+1)+str(l_index+1))
                     cur_comp = integrated_component.subs(i,1+i_index).subs(j,1+j_index).subs(k,1+k_index).subs(l,1+l_index)
                     component_list_K.append(cur_comp)
 
-    K = np.array(component_list_K).reshape(n**2,n**2).astype(float)
+    K = np.array(component_list_K).reshape(n**2, n**2).astype(float)
 
     #==================SOLVING THE EIGENPROBLEM AND FINDING THE RESULTS ============
     #eigenproblem
@@ -117,11 +113,11 @@ def buckling_load(a, b, D, n = 3, shape_plot = False , eig = False):
     
     #finding the min eigenvalue
     min_eigen_value = min((eig_values.real**2)**(1/2))
-    Nx = min_eigen_value*b
+    Nx = min_eigen_value * b
         
     #Finding the corresponding C vector
     i = np.where(eig_values == min_eigen_value)
-    C_vector = eig_vectors[::,i[0]].real
+    C_vector = eig_vectors[::, i[0]].real
     
     #complete shape function
     Nw = [[]]
