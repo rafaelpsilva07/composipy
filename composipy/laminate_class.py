@@ -120,7 +120,7 @@ class Laminate:
             for i in enumerate(self.Q_layup):
                 zk1 = self.z_position[i[0]+1]
                 zk0 = self.z_position[i[0]]
-                self._B += (1/2)*(zk1**2 - zk0**2)*i[1]
+                self._B += (1/2) * (zk1**2-zk0**2) * i[1]
         return self._B
     
     @property
@@ -131,7 +131,7 @@ class Laminate:
             for i in enumerate(self.Q_layup):
                 zk1 = self.z_position[i[0]+1]
                 zk0 = self.z_position[i[0]]
-                self._D += (1/3)*(zk1**3 - zk0**3)*i[1]
+                self._D += (1/3) * (zk1**3-zk0**3) * i[1]
         return self._D
 
 #Representation (str not implemented)
