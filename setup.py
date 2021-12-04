@@ -4,8 +4,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="mimo_composipy", # Replace with your own username
-    version="0.1.3",
+    name="composipy", # Replace with your own username
+    version="0.1.4",
     author="Rafael Pereira",
     author_email="rafaelpsilva07@gmail.com",
     description="This package intends to perform composite material calculations",
