@@ -1,6 +1,6 @@
 from .ply_class import Ply
 from .laminate_class import Laminate
-from .buckling_load_function import buckling_load
+
 
 if __name__ =='__main__':
     print('this script is being executed')

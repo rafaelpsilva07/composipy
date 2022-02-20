@@ -2,44 +2,47 @@ import numpy as np
 import numbers
 
 class Ply:
-    '''
-    ===========================================
-    The class
-
-    This class creates ply objects.
+    '''This class creates ply objects.
     Some formulation characteristics are:
         - Lamina macromechanical behavior formulations ares used (see References)
         - Main reference is the chapter 2 of reference 2.
-    ===========================================
-
-    Use
-
-    Ply( e1, e2, v12, g12, thickness)
-    It creates a ply object, where:
-        - e1 ==> Young modulus in the 1 direction
-        - e2 ==> Young modulus in the 2 direction
-        - v12 ==> poisson modulus 12
-        - g12 ==> Shear modulus
-        - thickness ==> thickness of the ply
-
-    Example:
-    >>> from mimo_composipy import Ply
-    >>> ply_1 = Ply(129500, 9370, 0.38, 5240, 0.2)
-    >>> ply_1.Q_0
-    >>> #Shows the stiffness matrix of the lamina
-    Out:
-    array([[130867.31382151,   3598.19426713,      0.        ],
-       [  3598.19426713,   9468.93228191,      0.        ],
-       [     0.        ,      0.        ,   5240.        ]])
-
-    ===========================================
-
-    References:
-        1 - JONES, M. Robert. Mechanics of Composite Materials. Taylor & Francis: 2nd ed 1999.
-        2 - Analysis and Design of composite structures. Class notes. ITA 2020.
     '''
     
     def __init__(self, e1, e2, v12, g12, thickness):
+        '''
+        Parameters
+        ----------
+        e1: float, int
+            Young modulus in the 1st direction
+        e2: float, int
+            Young modulus in the 2nd direction
+        v12: float
+            poisson modulus 12
+        g12: float, int
+            Shear modulus
+        thickness: float, int
+            thickness of the ply
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        >>> from composipy import Ply
+        >>> ply_1 = Ply(129500, 9370, 0.38, 5240, 0.2)
+        >>> ply_1.Q_0 # get the compliance matrix of the lamina
+        Out:
+        array([[130867.31382151,   3598.19426713,      0.        ],
+               [  3598.19426713,   9468.93228191,      0.        ],
+               [     0.        ,      0.        ,   5240.        ]])
+
+        References
+        ----------
+            1 - JONES, M. Robert. Mechanics of Composite Materials. Taylor & Francis: 2nd ed 1999.
+            2 - Analysis and Design of composite structures. Class notes. ITA 2020.
+
+        '''
 
         if not isinstance(e1,numbers.Real) or e1<0:
             raise ValueError('e1 must be a positive number')    
@@ -52,92 +55,71 @@ class Ply:
         if not isinstance(thickness,numbers.Real) or thickness<0:
             raise ValueError('thickness must be a positive number')
 
-        self._e1 = e1
-        self._e2 = e2
-        self._v12 = v12
-        self._g12 = g12
-        self._thickness = thickness
-        self._Q_0 = None #Calculated property
-        self._v21 = None #Calculated property
+        self.__e1 = e1
+        self.__e2 = e2
+        self.__v12 = v12
+        self.__g12 = g12
+        self.__thickness = thickness
+        self.__v21 = self.v12 * (self.e2/self.e1)
+        self.__Q_0 = None #Calculated property
 
-#Properties getters and setters
+    #Propertie getters    
     @property
     def e1(self):
-        return self._e1
-    
-    @e1.setter
-    def e1(self,value):
-        self._e1 = value
-        self._Q_0 = None
-        self._v21 = None
-
+        return self.__e1
     @property
     def e2(self):
-        return self._e2
-    
-    @e2.setter
-    def e2(self,value):
-        self._e2 = value
-        self._Q_0 = None
-        self._v21 = None
-        
+        return self.__e2
     @property
     def v12(self):
-        return self._v12
-    
-    @v12.setter
-    def v12(self,value):
-        self._v12 = value
-        self._Q_0 = None
-        self._v21 = None
-
+        return self.__v12
     @property
     def g12(self):
-        return self._g12
-    
-    @g12.setter
-    def g12(self,value):
-        self._g12 = value
-        self._Q_0 = None
-        self._v21 = None
-
-        
+        return self.__g12
     @property
     def thickness(self):
-        return self._thickness
-    
-    @thickness.setter
-    def thickness(self,value):
-        self._thickness = value
-        self._Q_0 = None
-        self._v21 = None
-
-    #Calculated properties (have only getter)
+        return self.__thickness
     @property
     def v21(self):
-        if self._v21 is None:
-            #value not cached - calculate it
-            self._v21 = self.v12*self.e2/self.e1
-        return self._v21
-    
+        return self.__v21
+
+    #Calculated properties (have only getter)   
     @property
     def Q_0(self):
-        if self._Q_0 is None:
-            self._Q_0 = np.array([
-                [self.e1/(1-self.v12*self.v21), self.v12*self.e2/(1-self.v12*self.v21), 0],
-                [self.v12*self.e2/(1-self.v12*self.v21), self.e2/(1-self.v12*self.v21), 0],
-                [0, 0, self.g12]])
-        return self._Q_0
+        '''Get the compliance matrix of the instance
+        This is for a lamina under plane stress
+        It uses the engineering constants of the instance.
+
+        Parameters
+        ----------
+        self
+            Instance of Ply
+        
+        Returns
+        -------
+        self.Q_0: numpy.ndarray
+            Compliance matrix of the ply
+        '''
+
+        if self.__Q_0 is None:
+            Q11 = self.e1 / (1-self.v12*self.v21) 
+            Q12 = (self.v12*self.e2) / (1-self.v12*self.v21)
+            Q22 = self.e2 / (1-self.v12*self.v21)
+            Q66 = self.g12
+            self.__Q_0 = np.array([[Q11, Q12, 0],
+                                   [Q12, Q22, 0],
+                                   [0, 0, Q66]])
+        return self.__Q_0
     
     def __repr__(self):
         return (
-            f'Ply definition \
-            \n============= \
-            \ne1 = {self.e1} \
-            \ne2 = {self.e2} \
-            \ne3 = {self.v12}\
-            \ng12 = {self.g12}\
-            \nthickness = {self.thickness}')
+            f'Ply definition \n\
+            ============= \n\
+            E1 = {self.e1} \n\
+            E2 = {self.e2} \n\
+            v12 = {self.v12}\n\
+            G12 = {self.g12}\n\
+            thickness = {self.thickness}')
     
 #Comparisons
     def __eq__(self, other):
@@ -147,5 +129,17 @@ class Ply:
                     and self.v12 == other.v12
                     and self.g12 == other.g12
                     and self.thickness == other.thickness)
-        return NotImplemented
+        else:
+            raise ValueError(f'Not a instance of Ply')
 
+if __name__ == '__main__':
+    
+    E1 = 129500
+    E2 = 9370
+    v12 = 0.38
+    G12 = 5240
+    t = 0.2
+
+    p1 = Ply(E1, E2, v12, G12, t)
+    print(p1)
+    print(p1.Q_0)

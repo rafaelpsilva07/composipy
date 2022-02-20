@@ -1,59 +1,61 @@
 import numbers
 import numpy as np
-from .ply_class import Ply
+
+import sys
+sys.path.append('D:/repositories/composipy')
+
+from composipy.ply_class import Ply
 
 class Laminate:
-    '''
-    ===========================================
-    The class
-
-    This class creates laminate object. It needs ply objects and the angle information.
+    '''This class creates laminate object. It needs ply objects and the angle information.
     Some formulation characteristics are:
-        - Laminate formulations ares used (see References)
-        - Main reference is the chapter 4 of reference 2.
-    ===========================================
-
-    Use
-
-    Laminate(layup)
-    It creates a laminate object, where:
-        - layup ==> indicates the stacking sequence of the laminate
-
-    The layup instance is composed of a list containing a tuple to each ply.
-    The tuple must contain the ply angle (float in degrees) with relation to the 1 direciton
-    and a ply object (of Ply class).
-    - [(angle_of_ply_1, ply_1),(angle_of_ply_2, ply_2), ... (angle_of_ply_n, ply_n)]
-
-    Example:
-    >>> layup_1 = [(90,ply_1),(90,ply_1),(0,ply_1),(90,ply_1),(90,ply_1),(0,ply_1),(90,ply_1),(90,ply_1)]
-    >>> laminate_1 = Laminate(layup_1)
-    >>> laminate_1.D # retunrs a array containing bending stiffness matrix [D] of the laminate
-    >>> laminate_1.A # retunrs a array containing stiffness matrix [A] of the laminate
-    >>> laminate_1.B # retunrs a array containing coupled stiffness matrix [B] of the laminate
-    >>> laminate_1.print_ABD() # method that prints ABD matrices of the laminate
-
-    ===========================================
-
-    References:
-        1 - JONES, M. Robert. Mechanics of Composite Materials. Taylor & Francis: 2nd ed 1999.
-        2 - Analysis and Design of composite structures. Class notes. ITA 2020.
+        Laminate formulations ares used (see References)
+        Main reference is the chapter 4 of reference 2.
     '''
-
 
     def __init__(self, layup):
+        '''
+        Parameters
+        ----------
+        layup: list
+            The layup instance is composed of a list containing a tuple to each ply.
+            The tuple must contain the ply angle (float in degrees) with relation to the 1 direciton
+            and a ply object (of Ply class).
+            [(angle_of_ply_1, ply_1), (angle_of_ply_2, ply_2), ... (angle_of_ply_n, ply_n)]
+
+        Returns
+        -------
+        None
+
+        Example
+        -------
+        >>> from composipy import Ply, Laminate
+        >>> ply_1 = Ply(129500, 9370, 0.38, 5240, 0.2)
+        >>> layup_1 = [(90, ply_1), (0, ply_1), (90, ply_1)]
+        >>> laminate = Laminate(layup_1)
+        >>> laminate_1.D # retunrs a array containing bending stiffness matrix [D] of the laminate
+        >>> laminate_1.A # retunrs a array containing stiffness matrix [A] of the laminate
+        >>> laminate_1.B # retunrs a array containing coupled stiffness matrix [B] of the laminate
+        >>> laminate_1.print_ABD() # method that prints ABD matrices of the laminate
         
+        References
+        ----------
+            1 - JONES, M. Robert. Mechanics of Composite Materials. Taylor & Francis: 2nd ed 1999.
+            2 - Analysis and Design of composite structures. Class notes. ITA 2020.
+        '''
+
+        # Checking layup
         if not isinstance(layup, list):
             raise ValueError(
                 'layup must be a list of tuples.\
                 Each tuple must contain a angle value and a Ply object'
-                )
-        
+                )       
         for ply in layup:
             if not isinstance(ply[0], numbers.Real):
                 raise ValueError(f'the angle must be a real number. Check {ply}')
             if not isinstance(ply[1], Ply):
                 raise ValueError(f'the ply mus be a Ply object. Check {ply}')
-            
+
         self.layup = layup
         self._z_position = None
         self._Q_layup = None
@@ -157,3 +159,15 @@ class Laminate:
         print("[D] is:")
         print(self.D)
         return None
+
+
+if __name__ == '__main__':
+    E1 = 129500
+    E2 = 9370
+    v12 = 0.38
+    G12 = 5240
+    t = 0.2
+
+    p1 = Ply(E1, E2, v12, G12, t)
+    print(p1)
+    print(p1.Q_0)
