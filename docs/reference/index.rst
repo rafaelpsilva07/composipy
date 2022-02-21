@@ -1,0 +1,14 @@
+Welcome to composipy's documentation!
+=====================================
+
+Composipy is structured in two main classes: Ply and Laminate
+These two creates the laminate and generates ABD matrices, which is used to mechanical calculations.
+
+See the classes below:
+
+.. toctree::
+   :maxdepth: 3
+   : caption: Contents:
+   
+   classes/Ply
+   classes/Laminate

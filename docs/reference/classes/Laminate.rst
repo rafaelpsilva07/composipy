@@ -1,0 +1,2 @@
+.. automodule:: composipy.laminate_class
+	:members:
