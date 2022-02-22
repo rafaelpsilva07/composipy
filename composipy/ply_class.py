@@ -1,49 +1,44 @@
-import numpy as np
+import itertools
 import numbers
+import numpy as np
+
 
 class Ply:
-    '''This class creates ply objects.
-    Some formulation characteristics are:
-        - Lamina macromechanical behavior formulations ares used (see References)
-        - Main reference is the chapter 2 of reference 2.
+    _ids = itertools.count(1) # counts number of instances
+
     '''
-    
-    def __init__(self, e1, e2, v12, g12, thickness):
-        '''
-        Parameters
-        ----------
-        e1: float, int
+    Creates an instance of Ply.
+
+    Attributes
+    ----------
+        e1 : float, int
             Young modulus in the 1st direction
-        e2: float, int
+        e2 : float, int
             Young modulus in the 2nd direction
-        v12: float
+        v12 : float
             poisson modulus 12
-        g12: float, int
+        g12 : float, int
             Shear modulus
-        thickness: float, int
+        thickness : float, int
             thickness of the ply
 
-        Returns
-        -------
-        None
-
-        Examples
-        --------
+    Examples
+    --------
         >>> from composipy import Ply
         >>> ply_1 = Ply(129500, 9370, 0.38, 5240, 0.2)
         >>> ply_1.Q_0 # get the compliance matrix of the lamina
         Out:
-        array([[130867.31382151,   3598.19426713,      0.        ],
-               [  3598.19426713,   9468.93228191,      0.        ],
-               [     0.        ,      0.        ,   5240.        ]])
+        array([[130867.31382151,   3598.19426713,      0.     ],
+            [  3598.19426713,   9468.93228191,      0.        ],
+            [     0.        ,      0.        ,   5240.        ]])
 
-        References
-        ----------
-            1 - JONES, M. Robert. Mechanics of Composite Materials. Taylor & Francis: 2nd ed 1999.
-            2 - Analysis and Design of composite structures. Class notes. ITA 2020.
+    References
+    ==========
 
-        '''
-
+        * 1 - JONES, M. Robert. Mechanics of Composite Materials. Taylor & Francis: 2nd ed 1999.
+        * 2 - Analysis and Design of composite structures. Class notes. ITA 2020.'''
+    
+    def __init__(self, e1, e2, v12, g12, thickness, name=None):
         if not isinstance(e1,numbers.Real) or e1<0:
             raise ValueError('e1 must be a positive number')    
         if not isinstance(e2,numbers.Real) or e2<0:
@@ -62,6 +57,8 @@ class Ply:
         self.__thickness = thickness
         self.__v21 = self.v12 * (self.e2/self.e1)
         self.__Q_0 = None #Calculated property
+        self._id = next(self._ids)
+        self.__name = name
 
     #Propertie getters    
     @property
@@ -82,11 +79,19 @@ class Ply:
     @property
     def v21(self):
         return self.__v21
+    @property
+    def name(self):
+        if self.__name is None:
+            self.__name = f'ply_{self._id}'
+            return self.__name
+        else:
+            return self.__name
 
     #Calculated properties (have only getter)   
     @property
     def Q_0(self):
-        '''Get the compliance matrix of the instance
+        '''Get the compliance matrix of the instance.
+
         This is for a lamina under plane stress
         It uses the engineering constants of the instance.
 
@@ -110,16 +115,11 @@ class Ply:
                                    [Q12, Q22, 0],
                                    [0, 0, Q66]])
         return self.__Q_0
-    
+
     def __repr__(self):
         return (
-            f'Ply definition \n\
-            ============= \n\
-            E1 = {self.e1} \n\
-            E2 = {self.e2} \n\
-            v12 = {self.v12}\n\
-            G12 = {self.g12}\n\
-            thickness = {self.thickness}')
+            f'Ply({self.name}, E1 = {self.e1}, E2 = {self.e2}, \n\
+    v12 = {self.v12}, G12 = {self.g12}, thickness = {self.thickness})')
     
 #Comparisons
     def __eq__(self, other):

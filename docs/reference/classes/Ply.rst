@@ -1,2 +1,2 @@
-.. automodule:: composipy.Ply
+.. automodule:: composipy.ply_class
    :members:
