@@ -103,7 +103,11 @@ class Laminate:
                     [-2*c*s, 2*c*s, c**2-s**2]
                     ])
 
-                self._Q_layup.append((np.linalg.inv(T_real))@theta[1].Q_0@T_engineering)
+                self._Q_layup.append(
+                    (np.linalg.inv(T_real))
+                    @ theta[1].Q_0 
+                    @ T_engineering
+                    )
         return self._Q_layup
         
     @property
