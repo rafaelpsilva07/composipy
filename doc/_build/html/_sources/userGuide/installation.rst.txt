@@ -1,0 +1,9 @@
+Instalation
+===========
+
+Pypi project
+------------
+
+```
+pip install composipy
+```
