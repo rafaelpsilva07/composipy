@@ -10,17 +10,17 @@ from composipy.ply_class import Ply
 class Laminate:
     '''
     This class creates laminate object. It needs ply objects and the angle information.
-    
     Some formulation characteristics are:
     Laminate formulations ares used (see References)
     Main reference is the chapter 4 of reference 2.
 
-    Attributes
+    Parameters
     ----------
     layup : list
         The layup instance is composed of a list containing a tuple to each ply.
         The tuple must contain the ply angle (float in degrees) with relation to the 1 direciton
         and a ply object (of Ply class).
+       
         [(angle_of_ply_1, ply_1), (angle_of_ply_2, ply_2), ... (angle_of_ply_n, ply_n)]
 
     Returns
@@ -112,6 +112,8 @@ class Laminate:
         
     @property
     def A(self):
+        '''[A] Matrix as numpy.ndarray '''
+
         if self._A is None:
             self._A = np.zeros(9).reshape(3,3)
 
@@ -123,6 +125,8 @@ class Laminate:
     
     @property
     def B(self):
+        '''[B] Matrix as numpy.ndarray '''
+
         if self._B is None:
             self._B = np.zeros(9).reshape(3,3)
 
@@ -134,6 +138,8 @@ class Laminate:
     
     @property
     def D(self):
+        '''[D] Matrix as numpy.ndarray '''
+
         if self._D is None:
             self._D = np.zeros(9).reshape(3,3)
 
@@ -180,17 +186,13 @@ class Laminate:
         return NotImplemented
 
 #Methods
-    def print_ABD(self):
-        ''' This method prints ABD matrices'''
+    def show_ABD(self):
+        ''' This method prints ABD Matrix'''
 
-        print("[A] is:")
-        print(self.A)
-        print("\n")
-        print("[B] is:")
-        print(self.B)
-        print("\n")
-        print("[D] is:")
-        print(self.D)
+        result = "[A]:\n" + str(self.A) + "\n"
+        result += "[B]:\n" + str(self.B) + "\n"
+        result += "[D]:\n" + str(self.D)
+        print(result)
         return None
 
 

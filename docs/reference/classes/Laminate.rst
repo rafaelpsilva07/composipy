@@ -1,2 +1,0 @@
-.. autoclass:: composipy.Laminate
-  :members:

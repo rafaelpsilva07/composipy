@@ -4,40 +4,40 @@ import numpy as np
 
 
 class Ply:
-    _ids = itertools.count(1) # counts number of instances
+    """Creates an instance of Ply.
 
-    '''
-    Creates an instance of Ply.
-
-    Attributes
+    Parameters
     ----------
-        e1 : float, int
-            Young modulus in the 1st direction
-        e2 : float, int
-            Young modulus in the 2nd direction
-        v12 : float
-            poisson modulus 12
-        g12 : float, int
-            Shear modulus
-        thickness : float, int
-            thickness of the ply
+    e1 : float, int
+        Young modulus in the 1st direction
+    e2 : float, int
+        Young modulus in the 2nd direction
+    v12 : float
+        poisson modulus 12
+    g12 : float, int
+        Shear modulus
+    thickness : float, int
+        thickness of the ply
 
     Examples
     --------
-        >>> from composipy import Ply
-        >>> ply_1 = Ply(129500, 9370, 0.38, 5240, 0.2)
-        >>> ply_1.Q_0 # get the compliance matrix of the lamina
-        Out:
-        array([[130867.31382151,   3598.19426713,      0.     ],
-            [  3598.19426713,   9468.93228191,      0.        ],
-            [     0.        ,      0.        ,   5240.        ]])
+    >>> from composipy import Ply
+    >>> ply_1 = Ply(129500, 9370, 0.38, 5240, 0.2)
+    >>> ply_1.Q_0 # get the compliance matrix of the lamina
+    Out:
+    array([[130867.31382151,   3598.19426713,      0.     ],
+        [  3598.19426713,   9468.93228191,      0.        ],
+        [     0.        ,      0.        ,   5240.        ]])
 
     References
-    ==========
+    ----------
+    1. JONES, M. Robert. Mechanics of Composite Materials. Taylor & Francis: 2nd ed 1999.
+    2. Analysis and Design of composite structures. Class notes. ITA 2020.
+        
+    """
 
-        * 1 - JONES, M. Robert. Mechanics of Composite Materials. Taylor & Francis: 2nd ed 1999.
-        * 2 - Analysis and Design of composite structures. Class notes. ITA 2020.'''
-    
+    _ids = itertools.count(1) # counts number of instances
+
     def __init__(self, e1, e2, v12, g12, thickness, name=None):
         if not isinstance(e1,numbers.Real) or e1<0:
             raise ValueError('e1 must be a positive number')    
@@ -90,21 +90,20 @@ class Ply:
     #Calculated properties (have only getter)   
     @property
     def Q_0(self):
-        '''Get the compliance matrix of the instance.
-
+        """Get the compliance matrix of the instance.
         This is for a lamina under plane stress
         It uses the engineering constants of the instance.
 
         Parameters
         ----------
-        self
+        self : self
             Instance of Ply
         
         Returns
         -------
-        self.Q_0: numpy.ndarray
+        self.Q_0 : numpy.ndarray
             Compliance matrix of the ply
-        '''
+        """
 
         if self.__Q_0 is None:
             Q11 = self.e1 / (1-self.v12*self.v21) 

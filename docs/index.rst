@@ -6,11 +6,15 @@
 Welcome to composipy's documentation!
 =====================================
 
+.. mdinclude:: ../README.md
+
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 	
-	Code Reference <reference/index>
+   reference/classes
+   userGuide/getting_start
+
 
 
 Indices and tables
