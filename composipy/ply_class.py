@@ -18,6 +18,8 @@ class Ply:
         Shear modulus
     thickness : float, int
         thickness of the ply
+    name : str, default None
+        Name of the ply
 
     Examples
     --------

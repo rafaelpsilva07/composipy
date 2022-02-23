@@ -50,8 +50,8 @@ class Laminate:
         # Checking layup
         if not isinstance(layup, list):
             raise ValueError(
-                'layup must be a list of tuples.\
-                Each tuple must contain a angle value and a Ply object'
+                'layup must be a list of tuples.\n\
+                 Each tuple must contain a angle value and a Ply object'
                 )       
         for ply in layup:
             if not isinstance(ply[0], numbers.Real):
@@ -148,7 +148,6 @@ class Laminate:
                 zk0 = self.z_position[i[0]]
                 self._D += (1/3) * (zk1**3-zk0**3) * i[1]
         return self._D
-
     
     @staticmethod
     def _pprint(*args):
