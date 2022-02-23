@@ -1,4 +1,4 @@
-![RocketPy Logo](https://github.com/rafaelpsilva07/composipy/tree/main/docs/images/composipy_logo.PNG)
+![composipy Logo](docs/images/composipy_logo.PNG)
 
 # Overview
 
