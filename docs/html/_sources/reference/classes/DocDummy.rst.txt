@@ -1,0 +1,5 @@
+DocDummy
+========
+
+.. automodule:: composipy.docdummy
+  :members:
