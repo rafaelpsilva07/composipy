@@ -52,8 +52,8 @@ Builting a Laminate
 .. note::
     You made it! Now lets explore the options behind your composite material!
 
-See nice representation of your material
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A nice representation of your material!
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 >>> print(ply_1)
 Out:
