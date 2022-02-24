@@ -1,5 +1,6 @@
 import setuptools
 import sys
+import os
 
 sys.path.insert(0, os.path.abspath("./"))
 
@@ -11,6 +12,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setuptools.setup(
     name="composipy", # Replace with your own username
     version=VERSION,
+    install_requires=["numpy>=1.0"],
     author="Rafael Pereira",
     author_email="rafaelpsilva07@gmail.com",
     description="This package intends to perform composite material calculations",
