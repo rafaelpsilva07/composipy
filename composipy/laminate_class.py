@@ -1,6 +1,8 @@
 import numbers
 from tkinter import NS
 import numpy as np
+import scipy as sp
+
 
 import sys
 sys.path.append('D:/repositories/composipy')
@@ -37,6 +39,8 @@ class Laminate:
     >>> laminate_1.A # retunrs a array containing stiffness matrix [A] of the laminate
     >>> laminate_1.B # retunrs a array containing coupled stiffness matrix [B] of the laminate
     >>> laminate_1.print_ABD() # method that prints ABD matrices of the laminate
+    >>> laminate_1.ABD_p # returns an array containing the ABD prime matricies of the laminate
+
     
     References
     ----------
@@ -62,9 +66,12 @@ class Laminate:
         self.layup = layup
         self._z_position = None
         self._Q_layup = None
+        self._T_layup = None
         self._A = None
         self._B = None
         self._D = None
+        self._ABD_p = None
+
 
 #Properties
     @property
@@ -109,7 +116,32 @@ class Laminate:
                     @ T_engineering
                     )
         return self._Q_layup
-        
+     
+    @property
+    def T_layup(self):
+        if self._T_layup is None:
+            
+            self._T_layup = []
+            for theta in self.layup:
+                c = np.cos(theta[0]*np.pi/180)
+                s = np.sin(theta[0]*np.pi/180)
+
+                T_real = np.array([
+                    [c**2, s**2, 2*c*s],
+                    [s**2, c**2, -2*c*s],
+                    [-c*s, c*s, c**2-s**2]
+                    ])
+
+                T_engineering =  np.array([
+                    [c**2, s**2, c*s],
+                    [s**2, c**2, -c*s],
+                    [-2*c*s, 2*c*s, c**2-s**2]
+                    ])
+
+                self._T_layup.append([T_real,T_engineering])
+        return self._T_layup
+
+
     @property
     def A(self):
         '''[A] Matrix as numpy.ndarray '''
@@ -148,6 +180,18 @@ class Laminate:
                 zk0 = self.z_position[i[0]]
                 self._D += (1/3) * (zk1**3-zk0**3) * i[1]
         return self._D
+
+    @property
+    def ABD_p(self):
+        ''' [A',B',D'] Matrix as numpy.ndarray '''
+        if self._ABD_p is None:
+            A_p = np.linalg.inv(self.A)+(-np.linalg.inv(self.A)*self.B)*(np.linalg.inv(self.D-self.B*np.linalg.inv(self.A)*self.B))*(self.B*np.linalg.inv(self.A))
+            B_p = (-np.linalg.inv(self.A)*self.B)*np.linalg.inv(self.D-self.B*np.linalg.inv(self.A)*self.B)
+            D_p = np.linalg.inv(self.D-self.B*np.linalg.inv(self.A)*self.B)
+            ABD_p = sp.matrix(np.vstack((np.hstack((A_p,B_p)),np.hstack((B_p,D_p)))))
+            ABD_p[np.isnan(ABD_p)] = 0
+            self._ABD_p = ABD_p
+        return self._ABD_p
     
     @staticmethod
     def _pprint(*args):
