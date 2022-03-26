@@ -14,8 +14,10 @@ import os
 import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-sys.path.insert(0, os.path.abspath("../"))
 
+
+sys.path.insert(0, os.path.abspath("../"))
+#from composipy import VERSION
 
 # -- Project information -----------------------------------------------------
 
@@ -24,23 +26,32 @@ copyright = '2022, Rafael Pereira da Silva'
 author = 'Rafael Pereira da Silva'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.0'
+release = "0.3.0"
 
 
 # -- General configuration ---------------------------------------------------
-
+master_doc = "index"
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "nbsphinx",
     "m2r2"
 ]
 #    "sphinx.ext.napoleon"
 
+# Don't run notebooks
+nbsphinx_execute = "never"
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+napoleon_numpy_docstring = True
+autodoc_member_order = "bysource"
+autoclass_content = "both"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -60,4 +71,12 @@ html_theme = 'pydata_sphinx_theme'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["static"]
+html_css_files = ["notebooks.css"]
+html_logo = "static/composipy_logo.svg"
+html_theme_options = {
+    "logo_link": "index",
+    "github_url": "https://github.com/rafaelpsilva07/composipy",
+    "collapse_navigation": True,
+    "show_toc_level": 1,
+}

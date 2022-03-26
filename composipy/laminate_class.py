@@ -183,13 +183,15 @@ class Laminate:
     def ABD_p(self):
         ''' [A',B',D'], which is inverse of ABD Matrix, as numpy.ndarray '''
         if self._ABD_p is None:
-            A_p = np.linalg.inv(self.A)
-                  + (-np.linalg.inv(self.A) * self.B)
-                  * (np.linalg.inv(self.D-self.B * np.linalg.inv(self.A) * self.B))
-                  * (self.B * np.linalg.inv(self.A))
-            B_p = (-np.linalg.inv(self.A) * self.B)
-                  * np.linalg.inv(
-                      self.D - self.B * np.linalg.inv(self.A) * self.B
+            A_p = np.linalg.inv(self.A) \
+                + (-np.linalg.inv(self.A) * self.B) \
+                * (np.linalg.inv(self.D-self.B * np.linalg.inv(self.A) * self.B)) \
+                * (self.B * np.linalg.inv(self.A))
+            B_p = (-np.linalg.inv(self.A) * self.B) \
+                  * np.linalg.inv(self.D \
+                                  - self.B \
+                                  * np.linalg.inv(self.A) \
+                                  * self.B
                       )
             D_p = np.linalg.inv(
                 self.D - self.B
@@ -249,3 +251,4 @@ class Laminate:
         result += "[D]:\n" + str(self.D)
         print(result)
         return None
+

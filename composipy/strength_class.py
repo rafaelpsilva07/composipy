@@ -99,9 +99,9 @@ class Strength:
             ply_num = 0
             stress_xy_lam = []
             for q_bar in self.laminate.Q_layup:
-                stress_xy_ply = q_bar
-                                * self.mid_strain_xy[0:3] 
-                                + self.laminate.z_position[ply_num]
+                stress_xy_ply = q_bar \
+                                * self.mid_strain_xy[0:3] \
+                                + self.laminate.z_position[ply_num] \
                                 * self.mid_strain_xy[3:7]
                 stress_xy_lam.append(stress_xy_ply)
                 ply_num += 1
@@ -134,11 +134,11 @@ class Strength:
                 F22 = -1/(X[1].t2*X[1].c2)
                 F66 = 1/X[1].s**2
                 F12 = 1/(2*X[1].t1*X[1].c1) 
-                TW_i = float(F1 * self.stress_12[ply_num][0]
-                             + F2 * self.stress_12[ply_num][1] 
-                             + F11 * self.stress_12[ply_num][0]**2
-                             + F22 * self.stress_12[ply_num][1]**2 
-                             + F66 * self.stress_12[ply_num][2]**2 
+                TW_i = float(F1 * self.stress_12[ply_num][0] \
+                             + F2 * self.stress_12[ply_num][1] \
+                             + F11 * self.stress_12[ply_num][0]**2 \
+                             + F22 * self.stress_12[ply_num][1]**2 \
+                             + F66 * self.stress_12[ply_num][2]**2 \
                              + 2 * F12 * self.stress_12[ply_num][0] * self.stress_12[ply_num][1])
                 TW_i_lam.append(TW_i)
                 ply_num += 1
@@ -164,31 +164,25 @@ class Strength:
                 stress_12_lam = []
                 TW_i_lam = []
                 for x in range(len(self.laminate.layup)):
-                    stress_xy_ply = self.laminate.Q_layup[x]
-                                    * mid_strain_xy[0:3] 
-                                    + self.laminate.z_position[x]
+                    stress_xy_ply = self.laminate.Q_layup[x] \
+                                    * mid_strain_xy[0:3] \
+                                    + self.laminate.z_position[x] \
                                     * mid_strain_xy[3:7]
                     stress_xy_lam.append(stress_xy_ply)
                     stress_12_ply = self.laminate.T_layup[x][0] * stress_xy_ply
                     stress_12_lam.append(stress_12_ply)
 
-                    F1 = 1 / self.laminate.layup[x][1].t1 
+                    F1 = 1 / self.laminate.layup[x][1].t1 \
                         + 1 / self.laminate.layup[x][1].c1
-                    F2 = 1 / self.laminate.layup[x][1].t2 
+                    F2 = 1 / self.laminate.layup[x][1].t2 \
                         + 1 / self.laminate.layup[x][1].c2
-                    F11 = -1 / (
-                        self.laminate.layup[x][1].t1
-                        * self.laminate.layup[x][1].c1
-                        )
-                    F22 = -1 / (
-                        self.laminate.layup[x][1].t2
-                        * self.laminate.layup[x][1].c2
-                        )
+                    F11 = -1 / (self.laminate.layup[x][1].t1 \
+                                * self.laminate.layup[x][1].c1)
+                    F22 = -1 / (self.laminate.layup[x][1].t2
+                                * self.laminate.layup[x][1].c2)
                     F66 = 1 / self.laminate.layup[x][1].s**2
-                    F12 = 1 / (
-                        2 * self.laminate.layup[x][1].t1
-                        * self.laminate.layup[x][1].c1
-                        ) 
+                    F12 = 1 / (2 * self.laminate.layup[x][1].t1 \
+                               * self.laminate.layup[x][1].c1) 
                     
                     TW_i = float(F1*stress_12_ply[0] 
                                  + F2*stress_12_ply[1] 
