@@ -18,6 +18,16 @@ class Ply:
         Shear modulus
     thickness : float, int
         thickness of the ply
+    t1 : float, default None
+        tension allowable in direction 1.
+    c1 : float, default None
+        compression allowable in direction 1.
+    t2 : float, default None
+        tension allowable in direction 2.
+    c2 : float, default None
+        compression allowable in direction 2.
+    s : float, default None
+        shear allowable.
     name : str, default None
         Name of the ply
 
@@ -38,9 +48,21 @@ class Ply:
         
     """
 
-    _ids = itertools.count(1) # counts number of instances
+    _ids = itertools.count(1) # counts number of instances in order to generate names
 
-    def __init__(self, e1, e2, v12, g12, thickness,  t1, c1, t2, c2, s, name=None):
+    def __init__(
+            self, 
+            e1, 
+            e2, 
+            v12, 
+            g12, 
+            thickness, 
+            t1=None, 
+            c1=None, 
+            t2=None, 
+            c2=None, 
+            s=None, 
+            name=None):
         if not isinstance(e1,numbers.Real) or e1<0:
             raise ValueError('e1 must be a positive number')    
         if not isinstance(e2,numbers.Real) or e2<0:
@@ -168,20 +190,3 @@ class Ply:
                     and self.s == other.s)
         else:
             raise ValueError(f'Not a instance of Ply')
-
-if __name__ == '__main__':
-    
-    E1 = 129500
-    E2 = 9370
-    v12 = 0.38
-    G12 = 5240
-    t = 0.2
-    t1 = 500
-    c1 = -200
-    t2 = 50
-    c2 = -250
-    s = 25
-
-    p1 = Ply(E1, E2, v12, G12, t, t1, c1, t2, c2, s)
-    print(p1)
-    print(p1.Q_0)

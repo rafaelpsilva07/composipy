@@ -4,14 +4,16 @@ import os
 
 #sys.path.insert(0, os.path.abspath("./"))
 
-#from composipy._version import VERSION
+from composipy._version import VERSION
+
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
+
 setuptools.setup(
     name="composipy", # Replace with your own username
-    version="0.2.0",
+    version=VERSION,
     install_requires=["numpy>=1.0", "scipy>=1.0"],
     author="Rafael Pereira",
     author_email="rafaelpsilva07@gmail.com",

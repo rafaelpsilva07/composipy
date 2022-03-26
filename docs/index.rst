@@ -12,8 +12,10 @@ Welcome to composipy's documentation!
    :maxdepth: 1
    :caption: Contents:
 	
-   reference/classes
-   userGuide/getting_start
+   User Guide <userGuide/getting_start>
+   Code References <reference/index>
+   Examples Notebooks <examples/index>
+
 
 
 

@@ -1,4 +1,4 @@
-![composipy Logo](docs/images/composipy_logo.PNG)
+![composipy Logo](docs/static/composipy_logo.PNG)
 
 # Overview
 
@@ -18,8 +18,8 @@ https://pypi.org/project/composipy/
 
 ## Documentation
 
-- [Getting Started](https://rafaelpsilva07.github.io/composipy/buildDocs/html/userGuide/getting_start.html)
-- [Code Documentation](https://rafaelpsilva07.github.io/composipy/buildDocs/html/reference/classes.html)
+- [Getting Started]()
+- [Code Documentation]()
 
 ## Whats new in composipy 0.2.0?
  - composipy is simpler and more robust!
