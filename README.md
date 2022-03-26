@@ -18,10 +18,18 @@ https://pypi.org/project/composipy/
 
 ## Documentation
 
-- [Getting Started]()
-- [Code Documentation]()
+- [Getting Started](https://rafaelpsilva07.github.io/composipydocs/userGuide/getting_start.html)
+- [Examples Notebooks](https://rafaelpsilva07.github.io/composipydocs/examples/index.html)
+- [Code Documentation](https://rafaelpsilva07.github.io/composipydocs/reference/index.html)
 
-## Whats new in composipy 0.2.0?
+## Whats new in composipy?
+
+### 0.3.0
+- Class Load added
+- Class Strength added, wich allows the user calculate stresses and check failure criterias of a composite
+- Documentation was updated with jupyter notebook examples
+
+### 0.2.0
  - composipy is simpler and more robust!
  - Documentation added.
  - Validation tests added.
