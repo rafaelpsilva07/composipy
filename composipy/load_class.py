@@ -99,10 +99,15 @@ class Load:
         """
 
         if self._Load is None:
-            self.__Load = np.array([self.Nx, self.Ny, self.Nxy, self.Mx, self.My, self.Mxy])
+            self.__Load = np.array([
+                self.Nx,
+                self.Ny,
+                self.Nxy,
+                self.Mx,
+                self.My,
+                self.Mxy])
+
         return self.__Load
-
-
 
     def __repr__(self):
         return (
@@ -121,15 +126,3 @@ class Load:
         else:
             raise ValueError(f'Not a instance of Load')
 
-if __name__ == '__main__':
-    
-    Nx = 500
-    Ny = 250
-    Nxy = 20
-    Mx = 1000
-    My = 400
-    Mxy = 100
-
-    load1 = Load(Nx, Ny, Nxy, Mx, My, Mxy)
-    print(load1)
-    print(load1.Load)

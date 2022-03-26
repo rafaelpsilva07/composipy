@@ -1,5 +1,5 @@
 import numbers
-from tkinter import NS
+
 import numpy as np
 import scipy as sp
 
@@ -72,11 +72,10 @@ class Laminate:
         self._D = None
         self._ABD_p = None
 
-
 #Properties
     @property
     def z_position(self):
-        
+    
         total_thickness = 0
         for t in self.layup:
             total_thickness += t[1].thickness
@@ -141,7 +140,6 @@ class Laminate:
                 self._T_layup.append([T_real,T_engineering])
         return self._T_layup
 
-
     @property
     def A(self):
         '''[A] Matrix as numpy.ndarray '''
@@ -183,14 +181,28 @@ class Laminate:
 
     @property
     def ABD_p(self):
-        ''' [A',B',D'] Matrix as numpy.ndarray '''
+        ''' [A',B',D'], which is inverse of ABD Matrix, as numpy.ndarray '''
         if self._ABD_p is None:
-            A_p = np.linalg.inv(self.A)+(-np.linalg.inv(self.A)*self.B)*(np.linalg.inv(self.D-self.B*np.linalg.inv(self.A)*self.B))*(self.B*np.linalg.inv(self.A))
-            B_p = (-np.linalg.inv(self.A)*self.B)*np.linalg.inv(self.D-self.B*np.linalg.inv(self.A)*self.B)
-            D_p = np.linalg.inv(self.D-self.B*np.linalg.inv(self.A)*self.B)
-            ABD_p = sp.matrix(np.vstack((np.hstack((A_p,B_p)),np.hstack((B_p,D_p)))))
+            A_p = np.linalg.inv(self.A)
+                  + (-np.linalg.inv(self.A) * self.B)
+                  * (np.linalg.inv(self.D-self.B * np.linalg.inv(self.A) * self.B))
+                  * (self.B * np.linalg.inv(self.A))
+            B_p = (-np.linalg.inv(self.A) * self.B)
+                  * np.linalg.inv(
+                      self.D - self.B * np.linalg.inv(self.A) * self.B
+                      )
+            D_p = np.linalg.inv(
+                self.D - self.B
+                * np.linalg.inv(self.A)
+                * self.B
+                )
+            ABD_p = sp.matrix(
+                np.vstack(
+                    (np.hstack((A_p,B_p)), np.hstack((B_p,D_p))))
+                )
             ABD_p[np.isnan(ABD_p)] = 0
             self._ABD_p = ABD_p
+
         return self._ABD_p
     
     @staticmethod
@@ -237,15 +249,3 @@ class Laminate:
         result += "[D]:\n" + str(self.D)
         print(result)
         return None
-
-
-if __name__ == '__main__':
-    E1 = 129500
-    E2 = 9370
-    v12 = 0.38
-    G12 = 5240
-    t = 0.2
-
-    p1 = Ply(E1, E2, v12, G12, t)
-    print(p1)
-    print(p1.Q_0)
