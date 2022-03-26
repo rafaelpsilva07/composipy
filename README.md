@@ -24,7 +24,7 @@ https://pypi.org/project/composipy/
 
 ## Whats new in composipy?
 
-### 0.3.0
+### 0.3.1
 - Class Load added
 - Class Strength added, wich allows the user calculate stresses and check failure criterias of a composite
 - Documentation was updated with jupyter notebook examples

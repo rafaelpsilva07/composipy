@@ -73,16 +73,16 @@ class Ply:
             raise ValueError('g12 must be a positive number')
         if not isinstance(thickness,numbers.Real) or thickness<0:
             raise ValueError('thickness must be a positive number')
-        if not isinstance(t1,numbers.Real) or t1<0:
+        if (not isinstance(t1,numbers.Real) or t1<0) and t1 is not None:
             raise ValueError('t1 must be a positive number')
-        if not isinstance(c1,numbers.Real) or c1>0:
-            raise ValueError('c1 must be a negative number')
-        if not isinstance(t2,numbers.Real) or t2<0:
+        if not isinstance(c1,numbers.Real) and c1 is not None:
+            raise ValueError('c1 must be a real number')
+        if (not isinstance(t2,numbers.Real) or t2<0) and t2 is not None:
             raise ValueError('t2 must be a positive number')
-        if not isinstance(c2,numbers.Real) or c2>0:
-            raise ValueError('c2 must be a negative number')
-        if not isinstance(s,numbers.Real) or s<0:
-            raise ValueError('c2 must be a positive number')
+        if not isinstance(c2,numbers.Real) and c2 is not None:
+            raise ValueError('c2 must be a real number')
+        if (not isinstance(s,numbers.Real) or s<0) and s is not None:
+            raise ValueError('s must be a positive number')
 
         self.__e1 = e1
         self.__e2 = e2
