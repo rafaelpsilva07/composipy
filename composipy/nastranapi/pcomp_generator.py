@@ -183,7 +183,6 @@ def build_pcomp(sequence, midi, ti, pid=1, z0='',sout='FIBER'):
     '''
     size = len(sequence)
     pid = int(pid)
-    z0 = float(z0)
     ti = _convert_to_list(ti, size)
     midi = _convert_to_list(midi, size)
     sout = _convert_sout(sout, size)
