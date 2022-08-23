@@ -121,3 +121,80 @@ def build_pcomp(sequence):
         A string in NASTRAN PCOMP format
     '''
     pass
+
+
+def _convert_to_list(value, size):
+    '''If it is list return value, if value is a number return a list'''
+    try:
+        size_value = len(value)
+        if size_value == size:
+            return value
+        else:
+            raise ValueError(f'{value} does not fit with sequence size')
+    except TypeError:
+        return [value for i in range(size)]
+
+def _convert_sout(sout, size):
+    if sout == 'FIBER':
+        sout = ['NO' for i in range(size)]
+        sout[0] = 'YES'
+        sout[-1] = 'YES'
+        return sout
+    elif sout == 'NO':
+        sout = ['NO' for i in range(size)]
+        return sout
+    elif sout == 'YES':
+        sout = ['YES' for i in range(size)]
+        return sout
+    else:
+        try:
+            size_value = len(sout)
+            if size_value == size:
+                return sout
+            else:
+                 raise ValueError
+        except:
+            raise ValueError(f'{sout} not accepted')
+            
+
+def build_pcomp(sequence, midi, ti, pid=1, z0='',sout='FIBER'):
+    '''
+    Parameters
+    ----------
+    sequence : list
+        Angles of the stacking sequence. A list (or a iterable) containing angles
+    midi : list or int
+        A list of materials of plies or a material id (int) to be applied to all plies.
+    ti : list or float
+        A list of thickness of plies or a thickness (float) to be applied to all plies.
+    pid : int, default 1
+        NASTRAN property id
+    z0 : float, default ''
+        Laminate offset
+    sout : list or str, default 'FIBER'
+        A list of output request of plies or a output request to be applied to all plies.
+        Options = YES, NO, FIBER
+        If FIBER is used, then only the first and the last plies will be set as YES
+    
+    Returns
+    -------
+    text : str
+        Returns a PCOMP card. 
+    '''
+    size = len(sequence)
+    pid = int(pid)
+    z0 = float(z0)
+    ti = _convert_to_list(ti, size)
+    midi = _convert_to_list(midi, size)
+    sout = _convert_sout(sout, size)
+    
+    header = f'PCOMP,{pid},{z0},,,,,+\n'
+    body = ''
+    
+    for i in range(0, size, 2):
+        i0 = i
+        i1 = i + 1
+        body += f'+,{midi[i0]},{ti[i0]},{sequence[i0]},{sout[i0]},'
+        body += f'{midi[i1]},{ti[i1]},{sequence[i1]},{sout[i1]}+\n'
+    
+    return header + body
