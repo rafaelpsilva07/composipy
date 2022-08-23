@@ -18,11 +18,14 @@ https://pypi.org/project/composipy/
 
 ## Documentation
 
-- [Getting Started](https://rafaelpsilva07.github.io/composipydocs/userGuide/getting_start.html)
-- [Examples Notebooks](https://rafaelpsilva07.github.io/composipydocs/examples/index.html)
-- [Code Documentation](https://rafaelpsilva07.github.io/composipydocs/reference/index.html)
+- [Documentation](https://rafaelpsilva07.github.io/composipydocs/index.html)
+
 
 ## Whats new in composipy?
+
+### 0.3.2
+- PCOMP NASTRAN API added
+- documentation improvements
 
 ### 0.3.1
 - Class Load added
