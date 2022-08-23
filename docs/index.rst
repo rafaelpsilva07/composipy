@@ -16,12 +16,3 @@ Welcome to composipy's documentation!
    Code References <reference/index>
    Examples Notebooks <examples/index>
 
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
