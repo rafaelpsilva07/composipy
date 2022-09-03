@@ -66,17 +66,18 @@ def build_sequence(stacking):
     
     unities = list()
     unity = list()
+    block = list()
     current_block = ''
     is_in_block = False
     is_multiplier = False
+    
     for i, char in enumerate(stacking):
         if char == '(':
             is_in_block = True
         elif char == ')':
-            #current_block = ''
-            unity += _build_stack_unit(current_block)
+            unity = _build_stack_unit(current_block)
+            block.extend(unity)
             current_block = ''
-            is_in_block = False
             is_multiplier = True
         elif (char == '/' 
               and not is_in_block
@@ -87,18 +88,33 @@ def build_sequence(stacking):
             current_block = ''
             unity = list()
         elif (char == '/' 
-              and is_in_block):
+              and is_in_block
+              and not is_multiplier):
             unity = _build_stack_unit(current_block)
+            block.extend(unity)
             current_block = ''
         elif (char == '/' 
-             and is_multiplier):
+             and is_multiplier
+             and not is_in_block):
             times = current_block.replace('_', '').replace('{', '').replace('}', '')
             times = int(times)
             unity = times * unity
             unities.extend(unity)
             unity = list()
             current_block = ''
-            is_multiplier = False           
+            is_multiplier = False
+        elif (char == '/'
+              and is_multiplier
+              and is_in_block):
+            times = current_block.replace('_', '').replace('{', '').replace('}', '')
+            times = int(times)
+            unity = times * block
+            unities.extend(unity)
+            unity = list()
+            block = list()
+            current_block = ''
+            is_multiplier = False
+            is_in_block = False
         else:
             current_block += char
            
@@ -106,21 +122,6 @@ def build_sequence(stacking):
         symmetric_unities = unities[::-1]
         unities.extend(symmetric_unities)
     return unities
-
-
-def build_pcomp(sequence):
-    '''
-    Parameters
-    ----------
-    sequence : list
-        A list of angles.
-    
-    Returns
-    -------
-    pcomp : str
-        A string in NASTRAN PCOMP format
-    '''
-    pass
 
 
 def _convert_to_list(value, size):
@@ -194,6 +195,9 @@ def build_pcomp(sequence, midi, ti, pid=1, z0='',sout='FIBER'):
         i0 = i
         i1 = i + 1
         body += f'+,{midi[i0]},{ti[i0]},{sequence[i0]},{sout[i0]},'
-        body += f'{midi[i1]},{ti[i1]},{sequence[i1]},{sout[i1]}+\n'
+        try:
+            body += f'{midi[i1]},{ti[i1]},{sequence[i1]},{sout[i1]}+\n'
+        except IndexError:
+            body = body[0:-1] # removes last comma
     
     return header + body
