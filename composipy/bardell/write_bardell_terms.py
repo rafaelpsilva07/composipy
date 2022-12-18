@@ -49,3 +49,4 @@ for i in range(4, n_terms):
     f_xi[i] = _orth_polynomials(i+1)
 
 
+print(f_xi)
