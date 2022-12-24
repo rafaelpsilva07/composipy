@@ -13,7 +13,7 @@ f_xi = {
     0: t1 * f1,
     1: r1 * f2,
     2: t2 * f3,
-    3: r2 * f3
+    3: r2 * f4
 } # first terms of set of functions multiplied by constraint flag
 
 
