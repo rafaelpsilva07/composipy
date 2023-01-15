@@ -85,7 +85,7 @@ if __name__ == '__main__':
     # Building python file
     txt = f'# This file contains the {n_terms} first bardel terms\n'
     txt += f'# The results herein are produced by {__file__}\n\n\n'
-    txt += '__all__ = [\'FXI\', \'D_FXI\', \'DD_FXI\']\n\n\n'
+    txt += '__all__ = [\'FXI\', \'D_FXI\', \'DD_FXI\', \'I_D_FXI\', \'I_DD_FXI\']\n\n\n'
     txt += txt_fxi + '\n'*3 + txt_d_fxi + '\n'*3 + txt_dd_fxi + '\n'*3 
 
     
@@ -95,17 +95,13 @@ if __name__ == '__main__':
     for i in range(n_terms):
         for j in range(n_terms):
             i_d_fxi[(i, j)] = sp.integrate(
-                                  sp.integrate(
-                                    d_f_xi[i] * d_f_xi[j]
-                                  ))
+                                d_f_xi[i] * d_f_xi[j])
             i_dd_fxi[(i, j)] = sp.integrate(
-                                  sp.integrate(
-                                    dd_f_xi[i] * dd_f_xi[j]
-                                  ))
+                                dd_f_xi[i] * dd_f_xi[j])
 
     # Converting simbols into strings
     txt_i_d_fxi = 'I_D_FXI = {\n'
-    txt_i_dd_fxi = 'II_D_FXI = {\n'
+    txt_i_dd_fxi = 'I_DD_FXI = {\n'
     for k, v in i_d_fxi.items():
         txt_i_d_fxi += '    ' + str(k) + ': \'' + str(v) + '\'' + ',\n'
     for k, v in i_dd_fxi.items():
@@ -115,7 +111,7 @@ if __name__ == '__main__':
     txt_i_dd_fxi += '}'
     txt += txt_i_d_fxi + '\n'*3 + txt_i_dd_fxi
 
-    with open('_fxi_dfxi_ddfxi.py', 'w') as f:
+    with open('_fxi.py', 'w') as f:
         f.write(txt)
 
 
