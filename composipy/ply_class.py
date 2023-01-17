@@ -1,6 +1,11 @@
 import itertools
 import numbers
 import numpy as np
+import sys
+
+sys.path.append('D:/repositories/composipy')
+
+from composipy._descriptors import _NumberDescriptor
 
 
 class Ply:
@@ -63,76 +68,21 @@ class Ply:
             c2=None, 
             s=None, 
             name=None):
-        if not isinstance(e1,numbers.Real) or e1<0:
-            raise ValueError('e1 must be a positive number')    
-        if not isinstance(e2,numbers.Real) or e2<0:
-            raise ValueError('e2 must be a positive number')
-        if not isinstance(v12,numbers.Real) or v12 <-0.5 or v12>0.5:
-            raise ValueError('v12 must be a number between -0.5 and 0.5')
-        if not isinstance(g12,numbers.Real) or g12<0:
-            raise ValueError('g12 must be a positive number')
-        if not isinstance(thickness,numbers.Real) or thickness<0:
-            raise ValueError('thickness must be a positive number')
-        if (not isinstance(t1,numbers.Real) or t1<0) and t1 is not None:
-            raise ValueError('t1 must be a positive number')
-        if not isinstance(c1,numbers.Real) and c1 is not None:
-            raise ValueError('c1 must be a real number')
-        if (not isinstance(t2,numbers.Real) or t2<0) and t2 is not None:
-            raise ValueError('t2 must be a positive number')
-        if not isinstance(c2,numbers.Real) and c2 is not None:
-            raise ValueError('c2 must be a real number')
-        if (not isinstance(s,numbers.Real) or s<0) and s is not None:
-            raise ValueError('s must be a positive number')
-
-        self.__e1 = e1
-        self.__e2 = e2
-        self.__v12 = v12
-        self.__g12 = g12
-        self.__thickness = thickness
-        self.__t1 = t1
-        self.__c1 = c1
-        self.__t2 = t2
-        self.__c2 = c2
-        self.__s = s
+        self.__e1 = _NumberDescriptor(e1, n_min=0, name='e1')
+        self.__e2 = _NumberDescriptor(e2, n_min=0, name='e2')
+        self.__v12 = _NumberDescriptor(v12, n_min=-0.5, n_max=0.5, name='v12')
+        self.__g12 = _NumberDescriptor(g12, n_min=0, name='g12')
+        self.__thickness = _NumberDescriptor(thickness, n_min=0, name='thickness')
+        self.__t1 = _NumberDescriptor(t1, n_min=0, name='t1')
+        self.__c1 = _NumberDescriptor(c1, n_min=0, name='c1')
+        self.__t2 = _NumberDescriptor(t2, n_min=0, name='t2')
+        self.__c2 = _NumberDescriptor(c2, n_min=0, name='c2')
+        self.__s = _NumberDescriptor(s, n_min=0, name='s')
         self.__v21 = self.v12 * (self.e2/self.e1)
         self.__Q_0 = None #Calculated property
         self._id = next(self._ids)
         self.__name = name
 
-    #Propertie getters    
-    @property
-    def e1(self):
-        return self.__e1
-    @property
-    def e2(self):
-        return self.__e2
-    @property
-    def v12(self):
-        return self.__v12
-    @property
-    def g12(self):
-        return self.__g12
-    @property
-    def thickness(self):
-        return self.__thickness
-    @property 
-    def t1(self):
-        return self.__t1
-    @property 
-    def c1(self):
-        return self.__c1
-    @property 
-    def t2(self):
-        return self.__t2
-    @property 
-    def c2(self):
-        return self.__c2
-    @property
-    def s(self):
-        return self.__s
-    @property
-    def v21(self):
-        return self.__v21
     @property
     def name(self):
         if self.__name is None:
@@ -140,7 +90,7 @@ class Ply:
             return self.__name
         else:
             return self.__name
-
+ 
     #Calculated properties (have only getter)   
     @property
     def Q_0(self):
@@ -158,7 +108,6 @@ class Ply:
         self.Q_0 : numpy.ndarray
             Compliance matrix of the ply
         """
-
         if self.__Q_0 is None:
             Q11 = self.e1 / (1-self.v12*self.v21) 
             Q12 = (self.v12*self.e2) / (1-self.v12*self.v21)

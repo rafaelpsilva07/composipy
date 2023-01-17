@@ -9,6 +9,7 @@ sys.path.append('D:/repositories/composipy')
 
 from composipy.ply_class import Ply
 
+
 class Laminate:
     '''
     This class creates laminate object. It needs ply objects and the angle information.
@@ -18,27 +19,22 @@ class Laminate:
 
     Parameters
     ----------
-    layup : list
-        The layup instance is composed of a list containing a tuple to each ply.
-        The tuple must contain the ply angle (float in degrees) with relation to the 1 direciton
-        and a ply object (of Ply class).
-       
-        [(angle_of_ply_1, ply_1), (angle_of_ply_2, ply_2), ... (angle_of_ply_n, ply_n)]
+    stacking : list
+        An iterable containing the angles (in degrees) of layup.
+    plies : composipy.Ply or list
+        A single composipy.Ply or a list of Ply object
 
-    Returns
-    -------
-    None
 
     Example
     -------
     >>> from composipy import Ply, Laminate
     >>> ply_1 = Ply(129500, 9370, 0.38, 5240, 0.2)
-    >>> layup_1 = [(90, ply_1), (0, ply_1), (90, ply_1)]
-    >>> laminate = Laminate(layup_1)
-    >>> laminate_1.D # retunrs a array containing bending stiffness matrix [D] of the laminate
-    >>> laminate_1.A # retunrs a array containing stiffness matrix [A] of the laminate
-    >>> laminate_1.B # retunrs a array containing coupled stiffness matrix [B] of the laminate
-    >>> laminate_1.print_ABD() # method that prints ABD matrices of the laminate
+    >>> stacking = [90, 0, 90]
+    >>> laminate = Laminate(stacking, ply_1)
+    >>> laminate_1.D # retunrs an array containing bending stiffness matrix [D] of the laminate
+    >>> laminate_1.A # retunrs an array containing stiffness matrix [A] of the laminate
+    >>> laminate_1.B # retunrs an array containing coupled stiffness matrix [B] of the laminate
+    >>> laminate_1.ABD() # returns an array containing ABD matrices.
     >>> laminate_1.ABD_p # returns an array containing the ABD prime matricies of the laminate
 
     
@@ -49,27 +45,24 @@ class Laminate:
 
     '''
 
-    def __init__(self, layup):
-  
+    def __init__(self, stacking, plies):
         # Checking layup
-        if not isinstance(layup, list):
-            raise ValueError(
-                'layup must be a list of tuples.\n\
-                 Each tuple must contain a angle value and a Ply object'
-                )       
-        for ply in layup:
-            if not isinstance(ply[0], numbers.Real):
-                raise ValueError(f'the angle must be a real number. Check {ply}')
-            if not isinstance(ply[1], Ply):
-                raise ValueError(f'the ply mus be a Ply object. Check {ply}')
+        if isinstance(plies, Ply):
+            n_plies = len(stacking)
+            plies = [plies for s in range(n_plies)]
+        elif len(plies) != len(stacking):
+            raise ValueError('Number of plies and number of stacking must match')
 
-        self.layup = layup
+        self.stacking = stacking
+        self.plies = plies
+        self.layup = list(zip(stacking, plies))
         self._z_position = None
         self._Q_layup = None
         self._T_layup = None
         self._A = None
         self._B = None
         self._D = None
+        self._ABD = None
         self._ABD_p = None
 
 #Properties
@@ -93,16 +86,15 @@ class Laminate:
         if self._Q_layup is None:
             
             self._Q_layup = []
-            for theta in self.layup:
-                c = np.cos(theta[0]*np.pi/180)
-                s = np.sin(theta[0]*np.pi/180)
+            for theta, ply in self.layup:
+                c = np.cos(theta*np.pi/180)
+                s = np.sin(theta*np.pi/180)
 
                 T_real = np.array([
                     [c**2, s**2, 2*c*s],
                     [s**2, c**2, -2*c*s],
                     [-c*s, c*s, c**2-s**2]
                     ])
-
                 T_engineering =  np.array([
                     [c**2, s**2, c*s],
                     [s**2, c**2, -c*s],
@@ -111,7 +103,7 @@ class Laminate:
 
                 self._Q_layup.append(
                     (np.linalg.inv(T_real))
-                    @ theta[1].Q_0 
+                    @ ply.Q_0 
                     @ T_engineering
                     )
         return self._Q_layup
@@ -180,6 +172,16 @@ class Laminate:
         return self._D
 
     @property
+    def ABD(self):
+        '''[ABD] Matrices as numpy.ndarray'''
+        self._ABD = np.vstack([
+              np.hstack([self.A, self.B]),
+              np.hstack([self.B, self.D])
+            ])
+        return self._ABD
+
+
+    @property
     def ABD_p(self):
         ''' [A',B',D'], which is inverse of ABD Matrix, as numpy.ndarray '''
         if self._ABD_p is None:
@@ -206,34 +208,12 @@ class Laminate:
             self._ABD_p = ABD_p
 
         return self._ABD_p
-    
-    @staticmethod
-    def _pprint(*args):
-        nStrings = 20
-        representation = ''
-
-        for arg in args:
-            nSpaces = nStrings - len(str(arg))
-            if nSpaces < 0:
-                nSpaces = 1
-            representation += str(arg) + nSpaces * " "
-        return representation
-
-    #Representation (str not implemented)
+   
+       #Representation (str not implemented)
     def __repr__(self):
-        representation = ''
-        for angle, ply in self.layup:
-            if angle == abs(90):
-                angle_repr = '|||||'
-            elif angle == 0:
-                angle_repr = '====='
-            elif angle == 45 or angle == -45:
-                angle_repr = '/////'
-            else:
-                angle_repr = '***'
-            
-            representation += self._pprint(ply.name, angle, angle_repr) + '\n'
-
+                    
+        representation = f'composipy.Laminate\n'
+        representation += f'stacking = {self.stacking}'
         return representation
 
 #Comparisons
@@ -242,13 +222,9 @@ class Laminate:
             return (self.layup == other.layup)
         return NotImplemented
 
-#Methods
-    def show_ABD(self):
-        ''' This method prints ABD Matrix'''
 
-        result = "[A]:\n" + str(self.A) + "\n"
-        result += "[B]:\n" + str(self.B) + "\n"
-        result += "[D]:\n" + str(self.D)
-        print(result)
-        return None
-
+if __name__ == '__main__':
+    ply_1 = Ply(60800, 58250, 0.07, 4550, 0.21)
+    stacking = [45, 0, 0, 45, 0, 0, 45]
+    l1 = Laminate(stacking, ply_1)
+    print(l1.ABD)
