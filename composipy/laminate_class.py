@@ -64,7 +64,8 @@ class Laminate:
         self._D = None
         self._ABD = None
         self._ABD_p = None
-        
+        self._xiA = None
+        self._xiB = None
 
 #Properties
     @property
@@ -180,37 +181,41 @@ class Laminate:
               np.hstack([self.B, self.D])
             ])
         return self._ABD
-
+   
 
     @property
-    def ABD_p(self):
-        ''' [A',B',D'], which is inverse of ABD Matrix, as numpy.ndarray '''
-        if self._ABD_p is None:
-            A_p = np.linalg.inv(self.A) \
-                + (-np.linalg.inv(self.A) * self.B) \
-                * (np.linalg.inv(self.D-self.B * np.linalg.inv(self.A) * self.B)) \
-                * (self.B * np.linalg.inv(self.A))
-            B_p = (-np.linalg.inv(self.A) * self.B) \
-                  * np.linalg.inv(self.D \
-                                  - self.B \
-                                  * np.linalg.inv(self.A) \
-                                  * self.B
-                      )
-            D_p = np.linalg.inv(
-                self.D - self.B
-                * np.linalg.inv(self.A)
-                * self.B
-                )
-            ABD_p = sp.matrix(
-                np.vstack(
-                    (np.hstack((A_p,B_p)), np.hstack((B_p,D_p))))
-                )
-            ABD_p[np.isnan(ABD_p)] = 0
-            self._ABD_p = ABD_p
+    def xiA(self):
+        '''Lamination parameter xiA'''
+        xiA = np.zeros(4)
+        T = sum([ply.thickness for ply in self.plies])        
+        for i, angle in enumerate(self.stacking):
+            angle *= np.pi / 180
+            zk1 = self.z_position_position[i+1]
+            zk0 = self.z_position[i]
 
-        return self._ABD_p
-   
-       #Representation (str not implemented)
+            xiA[0] += (zk1-zk0) * np.cos(2*angle)
+            xiA[1] += (zk1-zk0) * np.sin(2*angle)
+            xiA[2] += (zk1-zk0) * np.cos(4*angle)
+            xiA[3] += (zk1-zk0) * np.sin(4*angle)                        
+        return xiA / T
+
+    @property
+    def xiD(self):
+        '''Lamination parameter xiD'''
+        xiD = np.zeros(4)
+        T = sum([ply.thickness for ply in self.plies])        
+        for i, angle in enumerate(self.stacking):
+            angle *= np.pi / 180
+            zk1 = self.z_position_position[i+1]
+            zk0 = self.z_position[i]
+
+            xiD[0] += (zk1**3-zk0**3) * np.cos(2*angle)
+            xiD[1] += (zk1**3-zk0**3) * np.sin(2*angle)
+            xiD[2] += (zk1**3-zk0**3) * np.cos(4*angle)
+            xiD[3] += (zk1**3-zk0**3) * np.sin(4*angle)                        
+        return 1 * xiD / T**3
+
+       #Representation
     def __repr__(self):
                     
         representation = f'composipy.Laminate\n'
@@ -225,7 +230,7 @@ class Laminate:
 
 
 if __name__ == '__main__':
+    from numpy.linalg import inv
     ply_1 = Ply(60800, 58250, 0.07, 4550, 0.21)
     stacking = [45, 0, 0, 45, 0, 0, 45]
     l1 = Laminate(stacking, ply_1)
-    print(l1.ABD)
