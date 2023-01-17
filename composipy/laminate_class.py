@@ -64,6 +64,7 @@ class Laminate:
         self._D = None
         self._ABD = None
         self._ABD_p = None
+        
 
 #Properties
     @property
