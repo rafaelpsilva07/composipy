@@ -190,7 +190,7 @@ class Laminate:
         T = sum([ply.thickness for ply in self.plies])        
         for i, angle in enumerate(self.stacking):
             angle *= np.pi / 180
-            zk1 = self.z_position_position[i+1]
+            zk1 = self.z_position[i+1]
             zk0 = self.z_position[i]
 
             xiA[0] += (zk1-zk0) * np.cos(2*angle)
@@ -206,14 +206,14 @@ class Laminate:
         T = sum([ply.thickness for ply in self.plies])        
         for i, angle in enumerate(self.stacking):
             angle *= np.pi / 180
-            zk1 = self.z_position_position[i+1]
+            zk1 = self.z_position[i+1]
             zk0 = self.z_position[i]
 
             xiD[0] += (zk1**3-zk0**3) * np.cos(2*angle)
             xiD[1] += (zk1**3-zk0**3) * np.sin(2*angle)
             xiD[2] += (zk1**3-zk0**3) * np.cos(4*angle)
             xiD[3] += (zk1**3-zk0**3) * np.sin(4*angle)                        
-        return 1 * xiD / T**3
+        return 4 * xiD / T**3
 
        #Representation
     def __repr__(self):
@@ -233,4 +233,8 @@ if __name__ == '__main__':
     from numpy.linalg import inv
     ply_1 = Ply(60800, 58250, 0.07, 4550, 0.21)
     stacking = [45, 0, 0, 45, 0, 0, 45]
+    stacking = [45,-45,0,90,45,-45,0,90,45,-45]
+    stacking += stacking[::-1]
     l1 = Laminate(stacking, ply_1)
+    print(l1.xiA)
+    print(l1.xiD)
