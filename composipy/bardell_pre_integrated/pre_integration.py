@@ -29,13 +29,15 @@ xi_lbound, xi_ubound,  = sp.symbols(['xi_lbound', 'xi_ubound'])
 eta_lbound, eta_ubound,  = sp.symbols(['eta_lbound', 'eta_ubound'])
 
 Su, Sv, Sw = [[]], [[]], [[]]
+ijS = [[]], 
 for i in range(m):
     for j in range(n):
         Su[0].append(uf_xi[i]*uf_eta[j])
         Sv[0].append(vf_xi[i]*vf_eta[j])
         Sw[0].append(wf_xi[i]*wf_eta[j])
+        ijS[0].append((i, j))
 Su, Sv, Sw = sp.Matrix(Su), sp.Matrix(Sv), sp.Matrix(Sw)
-
+ijS = sp.Matrix(ijS)
 
 B0_11 = np.array((2/a) * sp.diff(Su, xi))
 B0_22 = np.array((2/b) * sp.diff(Sv, eta))
@@ -94,10 +96,34 @@ K = sp.integrate(
 txt_kg = 'KG_IJKL = {\n'
 txt_k = 'K_IJKL = {\n'
 
+
+# Index matrix
+i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14 = sp.symbols(['i0', 'i1', 'i2', 'i3', 'i4', 'i5', 'i6', 'i7', 'i8', 'i9', 'i10', 'i11', 'i12', 'i13', 'i14'])
+j0, j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14 = sp.symbols(['j0', 'j1', 'j2', 'j3', 'j4', 'j5', 'j6', 'j7', 'j8', 'j9', 'j10', 'j11', 'j12', 'j13', 'j14'])
+k0, k1, k2, k3, k4, k5, k6, k7, k8, k9, k10, k11, k12, k13, k14 = sp.symbols(['k0', 'k1', 'k2', 'k3', 'k4', 'k5', 'k6', 'k7', 'k8', 'k9', 'k10', 'k11', 'k12', 'k13', 'k14'])
+l0, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14 = sp.symbols(['l0', 'l1', 'l2', 'l3', 'l4', 'l5', 'l6', 'l7', 'l8', 'l9', 'l10', 'l11', 'l12', 'l13', 'l14'])
+i_ = [i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14]
+j_ = [j0, j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14]
+k_ = [k0, k1, k2, k3, k4, k5, k6, k7, k8, k9, k10, k11, k12, k13, k14]
+l_ = [l0, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14]
+
+sij = [[]]
+skl = [[]]
+for i, k in zip(i_, k_):
+    for j, l in zip(j_, l_):
+        sij[0].append(i*j)
+        skl[0].append(k*l)
+
+sij = sp.Matrix(sij)
+skl = sp.Matrix(skl)
+
+index_matrix = (sij.T * skl)
+
+
 size = 3 * m * n
 
-for i in range(size):
-    for j in range(size):
+for i in range(m):
+    for j in range(n):
         txt_kg += f'    {(i, j)}: \'' + str(KG[i, j]) + '\',\n'
         txt_k +=  f'    {(i, j)}: \'' + str(K[i, j]) + '\',\n'
 
