@@ -1,9 +1,10 @@
 import sympy as sp
 import numpy as np
-import pickle
+from time import time
 
-n_terms = 10
-xi, eta, a, b = sp.symbols(['xi', 'eta', 'a', 'b'])
+ti = time()
+
+xi, eta = sp.symbols(['xi', 'eta'])
 f1 = 1/2 - 3/4*xi + 1/4*xi**3
 f2 = 1/8 - 1/8*xi - 1/8*xi**2 + 1/8*xi**3
 f3 = 1/2 + 3/4*xi - 1/4*xi**3
@@ -14,8 +15,8 @@ g2 = 1/8 - 1/8*eta - 1/8*eta**2 + 1/8*eta**3
 g3 = 1/2 + 3/4*eta - 1/4*eta**3
 g4 = -1/8 - 1/8*eta + 1/8*eta**2 + 1/8*eta**3
 
-f_xi = {0: f1, 1: f2, 2: f3, 3: f4} # first terms of set of functions
-g_eta = {0: g1, 1: g2, 2: g3, 3: g4}
+FXI = {0: f1, 1: f2, 2: f3, 3: f4} # first terms of set of functions
+GETA = {0: g1, 1: g2, 2: g3, 3: g4}
 
 
 def _orth_polynomials(r, sym):   
@@ -46,78 +47,91 @@ def _orth_polynomials(r, sym):
     return f_sym_r
 
 
+def convert_to_str(d, name):
+    '''
+    Parameters
+    ----------
+    d : dict 
+        dictionary to be converted into string
+    name : str
+        name of the variable
+    '''
+
+    txt = name + ' = {\n'
+    for k, v in d.items():
+        txt += '    ' + str(k) + ': \'' + str(v) + '\',\n'
+    txt += '}' + '\n' * 3
+    return txt
+
+
 if __name__ == '__main__':
     
-    n_terms = 30
+    n_terms = 3
 
     # Complete set of bardell functions
     for i in range(4, n_terms):
-        f_xi[i] = _orth_polynomials(i+1, xi)
-        g_eta[i] = _orth_polynomials(i+1, eta)
+        FXI[i] = _orth_polynomials(i+1, xi)
+        GETA[i] = _orth_polynomials(i+1, eta)
 
-    S = {}
-    B11, B22, B31, B32, B43, B53, B63 = {}, {}, {}, {}, {}, {}, {}
-    for i, fi in f_xi.items():
-        for j, gj in g_eta.items():
-            S[(i, j)] = f_xi * g_eta
-            B11[(i, j)] = (2/a) * sp.diff(S[(i, j)], xi)
-            B22[(i, j)] = (2/b) * sp.diff(S[(i, j)], eta)
-            B31[(i, j)] = (2/b) * sp.diff(S[(i, j)], eta)
-            B32[(i, j)] = (2/a) * sp.diff(S[(i, j)], xi)
-            B43[(i, j)] = -(4/a**2) * sp.diff(S[(i, j)], xi, xi)
-            B53[(i, j)] = -(4/b**2) * sp.diff(S[(i, j)], eta, eta)
-            B63[(i, j)] = -2 * (4/(a*b)) * sp.diff(S[(i, j)], xi, eta)
-
-   
+    S = {} # shape function
+    SXI, SETA, SXIXI, SETAETA, SXIETA = {}, {}, {}, {}, {} # derivatives
 
 
+    for i, fi in FXI.items():
+        for j, gj in GETA.items():
+            S[(i, j)] = fi * gj 
+            SXI[(i, j)] = sp.diff(S[(i, j)], xi)
+            SETA[(i, j)] = sp.diff(S[(i, j)], eta)
+            SXIXI[(i, j)] = sp.diff(S[(i, j)], xi, xi)
+            SETAETA[(i, j)] = sp.diff(S[(i, j)], eta, eta)
+            SXIETA[(i, j)] = sp.diff(S[(i, j)], xi, eta)
 
 
-    # Converting simbols into strings
-    txt_fxi = 'FXI = [\n'
-    txt_d_fxi = 'D_FXI = [\n'
-    txt_dd_fxi = 'DD_FXI = [\n'
-    for k, v in f_xi.items():
-        txt_fxi += '    ' + '\'' + str(v) + '\'' + ',\n'
-    for k, v in d_f_xi.items():
-        txt_d_fxi += '    ' + '\'' + str(v)  + '\''+ ',\n'
-    for k, v in d_f_xi.items():
-        txt_dd_fxi += '    ' + '\'' + str(v)  + '\'' + ',\n'
+    #SXI_SXI, SXI_SETA, SXIXI_SXI, SETAETA_SXI, SXIETA_SXI = {}, {}, {}, {}, {} # derivatives combination
+    #SXIXI_SXIXI, SXIXI_SETAETA, SXIXI_SXIETA, SXIETA_SXIETA = {}, {}, {}, {} # (cont.) derivatives combination
 
-    txt_fxi += ']'
-    txt_d_fxi += ']'
-    txt_dd_fxi += ']'
+    II_SXI_SXI, II_SXI_SETA, II_SXIXI_SXI, II_SETAETA_SXI, II_SXIETA_SXI = {}, {}, {}, {}, {} # integral combination
+    II_SXIXI_SXIXI, II_SXIXI_SETAETA, II_SXIXI_SXIETA, II_SXIETA_SXIETA = {}, {}, {}, {} # (cont.) integral combination
 
-    # Building python file
-    txt = f'# This file contains the {n_terms} first bardel terms\n'
-    txt += f'# The results herein are produced by {__file__}\n\n\n'
-    txt += '__all__ = [\'FXI\', \'D_FXI\', \'DD_FXI\', \'I_D_FXI\', \'I_DD_FXI\']\n\n\n'
-    txt += txt_fxi + '\n'*3 + txt_d_fxi + '\n'*3 + txt_dd_fxi + '\n'*3 
 
-    
-    # integration
-    i_d_fxi = {}
-    i_dd_fxi = {}
     for i in range(n_terms):
         for j in range(n_terms):
-            i_d_fxi[(i, j)] = sp.integrate(
-                                d_f_xi[i] * d_f_xi[j])
-            i_dd_fxi[(i, j)] = sp.integrate(
-                                dd_f_xi[i] * dd_f_xi[j])
+            for k in range(n_terms):
+                for l in range(n_terms):
+                    II_SXI_SXI[(i, j, k, l)] = sp.integrate(sp.integrate(
+                         SXI[(i, j)] * SXI[(k, l)], (xi, -1, 1)), (eta, -1, 1))
+                    II_SXI_SETA[(i, j, k, l)] = sp.integrate(sp.integrate(
+                        SXI[(i, j)] * SETA[(k, l)], (xi, -1, 1)), (eta, -1, 1))
+                    II_SXIXI_SXI[(i, j, k, l)] = sp.integrate(sp.integrate(
+                        SXIXI[(i, j)] * SXI[(k, l)], (xi, -1, 1)), (eta, -1, 1))
+                    II_SETAETA_SXI[(i, j, k, l)] = sp.integrate(sp.integrate(
+                        SETAETA[(i, j)] * SXI[(k, l)], (xi, -1, 1)), (eta, -1, 1))
+                    II_SXIETA_SXI[(i, j, k, l)] = sp.integrate(sp.integrate(
+                        SXIETA[(i, j)] * SXI[(k, l)], (xi, -1, 1)), (eta, -1, 1))
+                    II_SXIXI_SXIXI[(i, j, k, l)] = sp.integrate(sp.integrate(
+                        SXIXI[(i, j)] * SXIXI[(k, l)], (xi, -1, 1)), (eta, -1, 1))
+                    II_SXIXI_SETAETA[(i, j, k, l)] = sp.integrate(sp.integrate(
+                        SXIXI[(i, j)] * SETAETA[(k, l)], (xi, -1, 1)), (eta, -1, 1))
+                    II_SXIXI_SXIETA[(i, j, k, l)] = sp.integrate(sp.integrate(
+                        SXIXI[(i, j)] * SXIETA[(k, l)], (xi, -1, 1)), (eta, -1, 1))
+                    II_SXIETA_SXIETA[(i, j, k, l)] = sp.integrate(sp.integrate(
+                        SXIETA[(i, j)] * SXIETA[(k, l)], (xi, -1, 1)), (eta, -1, 1))
+                
 
-    # Converting simbols into strings
-    txt_i_d_fxi = 'I_D_FXI = {\n'
-    txt_i_dd_fxi = 'I_DD_FXI = {\n'
-    for k, v in i_d_fxi.items():
-        txt_i_d_fxi += '    ' + str(k) + ': \'' + str(v) + '\'' + ',\n'
-    for k, v in i_dd_fxi.items():
-        txt_i_dd_fxi += '    ' + str(k) + ': \'' + str(v)  + '\''+ ',\n'
+    txt = f'# This file is generated by {__file__}, it contains the preintegrated terms\n\n'
+    txt += '__all__ = [\'II_SXI_SXI\', \'II_SXI_SETA\', \'II_SXIXI_SXI\', \'II_SETAETA_SXI\', \'II_SXIETA_SXI\', \'II_SXIXI_SXIXI\', \'II_SXIXI_SETAETA\', \'II_SXIXI_SXIETA\', \'II_SXIETA_SXIETA\']\n\n\n'
+    txt += convert_to_str(II_SXI_SXI, 'II_SXI_SXI')
+    txt += convert_to_str(II_SXI_SETA, 'II_SXI_SETA')
+    txt += convert_to_str(II_SXIXI_SXI, 'II_SXIXI_SXI')
+    txt += convert_to_str(II_SETAETA_SXI, 'II_SETAETA_SXI')
+    txt += convert_to_str(II_SXIETA_SXI, 'II_SXIETA_SXI')
+    txt += convert_to_str(II_SXIXI_SXIXI, 'II_SXIXI_SXIXI')
+    txt += convert_to_str(II_SXIXI_SETAETA, 'II_SXIXI_SETAETA')
+    txt += convert_to_str(II_SXIXI_SXIETA, 'II_SXIXI_SXIETA')
+    txt += convert_to_str(II_SXIETA_SXIETA, 'II_SXIETA_SXIETA')
 
-    txt_i_d_fxi += '}'
-    txt_i_dd_fxi += '}'
-    txt += txt_i_d_fxi + '\n'*3 + txt_i_dd_fxi
-
-    with open('_fxi.py', 'w') as f:
+    with open('_ii_S.py', 'w') as f:
         f.write(txt)
-
+        
+    print(f'time is {time() - ti} s')
 
