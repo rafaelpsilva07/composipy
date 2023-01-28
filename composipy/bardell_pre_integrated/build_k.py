@@ -4,12 +4,18 @@ sys.path.append('D:/repositories/composipy/composipy/bardell_pre_integrated')
 from functions import *
 
 
-def calc_K11_ijkl(a, b, ijkl, A11, A16, A66):
-    klij = (ijkl[2], ijkl[3], ijkl[0],ijkl[1])
+def calc_K11_ijkl(a, b, ui, uj, uk, ul, A11, A16, A66):
+    uik = (ui, uk)
+    ujl = (uj, ul)
+    uxi_ij_uxi_kl = ii_fxi_fxi(uik) * ii_ff(ujl)
+    uxi_ij_ueta_kl = ii_fxi_f(uik) * ii_f_fxi(ujl)
+    ueta_ij_uxi_kl = ii_f_fxi(uik) * ii_fxi_f(ujl)
+    ueta_ij_ueta_kl = ii_ff(uik) * ii_fxi_fxi(ujl)
+
     k11 = (
-        A11 * (b/a) * ii_sxi_sxi(ijkl)
-        + A16 * (ii_sxi_seta(ijkl)+ii_sxi_seta(klij))
-        + A66 * (b/a) * ii_sxi_sxi(ijkl))
+        A11 * (b/a) *  uxi_ij_uxi_kl
+        + A16 * (uxi_ij_ueta_kl+ueta_ij_uxi_kl)
+        + A66 * (b/a) * ueta_ij_ueta_kl)
     return k11
 
 

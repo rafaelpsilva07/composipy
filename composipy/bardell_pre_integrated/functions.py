@@ -1,43 +1,48 @@
 import sys
 sys.path.append('D:/repositories/composipy/composipy/bardell_pre_integrated')
-from _ii_S import *
+from _ii_F import *
 
 
-__all__ = ['ii_sxi_sxi', 'ii_sxi_seta', 'ii_sxixi_sxi', 'ii_setaeta_sxi',
-           'ii_sxieta_sxi', 'ii_sxixi_sxixi','ii_sxixi_setaeta',
-            'ii_sxixi_sxieta', 'ii_sxieta_sxieta']
+__all__ = ['ii_ff', 'ii_fxi_f', 'ii_fxi_fxi', 'ii_fxixi_f', 'ii_fxixi_fxi', 'ii_fxixi_fxixi']
+__all__.extend(['ii_f_fxi', 'ii_f_fxixi', 'ii_fxi_fxixi'])
 
 
-def ii_sxi_sxi(ijkl):
-    return II_SXI_SXI[ijkl]
+ii_FF, ii_FXI_F, ii_FXI_FXI, ii_FXIXI_F, ii_FXIXI_FXI, ii_FXIXI_FXIXI
 
-def ii_sxi_seta(ijkl):
-    return II_SXI_SETA[ijkl]
-
-
-def ii_sxixi_sxi(ijkl):
-    return II_SXIXI_SXI[ijkl]
+def ii_ff(ik):
+    return ii_FF[ik]
 
 
-def ii_setaeta_sxi(ijkl):
-    return II_SETAETA_SXI[ijkl]
+def ii_fxi_f(ik):
+    return ii_FXI_F[ik]
 
 
-def ii_sxieta_sxi(ijkl):
-    return II_SXIETA_SXI[ijkl]
+def ii_f_fxi(ik):
+    ki = ik[::-1]
+    return ii_FXI_F[ki]
 
 
-def ii_sxixi_sxixi(ijkl):
-    return II_SXIXI_SXIXI[ijkl]
+def ii_fxi_fxi(ik):
+    return ii_FXI_FXI[ik]
 
 
-def ii_sxixi_setaeta(ijkl):
-    return II_SXIXI_SETAETA[ijkl]
+def ii_fxixi_f(ik):
+    return ii_FXIXI_F[ik]
 
 
-def ii_sxixi_sxieta(ijkl):
-    return II_SXIXI_SXIETA[ijkl]
+def ii_f_fxixi(ik):
+    ki = ik[::-1]
+    return ii_FXIXI_F[ki]
 
 
-def ii_sxieta_sxieta(ijkl):
-    return II_SXIETA_SXIETA[ijkl]
+def ii_fxixi_fxi(ik):
+    return ii_FXIXI_FXI[ik]
+
+
+def ii_fxi_fxixi(ik):
+    ki = ik[::-1]
+    return ii_FXIXI_FXI[ki]
+
+
+def ii_fxixi_fxixi(ik):
+    return ii_FXIXI_FXIXI[ik]
