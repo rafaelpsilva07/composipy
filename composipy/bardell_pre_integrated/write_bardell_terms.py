@@ -1,21 +1,28 @@
 import sympy as sp
 import numpy as np
-import pickle
+from time import time
 
-n_terms = 10
-xi, eta, a, b = sp.symbols(['xi', 'eta', 'a', 'b'])
+ti = time()
+
+xi, eta = sp.symbols(['xi', 'eta'])
 f1 = 1/2 - 3/4*xi + 1/4*xi**3
 f2 = 1/8 - 1/8*xi - 1/8*xi**2 + 1/8*xi**3
 f3 = 1/2 + 3/4*xi - 1/4*xi**3
 f4 = -1/8 - 1/8*xi + 1/8*xi**2 + 1/8*xi**3
 
-g1 = 1/2 - 3/4*eta + 1/4*eta**3
-g2 = 1/8 - 1/8*eta - 1/8*eta**2 + 1/8*eta**3
-g3 = 1/2 + 3/4*eta - 1/4*eta**3
-g4 = -1/8 - 1/8*eta + 1/8*eta**2 + 1/8*eta**3
-
-f_xi = {0: f1, 1: f2, 2: f3, 3: f4} # first terms of set of functions
-g_eta = {0: g1, 1: g2, 2: g3, 3: g4}
+F = {0: f1, 1: f2, 2: f3, 3: f4} # first terms of set of functions
+FXI = {
+    0: sp.diff(f1, xi),
+    1: sp.diff(f2, xi),
+    2: sp.diff(f3, xi),
+    3: sp.diff(f4, xi)   
+}
+FXIXI = {
+    0: sp.diff(f1, xi, xi),
+    1: sp.diff(f2, xi, xi),
+    2: sp.diff(f3, xi, xi),
+    3: sp.diff(f4, xi, xi)   
+}
 
 
 def _orth_polynomials(r, sym):   
@@ -46,78 +53,66 @@ def _orth_polynomials(r, sym):
     return f_sym_r
 
 
+def convert_to_str(d, name):
+    '''
+    Parameters
+    ----------
+    d : dict 
+        dictionary to be converted into string
+    name : str
+        name of the variable
+    '''
+
+    txt = name + ' = {\n'
+    for k, v in d.items():
+        txt += '    ' + str(k) + ': \'' + str(v) + '\',\n'
+    txt += '}' + '\n' * 3
+    return txt
+
+
 if __name__ == '__main__':
     
     n_terms = 30
 
     # Complete set of bardell functions
     for i in range(4, n_terms):
-        f_xi[i] = _orth_polynomials(i+1, xi)
-        g_eta[i] = _orth_polynomials(i+1, eta)
-
-    S = {}
-    B11, B22, B31, B32, B43, B53, B63 = {}, {}, {}, {}, {}, {}, {}
-    for i, fi in f_xi.items():
-        for j, gj in g_eta.items():
-            S[(i, j)] = f_xi * g_eta
-            B11[(i, j)] = (2/a) * sp.diff(S[(i, j)], xi)
-            B22[(i, j)] = (2/b) * sp.diff(S[(i, j)], eta)
-            B31[(i, j)] = (2/b) * sp.diff(S[(i, j)], eta)
-            B32[(i, j)] = (2/a) * sp.diff(S[(i, j)], xi)
-            B43[(i, j)] = -(4/a**2) * sp.diff(S[(i, j)], xi, xi)
-            B53[(i, j)] = -(4/b**2) * sp.diff(S[(i, j)], eta, eta)
-            B63[(i, j)] = -2 * (4/(a*b)) * sp.diff(S[(i, j)], xi, eta)
-
-   
+        F[i] = _orth_polynomials(i+1, xi)
+        FXI[i] = sp.diff(F[i], xi)
+        FXIXI[i] = sp.diff(F[i], xi, xi)
 
 
+    FF, FXI_F, FXI_FXI, FXIXI_F, FXIXI_FXI, FXIXI_FXIXI = {}, {}, {}, {}, {}, {} # shape function
+    ii_FF, ii_FXI_F, ii_FXI_FXI, ii_FXIXI_F, ii_FXIXI_FXI, ii_FXIXI_FXIXI = {}, {}, {}, {}, {}, {} # shape function
 
-
-    # Converting simbols into strings
-    txt_fxi = 'FXI = [\n'
-    txt_d_fxi = 'D_FXI = [\n'
-    txt_dd_fxi = 'DD_FXI = [\n'
-    for k, v in f_xi.items():
-        txt_fxi += '    ' + '\'' + str(v) + '\'' + ',\n'
-    for k, v in d_f_xi.items():
-        txt_d_fxi += '    ' + '\'' + str(v)  + '\''+ ',\n'
-    for k, v in d_f_xi.items():
-        txt_dd_fxi += '    ' + '\'' + str(v)  + '\'' + ',\n'
-
-    txt_fxi += ']'
-    txt_d_fxi += ']'
-    txt_dd_fxi += ']'
-
-    # Building python file
-    txt = f'# This file contains the {n_terms} first bardel terms\n'
-    txt += f'# The results herein are produced by {__file__}\n\n\n'
-    txt += '__all__ = [\'FXI\', \'D_FXI\', \'DD_FXI\', \'I_D_FXI\', \'I_DD_FXI\']\n\n\n'
-    txt += txt_fxi + '\n'*3 + txt_d_fxi + '\n'*3 + txt_dd_fxi + '\n'*3 
-
-    
-    # integration
-    i_d_fxi = {}
-    i_dd_fxi = {}
     for i in range(n_terms):
-        for j in range(n_terms):
-            i_d_fxi[(i, j)] = sp.integrate(
-                                d_f_xi[i] * d_f_xi[j])
-            i_dd_fxi[(i, j)] = sp.integrate(
-                                dd_f_xi[i] * dd_f_xi[j])
+        for k in range(n_terms):
+            FF[(i, k)] = F[i] * F[k]
+            FXI_F[(i, k)] = FXI[i] * F[k]
+            FXI_FXI[(i, k)] = FXI[i] * FXI[k]
+            FXIXI_F[(i, k)] = FXIXI[i] * F[k]
+            FXIXI_FXI[(i, k)] = FXIXI[i] * FXI[k]
+            FXIXI_FXIXI[(i, k)] = FXIXI[i] * FXIXI[k]
 
-    # Converting simbols into strings
-    txt_i_d_fxi = 'I_D_FXI = {\n'
-    txt_i_dd_fxi = 'I_DD_FXI = {\n'
-    for k, v in i_d_fxi.items():
-        txt_i_d_fxi += '    ' + str(k) + ': \'' + str(v) + '\'' + ',\n'
-    for k, v in i_dd_fxi.items():
-        txt_i_dd_fxi += '    ' + str(k) + ': \'' + str(v)  + '\''+ ',\n'
+            ii_FF[(i, k)] = sp.integrate(FF[(i, k)], (xi, -1, 1))
+            ii_FXI_F[(i, k)] = sp.integrate(FXI_F[(i, k)], (xi, -1, 1))
+            ii_FXI_FXI[(i, k)] = sp.integrate(FXI_FXI[(i, k)], (xi, -1, 1))
+            ii_FXIXI_F[(i, k)] = sp.integrate(FXIXI_F[(i, k)], (xi, -1, 1))
+            ii_FXIXI_FXI[(i, k)] = sp.integrate(FXIXI_FXI[(i, k)], (xi, -1, 1))
+            ii_FXIXI_FXIXI[(i, k)] = sp.integrate(FXIXI_FXIXI[(i, k)], (xi, -1, 1))
+     
 
-    txt_i_d_fxi += '}'
-    txt_i_dd_fxi += '}'
-    txt += txt_i_d_fxi + '\n'*3 + txt_i_dd_fxi
+    txt = f'# This file is generated by {__file__}, it contains the preintegrated terms\n\n'
+    txt += '__all__ = [\'ii_FF\', \'ii_FXI_F\', \'ii_FXI_FXI\', \'ii_FXIXI_F\', \'ii_FXIXI_FXI\', \'ii_FXIXI_FXIXI\']\n\n\n'
+    txt += convert_to_str(ii_FF, 'ii_FF')
+    txt += convert_to_str(ii_FXI_F, 'ii_FXI_F')
+    txt += convert_to_str(ii_FXI_FXI, 'ii_FXI_FXI')
+    txt += convert_to_str(ii_FXIXI_F, 'ii_FXIXI_F')
+    txt += convert_to_str(ii_FXIXI_FXI, 'ii_FXIXI_FXI')
+    txt += convert_to_str(ii_FXIXI_FXIXI, 'ii_FXIXI_FXIXI')
 
-    with open('_fxi.py', 'w') as f:
+
+    with open('_ii_F.py', 'w') as f:
         f.write(txt)
-
+        
+    print(f'time is {time() - ti} s')
 
