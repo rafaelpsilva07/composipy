@@ -7,7 +7,6 @@ __all__ = ['ii_ff', 'ii_fxi_f', 'ii_fxi_fxi', 'ii_fxixi_f', 'ii_fxixi_fxi', 'ii_
 __all__.extend(['ii_f_fxi', 'ii_f_fxixi', 'ii_fxi_fxixi'])
 
 
-ii_FF, ii_FXI_F, ii_FXI_FXI, ii_FXIXI_F, ii_FXIXI_FXI, ii_FXIXI_FXIXI
 
 def ii_ff(ik):
     return ii_FF[ik]
