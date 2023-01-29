@@ -39,8 +39,8 @@ def ii_fxixi_fxi(ik):
 
 def ii_fxi_fxixi(ik):
     ki = ik[::-1]
-    return ii_FXIXI_FXI[ki]
+    return eval(ii_FXIXI_FXI[ki])
 
 
 def ii_fxixi_fxixi(ik):
-    return ii_FXIXI_FXIXI[ik]
+    return eval(ii_FXIXI_FXIXI[ik])
