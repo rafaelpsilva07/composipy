@@ -85,7 +85,7 @@ def calc_k23_ijkl(): #(a, b, vi, vj, wk, wl, B12, B16, B22, B26, B66):
 
 
 def calc_k31_ijkl():
-    return
+    return 0
 
 
 def calc_k32_ijkl():
