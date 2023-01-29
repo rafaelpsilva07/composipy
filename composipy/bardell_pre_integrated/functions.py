@@ -7,35 +7,34 @@ __all__ = ['ii_ff', 'ii_fxi_f', 'ii_fxi_fxi', 'ii_fxixi_f', 'ii_fxixi_fxi', 'ii_
 __all__.extend(['ii_f_fxi', 'ii_f_fxixi', 'ii_fxi_fxixi'])
 
 
-
 def ii_ff(ik):
-    return ii_FF[ik]
+    return eval(ii_FF[ik])
 
 
 def ii_fxi_f(ik):
-    return ii_FXI_F[ik]
+    return eval(ii_FXI_F[ik])
 
 
 def ii_f_fxi(ik):
     ki = ik[::-1]
-    return ii_FXI_F[ki]
+    return eval(ii_FXI_F[ki])
 
 
 def ii_fxi_fxi(ik):
-    return ii_FXI_FXI[ik]
+    return eval(ii_FXI_FXI[ik])
 
 
 def ii_fxixi_f(ik):
-    return ii_FXIXI_F[ik]
+    return eval(ii_FXIXI_F[ik])
 
 
 def ii_f_fxixi(ik):
     ki = ik[::-1]
-    return ii_FXIXI_F[ki]
+    return eval(ii_FXIXI_F[ki])
 
 
 def ii_fxixi_fxi(ik):
-    return ii_FXIXI_FXI[ik]
+    return eval(ii_FXIXI_FXI[ik])
 
 
 def ii_fxi_fxixi(ik):
