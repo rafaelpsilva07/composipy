@@ -1,5 +1,5 @@
 import sys
-sys.path.append('D:/repositories/composipy/composipy/bardell_pre_integrated')
+sys.path.append('D:/repositories/composipy/composipy/pre_integrated_component')
 from _ii_F import *
 
 

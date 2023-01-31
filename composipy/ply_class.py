@@ -68,18 +68,28 @@ class Ply:
             c2=None, 
             s=None, 
             name=None):
-        self.__e1 = _NumberDescriptor(e1, n_min=0, name='e1')
-        self.__e2 = _NumberDescriptor(e2, n_min=0, name='e2')
-        self.__v12 = _NumberDescriptor(v12, n_min=-0.5, n_max=0.5, name='v12')
-        self.__g12 = _NumberDescriptor(g12, n_min=0, name='g12')
-        self.__thickness = _NumberDescriptor(thickness, n_min=0, name='thickness')
-        self.__t1 = _NumberDescriptor(t1, n_min=0, name='t1')
-        self.__c1 = _NumberDescriptor(c1, n_min=0, name='c1')
-        self.__t2 = _NumberDescriptor(t2, n_min=0, name='t2')
-        self.__c2 = _NumberDescriptor(c2, n_min=0, name='c2')
-        self.__s = _NumberDescriptor(s, n_min=0, name='s')
-        self.__v21 = self.v12 * (self.e2/self.e1)
-        self.__Q_0 = None #Calculated property
+        # self.e1 = _NumberDescriptor(e1, n_min=0, name='e1')
+        # self.e2 = _NumberDescriptor(e2, n_min=0, name='e2')
+        # self.v12 = _NumberDescriptor(v12, n_min=-0.5, n_max=0.5, name='v12')
+        # self.g12 = _NumberDescriptor(g12, n_min=0, name='g12')
+        # self.thickness = _NumberDescriptor(thickness, n_min=0, name='thickness')
+        # self.t1 = _NumberDescriptor(t1, n_min=0, name='t1')
+        # self.c1 = _NumberDescriptor(c1, n_min=0, name='c1')
+        # self.t2 = _NumberDescriptor(t2, n_min=0, name='t2')
+        # self.c2 = _NumberDescriptor(c2, n_min=0, name='c2')
+        # self.s = _NumberDescriptor(s, n_min=0, name='s')
+        self.e1 = e1
+        self.e2 = e2
+        self.v12 = v12
+        self.g12 = g12
+        self.thickness = thickness
+        self.t1 = t1
+        self.c1 = c1
+        self.t2 = t2
+        self.c2 = c2
+        self.s = s
+        self.v21 = self.v12 * (self.e2/self.e1)
+        self._Q_0 = None #Calculated property
         self._id = next(self._ids)
         self.__name = name
 
@@ -108,15 +118,15 @@ class Ply:
         self.Q_0 : numpy.ndarray
             Compliance matrix of the ply
         """
-        if self.__Q_0 is None:
-            Q11 = self.e1 / (1-self.v12*self.v21) 
-            Q12 = (self.v12*self.e2) / (1-self.v12*self.v21)
-            Q22 = self.e2 / (1-self.v12*self.v21)
-            Q66 = self.g12
-            self.__Q_0 = np.array([[Q11, Q12, 0],
-                                   [Q12, Q22, 0],
-                                   [0, 0, Q66]])
-        return self.__Q_0
+
+        Q11 = self.e1 / (1-self.v12*self.v21) 
+        Q12 = (self.v12*self.e2) / (1-self.v12*self.v21)
+        Q22 = self.e2 / (1-self.v12*self.v21)
+        Q66 = self.g12
+        self._Q_0 = np.array([[Q11, Q12, 0],
+                                [Q12, Q22, 0],
+                                [0, 0, Q66]])
+        return self._Q_0
 
     def __repr__(self):
         return (
