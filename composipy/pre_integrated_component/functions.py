@@ -1,6 +1,7 @@
 import sys
-sys.path.append('D:/repositories/composipy/composipy/pre_integrated_component')
-from _ii_F import *
+
+from composipy.pre_integrated_component._ii_F import *
+
 
 
 __all__ = ['ii_ff', 'ii_fxi_f', 'ii_fxi_fxi', 'ii_fxixi_f', 'ii_fxixi_fxi', 'ii_fxixi_fxixi']

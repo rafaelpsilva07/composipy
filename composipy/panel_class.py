@@ -3,12 +3,7 @@ from scipy.linalg import eig
 import sys
 from itertools import product
 
-sys.path.append('D:/repositories/composipy/composipy')
-
-from _descriptors import _NumberDescriptor
-
-sys.path.append('D:/repositories/composipy/composipy/pre_integrated_component')
-from build_k import *
+from composipy.pre_integrated_component.build_k import *
 
 
 class Panel:
@@ -117,7 +112,7 @@ class Panel:
         k31 = np.array(k31).reshape(self.m**2, self.m**2)
         k32 = np.array(k32).reshape(self.m**2, self.m**2)
         k33 = np.array(k33).reshape(self.m**2, self.m**2)
-        k00 = np.zeros(n**4).reshape(self.m**2, self.m**2)
+        k00 = np.zeros(self.n**4).reshape(self.m**2, self.m**2)
         k33g = np.array(k33g).reshape(self.m**2, self.m**2)
 
         K = np.vstack([
@@ -154,5 +149,6 @@ if __name__ == '__main__':
      laminate1 = Laminate(stacking, ply1)
      print(laminate1.ABD)
 
-     panel = Panel(laminate1, 360, 360, Nxx=1)
+     panel = Panel(laminate1, 360, 360, m=10, n=10, Nxx=1)
      print(panel.buckling_analysis())
+

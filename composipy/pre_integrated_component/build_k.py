@@ -1,7 +1,6 @@
 import sys
-sys.path.append('D:/repositories/composipy/composipy/pre_integrated_component')
 
-from functions import *
+from composipy.pre_integrated_component.functions import *
 
 
 def calc_K11_ijkl(a, b, ui, uj, uk, ul, A11, A16, A66):
