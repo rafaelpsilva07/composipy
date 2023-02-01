@@ -128,3 +128,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Tests and configuration
+setup.bat
+test.py
+activate_env.bat
+

@@ -2,10 +2,7 @@ import os
 import sys
 
 from ._version import VERSION
-from .ply_class import Ply
-from .laminate_class import Laminate
-from .load_class import Load
-from .strength_class import Strength
-from .buckling_load_function import buckling_load
+from .material import OrthotropicMaterial, IsotropicMaterial
+from .property import LaminateProperty
 
 __version__ = VERSION

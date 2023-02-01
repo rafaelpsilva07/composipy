@@ -3,14 +3,15 @@ import numbers
 import numpy as np
 import scipy as sp
 
-
-import sys
-sys.path.append('D:/repositories/composipy')
-
-from composipy.ply_class import Ply
+from composipy.validators import ComposipyValidator
+from composipy.material import Material, OrthotropicMaterial, IsotropicMaterial
 
 
-class Laminate:
+class Property(ComposipyValidator):
+    pass
+
+
+class LaminateProperty(Property):
     '''
     This class creates laminate object. It needs ply objects and the angle information.
     Some formulation characteristics are:
@@ -21,14 +22,14 @@ class Laminate:
     ----------
     stacking : list
         An iterable containing the angles (in degrees) of layup.
-    plies : composipy.Ply or list
-        A single composipy.Ply or a list of Ply object
+    plies : Material or list
+        A single Material or a list of OrthotropicMaterial object
 
 
     Example
     -------
     >>> from composipy import Ply, Laminate
-    >>> ply_1 = Ply(129500, 9370, 0.38, 5240, 0.2)
+    >>> ply_1 = OrthotropicMaterial(129500, 9370, 0.38, 5240, 0.2)
     >>> stacking = [90, 0, 90]
     >>> laminate = Laminate(stacking, ply_1)
     >>> laminate_1.D # retunrs an array containing bending stiffness matrix [D] of the laminate
@@ -47,7 +48,7 @@ class Laminate:
 
     def __init__(self, stacking, plies):
         # Checking layup
-        if isinstance(plies, Ply):
+        if isinstance(plies, Material):
             n_plies = len(stacking)
             plies = [plies for s in range(n_plies)]
         elif len(plies) != len(stacking):
@@ -182,7 +183,6 @@ class Laminate:
             ])
         return self._ABD
    
-
     @property
     def xiA(self):
         '''Lamination parameter xiA'''
@@ -218,23 +218,13 @@ class Laminate:
        #Representation
     def __repr__(self):
                     
-        representation = f'composipy.Laminate\n'
+        representation = f'composipy.LaminateProperty\n'
         representation += f'stacking = {self.stacking}'
         return representation
 
 #Comparisons
     def __eq__(self, other):
-        if isinstance(other, Laminate):
+        if isinstance(other, LaminateProperty):
             return (self.layup == other.layup)
         return NotImplemented
 
-
-if __name__ == '__main__':
-    from numpy.linalg import inv
-    ply_1 = Ply(60800, 58250, 0.07, 4550, 0.21)
-    stacking = [45, 0, 0, 45, 0, 0, 45]
-    stacking = [45,-45,0,90,45,-45,0,90,45,-45]
-    stacking += stacking[::-1]
-    l1 = Laminate(stacking, ply_1)
-    print(l1.xiA)
-    print(l1.xiD)
