@@ -28,4 +28,8 @@ class ComposipyValidator:
             raise ValueError(f'{name} cannot exceed {n_max}')
         return int(value)
     
-    
+
+    def _is_instance(self, value, typeobj, name=None):
+        if not isinstance(value, typeobj):
+            raise ValueError (f'{name} must be an instance of {typeobj}')
+        return value

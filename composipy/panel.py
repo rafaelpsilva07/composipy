@@ -3,13 +3,15 @@ from scipy.linalg import eig
 import sys
 from itertools import product
 
+from composipy.property import Property
+from composipy.validators import ComposipyValidator
 from composipy.pre_integrated_component.build_k import *
 
 
-class Panel:
+class PanelElement(ComposipyValidator):
     def __init__(
             self,
-            property,
+            dproperty,
             a,
             b,
             boundary_conditions=None,
@@ -17,26 +19,52 @@ class Panel:
             Nyy=0,
             Nxy=0,
             m=10,
-            n=10,):
-        #self.property = property
-        # self.a = _NumberDescriptor(a, n_min=0, name='a')
-        # self.b = _NumberDescriptor(b, n_min=0, name='a')
-        # self.boundary_conditions = boundary_conditions
-        # self.Nxx = _NumberDescriptor(Nxx, name='Nxx')
-        # self.Nyy = _NumberDescriptor(Nyy, name='Nyy')
-        # self.Nxy = _NumberDescriptor(Nxy, name='Nxy')
-        # self.m = _NumberDescriptor(m, n_min=1, name='m')
-        # self.n = _NumberDescriptor(n, n_min=1, name='n')
+            n=10):
 
-        self.property = property
-        self.a = a
-        self.b = b
-        self.boundary_conditions = boundary_conditions
-        self.Nxx = Nxx
-        self.Nyy = Nyy
-        self.Nxy = Nxy
-        self.m = m
-        self.n = n
+        self.__dproperty = self._is_instance(dproperty, Property, 'dproperty')
+        self.__a = self._float_number(a, n_min=0, name='a')
+        self.__b = self._float_number(b, n_min=0, name='b')
+        self.__boundary_conditions = boundary_conditions
+        self.__Nxx = self._float_number(Nxx, name='Nxx')
+        self.__Nyy = self._float_number(Nyy, name='Nyy')
+        self.__Nxy = self._float_number(Nxy, name='Nxy')
+        self.__m = self._int_number(m, n_min=1, name='m')
+        self.__n = self._int_number(n, n_min=1, name='n')
+
+    @property
+    def dproperty(self):
+            return self.__dproperty
+        
+    @property
+    def a(self):
+        return self.__a
+    
+    @property
+    def b(self):
+            return self.__b
+
+    @property
+    def boundary_conditions(self):
+            return self.__boundary_conditions
+    
+    @property
+    def Nxx(self):
+            return self.__Nxx
+    @property
+    def Nyy(self):
+            return self.__Nyy
+    
+    @property
+    def Nxy(self):
+            return self.__Nxy
+    
+    @property
+    def m(self):
+            return self.__m
+    
+    @property
+    def n(self):
+            return self.__n
 
 
     def _compute_boundary_conditions(self):
@@ -75,12 +103,12 @@ class Panel:
     
     
     def calc_K_KG(self):
-        A11, A12, A16, B11, B12, B16 = self.property.ABD[0, ::]
-        A12, A22, A26, B12, B22, B26 = self.property.ABD[1, ::]
-        A16, A26, A66, B16, B26, B66 = self.property.ABD[2, ::]
-        B11, B12, B16, D11, D12, D16 = self.property.ABD[3, ::]
-        B12, B22, B26, D12, D22, D26 = self.property.ABD[4, ::]
-        B16, B26, B66, D16, D26, D66 = self.property.ABD[5, ::]
+        A11, A12, A16, B11, B12, B16 = self.dproperty.ABD[0, ::]
+        A12, A22, A26, B12, B22, B26 = self.dproperty.ABD[1, ::]
+        A16, A26, A66, B16, B26, B66 = self.dproperty.ABD[2, ::]
+        B11, B12, B16, D11, D12, D16 = self.dproperty.ABD[3, ::]
+        B12, B22, B26, D12, D22, D26 = self.dproperty.ABD[4, ::]
+        B16, B26, B66, D16, D26, D66 = self.dproperty.ABD[5, ::]
 
         k11, k12, k13, k21, k22, k23, k31, k32, k33 = [], [], [], [], [], [], [], [], []
         k33g = []
@@ -138,17 +166,4 @@ class Panel:
 
         return eig_values.min()
     
-if __name__ == '__main__':
-
-     sys.path.append('D:/repositories/composipy')
-
-     from composipy import Ply, Laminate
-
-     ply1 = Ply(129500, 9370, 0.38, 5240, 0.2)
-     stacking = [-45, 45, 90, 0, 0, 0, 0, 90, 45, -45]
-     laminate1 = Laminate(stacking, ply1)
-     print(laminate1.ABD)
-
-     panel = Panel(laminate1, 360, 360, m=10, n=10, Nxx=1)
-     print(panel.buckling_analysis())
 
