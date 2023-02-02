@@ -184,17 +184,17 @@ class PlateStructure(Structure):
                 k33.append(calc_k33_ijkl(self.a, self.b, wi, wj, wk, wl, D11, D12, D22, D16, D26, D66))
                 k33g.append(calc_kG33_ijkl(self.a, self.b, wi, wj, wk, wl, self.Nxx, self.Nyy, self.Nxy))
         
-        k11 = np.array(k11).reshape(self.m**2, self.m**2)
-        k12 = np.array(k12).reshape(self.m**2, self.m**2)
-        k13 = np.array(k13).reshape(self.m**2, self.m**2)
-        k21 = np.array(k21).reshape(self.m**2, self.m**2)
-        k22 = np.array(k22).reshape(self.m**2, self.m**2)
-        k23 = np.array(k23).reshape(self.m**2, self.m**2)
-        k31 = np.array(k31).reshape(self.m**2, self.m**2)
-        k32 = np.array(k32).reshape(self.m**2, self.m**2)
-        k33 = np.array(k33).reshape(self.m**2, self.m**2)
-        k00 = np.zeros(self.n**4).reshape(self.m**2, self.m**2)
-        k33g = np.array(k33g).reshape(self.m**2, self.m**2)
+        k11 = np.array(k11).reshape(self.m*self.n, self.m*self.n)
+        k12 = np.array(k12).reshape(self.m*self.n, self.m*self.n)
+        k13 = np.array(k13).reshape(self.m*self.n, self.m*self.n)
+        k21 = np.array(k21).reshape(self.m*self.n, self.m*self.n)
+        k22 = np.array(k22).reshape(self.m*self.n, self.m*self.n)
+        k23 = np.array(k23).reshape(self.m*self.n, self.m*self.n)
+        k31 = np.array(k31).reshape(self.m*self.n, self.m*self.n)
+        k32 = np.array(k32).reshape(self.m*self.n, self.m*self.n)
+        k33 = np.array(k33).reshape(self.m*self.n, self.m*self.n)
+        k00 = np.zeros(self.m**2*self.n**2).reshape(self.m*self.n, self.m*self.n)
+        k33g = np.array(k33g).reshape(self.m*self.n, self.m*self.n)
 
         K = np.vstack([
         np.hstack([k11, k12, k13]),

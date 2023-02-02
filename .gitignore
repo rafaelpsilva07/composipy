@@ -130,7 +130,7 @@ dmypy.json
 .pyre/
 
 # Tests and configuration
-setup.bat
+setup_.bat
 test.py
 activate_env.bat
 

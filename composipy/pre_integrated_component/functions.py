@@ -6,7 +6,7 @@ from composipy.pre_integrated_component._S import *
 
 __all__ = ['ii_ff', 'ii_fxi_f', 'ii_fxi_fxi', 'ii_fxixi_f', 'ii_fxixi_fxi', 'ii_fxixi_fxixi']
 __all__.extend(['ii_f_fxi', 'ii_f_fxixi', 'ii_fxi_fxixi'])
-__all__.extend(['fxi', ''])
+__all__.extend(['fxi', 'sxieta'])
 
 
 def ii_ff(ik):
