@@ -89,21 +89,68 @@ class PlateStructure(Structure):
         vm, vn = sm.copy(), sn.copy()
         wm, wn = sm.copy(), sn.copy()
 
+        # x0
         if 'TX' in x0:
               um.remove(0)
+        if 'TY' in x0:
+              vm.remove(0)
+        if 'TZ' in x0:
+              wm.remove(0)
+        if not 'RX' in x0:
+              um.remove(1)
+        if not 'RY' in x0:
+              vm.remove(1)
+        if not 'RZ' in x0:
+              wm.remove(1)
+        #xa
+        if 'TX' in xa:
+              um.remove(2)
+        if 'TY' in xa:
+              vm.remove(2)
+        if 'TZ' in xa:
+              wm.remove(2)
+        if not 'RX' in xa:
+              um.remove(3)
+        if not 'RY' in xa:
+              vm.remove(3)
+        if not 'RZ' in xa:
+              wm.remove(3)
         
-        um.remove(0); um.remove(1); um.remove(2); um.remove(3); un.remove(0); un.remove(1); un.remove(2); un.remove(3)
-        vm.remove(0); vm.remove(1); vm.remove(2); vm.remove(3); vn.remove(0); vn.remove(1); vn.remove(2); vn.remove(3)
-        wm.remove(0); wm.remove(1); wm.remove(2); wm.remove(3); wn.remove(0); wn.remove(1); wn.remove(2); wn.remove(3)
-
+        #y0
+        if 'TX' in y0:
+              un.remove(0)
+        if 'TY' in y0:
+              vn.remove(0)
+        if 'TZ' in y0:
+              wn.remove(0)
+        if not 'RX' in y0:
+              un.remove(1)
+        if not 'RY' in y0:
+              vn.remove(1)
+        if not 'RZ' in y0:
+              wn.remove(1)
+        
+        #yb
+        if 'TX' in y0:
+              un.remove(2)
+        if 'TY' in y0:
+              vn.remove(2)
+        if 'TZ' in y0:
+              wn.remove(2)
+        if not 'RX' in y0:
+              un.remove(3)
+        if not 'RY' in y0:
+              vn.remove(3)
+        if not 'RZ' in y0:
+              wn.remove(3)
+        
         um, un = um[0:self.m], un[0:self.n]
         vm, vn = vm[0:self.m], un[0:self.n]
         wm, wn = wm[0:self.m], un[0:self.n]
-        #return {'um': um, 'un': un, 'vm': vm, 'vn': vn, 'wm': wm, 'wn': wn}
 
-        uidx = list(product(um, um, um, um))
-        vidx = list(product(vm, vm, vm, vm))
-        widx = list(product(wm, wm, wm, wm))
+        uidx = list(product(um, um, un, un))
+        vidx = list(product(vm, vm, vn, vn))
+        widx = list(product(wm, wm, wn, wn))
 
         return (uidx, vidx, widx)
     
