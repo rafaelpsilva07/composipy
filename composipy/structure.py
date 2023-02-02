@@ -81,7 +81,8 @@ class PlateStructure(Structure):
         xa = self.constraints['xa']
         y0 = self.constraints['y0']
         yb = self.constraints['yb']
-
+        #TODO: validate m and n
+        #TODO: validate constraints (lista may not work)
         sm = [i for i in range(self.m+4)]
         sn = [i for i in range(self.n+4)]
 
@@ -131,17 +132,17 @@ class PlateStructure(Structure):
               wn.remove(1)
         
         #yb
-        if 'TX' in y0:
+        if 'TX' in yb:
               un.remove(2)
-        if 'TY' in y0:
+        if 'TY' in yb:
               vn.remove(2)
-        if 'TZ' in y0:
+        if 'TZ' in yb:
               wn.remove(2)
-        if not 'RX' in y0:
+        if not 'RX' in yb:
               un.remove(3)
-        if not 'RY' in y0:
+        if not 'RY' in yb:
               vn.remove(3)
-        if not 'RZ' in y0:
+        if not 'RZ' in yb:
               wn.remove(3)
         
         um, un = um[0:self.m], un[0:self.n]
