@@ -8,7 +8,11 @@ from composipy.validators import ComposipyValidator
 from composipy.pre_integrated_component.build_k import *
 
 
-class PanelElement(ComposipyValidator):
+class Structure(ComposipyValidator):
+      pass
+
+
+class PlateStructure(Structure):
     def __init__(
             self,
             dproperty,
