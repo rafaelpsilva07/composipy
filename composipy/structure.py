@@ -18,7 +18,12 @@ class PlateStructure(Structure):
             dproperty,
             a,
             b,
-            boundary_conditions=None,
+            constraints={
+                'x0': ['TX', 'TY', 'TZ'],
+                'xa': ['TX', 'TY', 'TZ'],
+                'y0': ['TX', 'TY', 'TZ'],
+                'yb': ['TX', 'TY', 'TZ'],
+            },
             Nxx=0,
             Nyy=0,
             Nxy=0,
@@ -28,7 +33,7 @@ class PlateStructure(Structure):
         self.__dproperty = self._is_instance(dproperty, Property, 'dproperty')
         self.__a = self._float_number(a, n_min=0, name='a')
         self.__b = self._float_number(b, n_min=0, name='b')
-        self.__boundary_conditions = boundary_conditions
+        self.__constraints = constraints
         self.__Nxx = self._float_number(Nxx, name='Nxx')
         self.__Nyy = self._float_number(Nyy, name='Nyy')
         self.__Nxy = self._float_number(Nxy, name='Nxy')
@@ -48,8 +53,8 @@ class PlateStructure(Structure):
             return self.__b
 
     @property
-    def boundary_conditions(self):
-            return self.__boundary_conditions
+    def constraints(self):
+            return self.__constraints
     
     @property
     def Nxx(self):
@@ -71,17 +76,11 @@ class PlateStructure(Structure):
             return self.__n
 
 
-    def _compute_boundary_conditions(self):
-        #TODO: create this function
-        # bardell_functions = {
-        #     'TX': ,
-        #     'TY': ,
-        #     'TZ' ,
-        #     'RX' ,
-        #     'RX' ,
-        #     'RZ' ,
-
-        # }
+    def _compute_constraints(self):
+        x0 = self.constraints['x0']
+        xa = self.constraints['xa']
+        y0 = self.constraints['y0']
+        yb = self.constraints['yb']
 
         sm = [i for i in range(self.m+4)]
         sn = [i for i in range(self.n+4)]
@@ -90,6 +89,9 @@ class PlateStructure(Structure):
         vm, vn = sm.copy(), sn.copy()
         wm, wn = sm.copy(), sn.copy()
 
+        if 'TX' in x0:
+              um.remove(0)
+        
         um.remove(0); um.remove(1); um.remove(2); um.remove(3); un.remove(0); un.remove(1); un.remove(2); un.remove(3)
         vm.remove(0); vm.remove(1); vm.remove(2); vm.remove(3); vn.remove(0); vn.remove(1); vn.remove(2); vn.remove(3)
         wm.remove(0); wm.remove(1); wm.remove(2); wm.remove(3); wn.remove(0); wn.remove(1); wn.remove(2); wn.remove(3)
@@ -117,7 +119,7 @@ class PlateStructure(Structure):
         k11, k12, k13, k21, k22, k23, k31, k32, k33 = [], [], [], [], [], [], [], [], []
         k33g = []
 
-        uidx, vidx, widx = self._compute_boundary_conditions()
+        uidx, vidx, widx = self._compute_constraints()
 
         for i in range(self.m**2*self.n**2):
                 ui, uj, uk, ul = uidx[i]
@@ -159,11 +161,12 @@ class PlateStructure(Structure):
         np.hstack([k00, k00, k33g])
         ])
 
-        return (K, KG)
+        return {'K': K, 'KG': KG}
     
 
     def buckling_analysis(self):
-        A, B = self.calc_K_KG()
+        K_KG = self.calc_K_KG()
+        A, B = K_KG['K'], K_KG['KG']
         eig_values, eig_vectors = eig(A, B)
         eig_values = abs(eig_values)
         eig_values[np.isnan(eig_values)] = 99999999999

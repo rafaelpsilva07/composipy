@@ -72,7 +72,7 @@ def convert_to_str(d, name):
 
 if __name__ == '__main__':
     
-    n_terms = 30
+    n_terms = 50
 
     # Complete set of bardell functions
     for i in range(4, n_terms):

@@ -1,11 +1,12 @@
 import sys
 
 from composipy.pre_integrated_component._ii_F import *
-
+from composipy.pre_integrated_component._S import *
 
 
 __all__ = ['ii_ff', 'ii_fxi_f', 'ii_fxi_fxi', 'ii_fxixi_f', 'ii_fxixi_fxi', 'ii_fxixi_fxixi']
 __all__.extend(['ii_f_fxi', 'ii_f_fxixi', 'ii_fxi_fxixi'])
+__all__.extend(['fxi', ''])
 
 
 def ii_ff(ik):
@@ -45,3 +46,11 @@ def ii_fxi_fxixi(ik):
 
 def ii_fxixi_fxixi(ik):
     return eval(ii_FXIXI_FXIXI[ik])
+    
+
+def fxi(i, xi):
+    return eval(FXI[i])
+    
+
+def sxieta(ij, xi, eta):
+    return eval(S[ij])
