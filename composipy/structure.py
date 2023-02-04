@@ -1,8 +1,8 @@
 import numpy as np
 
-from scipy.linalg import eig
+from time import time
 from scipy.sparse import csr_matrix
-from scipy.sparse.linalg import eigs, eigsh
+from scipy.sparse.linalg import eigsh
 from itertools import product
 
 from composipy.property import Property
@@ -221,19 +221,45 @@ class PlateStructure(Structure):
         np.hstack([k00, k00, k33g])
         ])
 
-        return {'K': K, 'KG': KG}  
+        return K, KG  
 
+    def buckling_analysis(self, silent=True, num_eigvalues = 5):
+        r"""Linear Buckling Analysis
 
-    def buckling_analysis(self, n_eigen_values=5):
-        K_KG = self.calc_K_KG()
-        #A, B = csr_matrix(K_KG['K']), csr_matrix(K_KG['KG'])
-        A, B = K_KG['K'], K_KG['KG']
-        #n_eigen_values = min(B.shape[0]-2, n_eigen_values)
-        #eig_values, eig_vectors = eigsh(A=B, k=n_eigen_values, tol=0, which='SM', M=A, sigma=1, mode='cayley')
-        eig_values, eig_vectors = eig(A, B)
-        eig_values = abs(eig_values)
-        eig_values[np.isnan(eig_values)] = 99999999999
+        Parameters
+        ----------
+        silent : bool, optional
+            Prints time to compute calculation
+        num_eigvalues : int, optional
+            Number of calculated eigenvalues.
 
-
-        return eig_values.min()
+        Returns
+        -------
+        eigvals, eigvecs
+        """
+        if not silent:
+            ti = time()       
+            print('calculating K and KG')
+        K, KG = self.calc_K_KG()
+        K, KG = csr_matrix(K), csr_matrix(KG)
+        if not silent:
+            print(f'K and KG calculated in {time()-ti} seconds')
+        tol = 0
     
+        if not silent:
+            ti = time()
+            print('Calculating eigenvalues')
+        k = min(num_eigvalues, KG.shape[0]-2)
+        mode = 'cayley'
+
+        eigvals, eigvecs = eigsh(A=KG, k=k,
+              which='SM', M=K, tol=tol, sigma=1., mode=mode)
+        
+        eigvals = -1./eigvals
+    
+        eigvals = eigvals
+        eigvecs = eigvecs 
+        if not silent:
+             print(f'eigenvalues calculated in {time()-ti} seconds')
+
+        return eigvals, eigvecs
