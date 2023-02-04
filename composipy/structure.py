@@ -1,6 +1,7 @@
 import numpy as np
+
 from scipy.linalg import eig
-import sys
+from scipy.sparse import cs
 from itertools import product
 
 from composipy.property import Property
@@ -97,11 +98,11 @@ class PlateStructure(Structure):
               vm.remove(0)
         if 'TZ' in x0:
               wm.remove(0)
-        if not 'RX' in x0:
+        if 'RX' in x0:
               um.remove(1)
-        if not 'RY' in x0:
+        if 'RY' in x0:
               vm.remove(1)
-        if not 'RZ' in x0:
+        if 'RZ' in x0:
               wm.remove(1)
         #xa
         if 'TX' in xa:
@@ -110,11 +111,11 @@ class PlateStructure(Structure):
               vm.remove(2)
         if 'TZ' in xa:
               wm.remove(2)
-        if not 'RX' in xa:
+        if 'RX' in xa:
               um.remove(3)
-        if not 'RY' in xa:
+        if 'RY' in xa:
               vm.remove(3)
-        if not 'RZ' in xa:
+        if 'RZ' in xa:
               wm.remove(3)
         
         #y0
@@ -124,11 +125,11 @@ class PlateStructure(Structure):
               vn.remove(0)
         if 'TZ' in y0:
               wn.remove(0)
-        if not 'RX' in y0:
+        if 'RX' in y0:
               un.remove(1)
-        if not 'RY' in y0:
+        if 'RY' in y0:
               vn.remove(1)
-        if not 'RZ' in y0:
+        if 'RZ' in y0:
               wn.remove(1)
         
         #yb
@@ -138,20 +139,20 @@ class PlateStructure(Structure):
               vn.remove(2)
         if 'TZ' in yb:
               wn.remove(2)
-        if not 'RX' in yb:
+        if 'RX' in yb:
               un.remove(3)
-        if not 'RY' in yb:
+        if 'RY' in yb:
               vn.remove(3)
-        if not 'RZ' in yb:
+        if 'RZ' in yb:
               wn.remove(3)
         
         um, un = um[0:self.m], un[0:self.n]
         vm, vn = vm[0:self.m], un[0:self.n]
         wm, wn = wm[0:self.m], un[0:self.n]
 
-        uidx = list(product(um, um, un, un))
-        vidx = list(product(vm, vm, vn, vn))
-        widx = list(product(wm, wm, wn, wn))
+        uidx = list(product(um, un, um, un))
+        vidx = list(product(vm, vn, vm, vn))
+        widx = list(product(wm, wn, wm, wn))
 
         return (uidx, vidx, widx)
     
