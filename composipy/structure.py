@@ -1,8 +1,8 @@
 import numpy as np
 
 from scipy.linalg import eig
-from scipy.sparse import csc_matrix
-#from scipy.sparse.linalg import eigs, eigsh
+from scipy.sparse import csr_matrix
+from scipy.sparse.linalg import eigs, eigsh
 from itertools import product
 
 from composipy.property import Property
@@ -79,12 +79,22 @@ class PlateStructure(Structure):
 
 
     def _compute_constraints(self):
-        x0 = self.constraints['x0']
-        xa = self.constraints['xa']
-        y0 = self.constraints['y0']
-        yb = self.constraints['yb']
-        #TODO: validate m and n
-        #TODO: validate constraints (lista may not work)
+        if self.constraints == 'PINNED':
+            x0 = ['TX', 'TY', 'TZ']
+            xa = ['TX', 'TY', 'TZ']
+            y0 = ['TX', 'TY', 'TZ']
+            yb = ['TX', 'TY', 'TZ']
+        elif self.constraints == 'CLAMPED':
+            x0 = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+            xa = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+            y0 = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+            yb = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+        else:
+            x0 = self.constraints['x0']
+            xa = self.constraints['xa']
+            y0 = self.constraints['y0']
+            yb = self.constraints['yb']
+
         sm = [i for i in range(self.m+4)]
         sn = [i for i in range(self.n+4)]
 
@@ -211,19 +221,19 @@ class PlateStructure(Structure):
         np.hstack([k00, k00, k33g])
         ])
 
-        #K = csc_matrix(K)
-        #KG = csc_matrix(KG)
-
         return {'K': K, 'KG': KG}  
 
 
-    def buckling_analysis(self, k=5):
+    def buckling_analysis(self, n_eigen_values=5):
         K_KG = self.calc_K_KG()
+        #A, B = csr_matrix(K_KG['K']), csr_matrix(K_KG['KG'])
         A, B = K_KG['K'], K_KG['KG']
+        #n_eigen_values = min(B.shape[0]-2, n_eigen_values)
+        #eig_values, eig_vectors = eigsh(A=B, k=n_eigen_values, tol=0, which='SM', M=A, sigma=1, mode='cayley')
         eig_values, eig_vectors = eig(A, B)
         eig_values = abs(eig_values)
         eig_values[np.isnan(eig_values)] = 99999999999
 
+
         return eig_values.min()
     
-
