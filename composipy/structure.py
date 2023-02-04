@@ -178,12 +178,12 @@ class PlateStructure(Structure):
 
                 k11.append(calc_K11_ijkl(self.a, self.b, ui, uj, uk, ul, A11, A16, A66))
                 k12.append(calc_k12_ijkl(self.a, self.b, ui, uj, vk, vl, A12, A16, A26, A66))
-                k13.append(calc_k13_ijkl())
+                k13.append(calc_k13_ijkl(self.a, self.b, ui, uj, wk, wl, B11, B12, B16, B26, B66))
                 k21.append(calc_k21_ijkl(self.a, self.b, vi, vj, uk, ul, A12, A16, A26, A66))
                 k22.append(calc_k22_ijkl(self.a, self.b, vi, vj, vk, vl, A22, A26, A66))
-                k23.append(calc_k23_ijkl())
-                k31.append(calc_k31_ijkl())
-                k32.append(calc_k32_ijkl())
+                k23.append(calc_k23_ijkl(self.a, self.b, vi, vj, wk, wl, B12, B16, B22, B26, B66))
+                k31.append(calc_k31_ijkl(self.a, self.b, wi, wj, uk, ul, B11, B12, B16, B26, B66))
+                k32.append(calc_k32_ijkl(self.a, self.b, wi, wj, vk, vl, B11, B12, B16, B22, B26, B66))
                 k33.append(calc_k33_ijkl(self.a, self.b, wi, wj, wk, wl, D11, D12, D22, D16, D26, D66))
                 k33g.append(calc_kG33_ijkl(self.a, self.b, wi, wj, wk, wl, self.Nxx, self.Nyy, self.Nxy))
         
