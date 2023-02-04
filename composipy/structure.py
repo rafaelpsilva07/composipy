@@ -1,7 +1,8 @@
 import numpy as np
 
 from scipy.linalg import eig
-from scipy.sparse import cs
+from scipy.sparse import csc_matrix
+#from scipy.sparse.linalg import eigs, eigsh
 from itertools import product
 
 from composipy.property import Property
@@ -210,10 +211,13 @@ class PlateStructure(Structure):
         np.hstack([k00, k00, k33g])
         ])
 
-        return {'K': K, 'KG': KG}
-    
+        #K = csc_matrix(K)
+        #KG = csc_matrix(KG)
 
-    def buckling_analysis(self):
+        return {'K': K, 'KG': KG}  
+
+
+    def buckling_analysis(self, k=5):
         K_KG = self.calc_K_KG()
         A, B = K_KG['K'], K_KG['KG']
         eig_values, eig_vectors = eig(A, B)
