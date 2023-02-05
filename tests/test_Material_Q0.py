@@ -1,8 +1,8 @@
 '''
-Test of Ply class
-=================
+Test of Q0 of OrthotropicMaterial
+=================================
 
-Test Ply class using example from page 102 of reference 1
+Test OrthotropicMaterial class using example from page 102 of reference 1
 
 References
 ----------
@@ -12,7 +12,7 @@ References
 import pytest
 import numpy as np
 
-from composipy import Ply
+from composipy import OrthotropicMaterial
 
 
 @pytest.fixture
@@ -25,9 +25,9 @@ def properties():
     return tuple([E1, E2, v12, G12, T])
 
 
-def test_ply(properties):
+def test_orthotropic(properties):
     reference = np.array([[39569.26989624, 2189.49960093, 0.],
                           [2189.49960093, 8421.15231125, 0.],
                           [0., 0., 4000.]])
-    ply1 = Ply(*properties)
+    ply1 = OrthotropicMaterial(*properties)
     np.testing.assert_array_almost_equal(ply1.Q_0, reference)
