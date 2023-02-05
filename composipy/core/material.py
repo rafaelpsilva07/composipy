@@ -1,7 +1,7 @@
 import itertools
 import numpy as np
 
-from composipy.validators import ComposipyValidator
+from composipy.utils import ComposipyValidator
 
 
 class Material(ComposipyValidator):

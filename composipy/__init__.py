@@ -2,6 +2,6 @@ import os
 import sys
 
 from .version import __version__
-from .material import OrthotropicMaterial, IsotropicMaterial
-from .property import LaminateProperty
-from .structure import PlateStructure
+from .core.material import OrthotropicMaterial, IsotropicMaterial
+from .core.property import LaminateProperty
+from .core.structure import PlateStructure

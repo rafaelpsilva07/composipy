@@ -5,8 +5,8 @@ from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import eigsh
 from itertools import product
 
-from composipy.property import Property
-from composipy.validators import ComposipyValidator
+from composipy.core.property import Property
+from composipy.utils import ComposipyValidator
 from composipy.pre_integrated_component.build_k import *
 
 

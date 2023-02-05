@@ -3,8 +3,8 @@ import numbers
 import numpy as np
 import scipy as sp
 
-from composipy.validators import ComposipyValidator
-from composipy.material import Material, OrthotropicMaterial, IsotropicMaterial
+from composipy.utils import ComposipyValidator
+from composipy.core.material import Material, OrthotropicMaterial, IsotropicMaterial
 
 
 class Property(ComposipyValidator):
