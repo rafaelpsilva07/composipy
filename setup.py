@@ -2,25 +2,29 @@ import setuptools
 import sys
 import os
 
-#sys.path.insert(0, os.path.abspath("./"))
+sys.path.insert(0, ("./composipy"))
 
-from composipy._version import VERSION
+from version import __version__
 
 
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
+with open("README.md", "r", encoding="utf-8") as f:
+    long_description = f.read()
+
+with open("requirements.txt", "r", encoding="utf-8") as f:
+    requires = f.readlines()
+    requires = [r.replace('\n', '') for r in requires]
 
 
 setuptools.setup(
-    name="composipy", # Replace with your own username
-    version=VERSION,
-    install_requires=["numpy>=1.0", "scipy>=1.0"],
+    name="composipy",
+    version=__version__,
+    install_requires=requires,
     author="Rafael Pereira",
     author_email="rafaelpsilva07@gmail.com",
     description="This package intends to perform composite material calculations",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/rafaelpsilva07/mimo_composipy.git",
+    url="https://github.com/rafaelpsilva07/composipy",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

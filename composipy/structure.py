@@ -167,7 +167,7 @@ class PlateStructure(Structure):
 
         return (uidx, vidx, widx)
     
-    
+    #TODO: parallel process, sparse matrix, cython
     def calc_K_KG(self):
         A11, A12, A16, B11, B12, B16 = self.dproperty.ABD[0, ::]
         A12, A22, A26, B12, B22, B26 = self.dproperty.ABD[1, ::]
