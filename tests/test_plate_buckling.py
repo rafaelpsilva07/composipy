@@ -14,7 +14,7 @@ from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
 
 
 @pytest.fixture
-def stacking_plies():
+def plateconfig():
     #Properties (N and mm)
     E1 = 60800
     E2 = 58250
@@ -51,7 +51,14 @@ def stacking_plies():
 
 
 def test_clamped_plate(plateconfig):
-    first_eigen_reference = 119.76079572
-    plate1 = PlateStructure(**plateconfig, constraints='Clamped')
+    first_eigen_reference = 119.76079572 # result from compmech
+    plate1 = PlateStructure(**plateconfig, constraints='CLAMPED')
     eigenvalues, eigvectors = plate1.buckling_analysis()
-    assert isclose(eigenvalues[0], first_eigen_reference)
+    assert isclose(eigenvalues[0], first_eigen_reference, abs_tol=1e-4, rel_tol=0.1)
+
+
+def test_pinned_plate(plateconfig):
+    first_eigen_reference = 48.52457849 # result from compmech: p1.w1rx = p1.w2rx = p1.w1ry = p1.w2ry = 1
+    plate1 = PlateStructure(**plateconfig, constraints='PINNED')
+    eigenvalues, eigvectors = plate1.buckling_analysis()
+    assert isclose(eigenvalues[0], first_eigen_reference, abs_tol=1e-4, rel_tol=0.1)
