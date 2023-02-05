@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>composipy.core.property &#8212; composipy 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/readable.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">composipy 1.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">composipy.core.property</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for composipy.core.property</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numbers</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
+
+<span class="kn">from</span> <span class="nn">composipy.utils</span> <span class="kn">import</span> <span class="n">ComposipyValidator</span>
+<span class="kn">from</span> <span class="nn">composipy.core.material</span> <span class="kn">import</span> <span class="n">Material</span><span class="p">,</span> <span class="n">OrthotropicMaterial</span><span class="p">,</span> <span class="n">IsotropicMaterial</span>
+
+
+<span class="k">class</span> <span class="nc">Property</span><span class="p">(</span><span class="n">ComposipyValidator</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="LaminateProperty"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateProperty">[docs]</a><span class="k">class</span> <span class="nc">LaminateProperty</span><span class="p">(</span><span class="n">Property</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This class creates laminate object. It needs Material objects (to define plies) and the angle information.</span>
+<span class="sd">    Some formulation characteristics are:</span>
+<span class="sd">    Laminate formulations ares used (see References)</span>
+<span class="sd">    Main reference is the chapter 4 of reference 2.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stacking : list</span>
+<span class="sd">        An iterable containing the angles (in degrees) of layup.</span>
+<span class="sd">    plies : Material or list</span>
+<span class="sd">        A single Material or a list of OrthotropicMaterial object</span>
+
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; from composipy import OrthotropicMaterial, LaminateProperty</span>
+<span class="sd">    &gt;&gt;&gt; ply_1 = OrthotropicMaterial(129500, 9370, 0.38, 5240, 0.2)</span>
+<span class="sd">    &gt;&gt;&gt; stacking = [90, 0, 90]</span>
+<span class="sd">    &gt;&gt;&gt; laminate = Laminate(stacking, ply_1)</span>
+<span class="sd">    &gt;&gt;&gt; laminate_1.ABD # retunrs an array containing bending stiffness matrix [D] of the laminate</span>
+<span class="sd">    &gt;&gt;&gt; laminate_1.xiA # lamination parameters of extension</span>
+<span class="sd">    &gt;&gt;&gt; laminate_1.xiA # lamination parameters of bending</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stacking</span><span class="p">,</span> <span class="n">plies</span><span class="p">):</span>
+        <span class="c1"># Checking layup</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">plies</span><span class="p">,</span> <span class="n">Material</span><span class="p">):</span>
+            <span class="n">n_plies</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stacking</span><span class="p">)</span>
+            <span class="n">plies</span> <span class="o">=</span> <span class="p">[</span><span class="n">plies</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_plies</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">plies</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stacking</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Number of plies and number of stacking must match&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">stacking</span> <span class="o">=</span> <span class="n">stacking</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plies</span> <span class="o">=</span> <span class="n">plies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layup</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">plies</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_z_position</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Q_layup</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_T_layup</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_A</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_B</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_D</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ABD</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ABD_p</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xiA</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xiB</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1">#Properties</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">z_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    
+        <span class="n">total_thickness</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layup</span><span class="p">:</span>
+            <span class="n">total_thickness</span> <span class="o">+=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">thickness</span>
+        
+        <span class="n">current_z</span> <span class="o">=</span> <span class="o">-</span><span class="n">total_thickness</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">ply_position</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_z</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layup</span><span class="p">:</span>
+            <span class="n">current_z</span> <span class="o">+=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">thickness</span>
+            <span class="n">ply_position</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_z</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">ply_position</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Q_layup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>    
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q_layup</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Q_layup</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">theta</span><span class="p">,</span> <span class="n">ply</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layup</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>
+
+                <span class="n">T_real</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                    <span class="p">[</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="p">])</span>
+                <span class="n">T_engineering</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                    <span class="p">[</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="p">])</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_Q_layup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">T_real</span><span class="p">))</span>
+                    <span class="o">@</span> <span class="n">ply</span><span class="o">.</span><span class="n">Q_0</span> 
+                    <span class="o">@</span> <span class="n">T_engineering</span>
+                    <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q_layup</span>
+     
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">T_layup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_T_layup</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">_T_layup</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layup</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>
+
+                <span class="n">T_real</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                    <span class="p">[</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="p">])</span>
+
+                <span class="n">T_engineering</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                    <span class="p">[</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="p">])</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_T_layup</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">T_real</span><span class="p">,</span><span class="n">T_engineering</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_T_layup</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;[A] Matrix as numpy.ndarray &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_A</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_layup</span><span class="p">):</span>
+                <span class="n">zk1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">zk0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_A</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">-</span><span class="n">zk0</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_A</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">B</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;[B] Matrix as numpy.ndarray &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_B</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_layup</span><span class="p">):</span>
+                <span class="n">zk1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">zk0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_B</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">zk1</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">zk0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_B</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">D</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;[D] Matrix as numpy.ndarray &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_D</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_layup</span><span class="p">):</span>
+                <span class="n">zk1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">zk0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_D</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">zk1</span><span class="o">**</span><span class="mi">3</span><span class="o">-</span><span class="n">zk0</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_D</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ABD</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;[ABD] Matrices as numpy.ndarray&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ABD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
+              <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">]),</span>
+              <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">])</span>
+            <span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ABD</span>
+   
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">xiA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Lamination parameter xiA&#39;&#39;&#39;</span>
+        <span class="n">xiA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">ply</span><span class="o">.</span><span class="n">thickness</span> <span class="k">for</span> <span class="n">ply</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plies</span><span class="p">])</span>        
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">angle</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stacking</span><span class="p">):</span>
+            <span class="n">angle</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
+            <span class="n">zk1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">zk0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="n">xiA</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">-</span><span class="n">zk0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">xiA</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">-</span><span class="n">zk0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">xiA</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">-</span><span class="n">zk0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">xiA</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">-</span><span class="n">zk0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>                        
+        <span class="k">return</span> <span class="n">xiA</span> <span class="o">/</span> <span class="n">T</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">xiD</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Lamination parameter xiD&#39;&#39;&#39;</span>
+        <span class="n">xiD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">ply</span><span class="o">.</span><span class="n">thickness</span> <span class="k">for</span> <span class="n">ply</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plies</span><span class="p">])</span>        
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">angle</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stacking</span><span class="p">):</span>
+            <span class="n">angle</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
+            <span class="n">zk1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">zk0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="n">xiD</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">**</span><span class="mi">3</span><span class="o">-</span><span class="n">zk0</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">xiD</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">**</span><span class="mi">3</span><span class="o">-</span><span class="n">zk0</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">xiD</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">**</span><span class="mi">3</span><span class="o">-</span><span class="n">zk0</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">xiD</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">**</span><span class="mi">3</span><span class="o">-</span><span class="n">zk0</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>                        
+        <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">xiD</span> <span class="o">/</span> <span class="n">T</span><span class="o">**</span><span class="mi">3</span>
+
+       <span class="c1">#Representation</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                    
+        <span class="n">representation</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;composipy.LaminateProperty</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;stacking = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">stacking</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="n">representation</span>
+
+<span class="c1">#Comparisons</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">LaminateProperty</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layup</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">layup</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation index</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2023, Rafael Pereira da Silva.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 6.1.3.
+  </div>
+  
+  </body>
+</html>

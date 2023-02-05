@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Welcome to composipy’s documentation! &#8212; composipy 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/readable.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Code references" href="reference/index.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+  <div class="indexwrapper">
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="reference/index.html" title="Code references"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">composipy 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to composipy’s documentation!</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="welcome-to-composipy-s-documentation">
+<h1>Welcome to composipy’s documentation!<a class="headerlink" href="#welcome-to-composipy-s-documentation" title="Permalink to this heading">¶</a></h1>
+</section>
+<section id="composipy">
+<h1>Composipy<a class="headerlink" href="#composipy" title="Permalink to this heading">¶</a></h1>
+<section id="what-it-is">
+<h2>What it is<a class="headerlink" href="#what-it-is" title="Permalink to this heading">¶</a></h2>
+<p><strong>composipy</strong> is a python library to calculate composite plates using the classical laminate theory. This library is designed to be simple, userfriendly and helpfull.</p>
+</section>
+<section id="how-to-install">
+<h2>How to install<a class="headerlink" href="#how-to-install" title="Permalink to this heading">¶</a></h2>
+<section id="directly-from-pypi">
+<h3>Directly From PYPI<a class="headerlink" href="#directly-from-pypi" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>composipy
+</pre></div>
+</div>
+</section>
+<section id="built-from-source">
+<h3>Built from source<a class="headerlink" href="#built-from-source" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>setup.py<span class="w"> </span>install
+</pre></div>
+</div>
+</section>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">¶</a></h2>
+<p>TODO</p>
+</section>
+<section id="quick-start">
+<h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this heading">¶</a></h2>
+<p>Create the material.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E1</span> <span class="o">=</span> <span class="mi">60800</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E2</span> <span class="o">=</span> <span class="mi">58250</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v12</span> <span class="o">=</span> <span class="mf">0.07</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G12</span> <span class="o">=</span> <span class="mi">4550</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="mf">0.21</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat_1</span> <span class="o">=</span> <span class="n">OrthotropicMaterial</span><span class="p">(</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Define the laminate.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">LaminateProperty</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stacking</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate1</span> <span class="o">=</span> <span class="n">LaminateProperty</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">ply1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">ABD</span><span class="p">)</span> <span class="c1"># prints the ABD matrix as a np.ndarray</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">xiA</span><span class="p">)</span> <span class="c1"># prints lamination parameters of extension as a np.ndarray</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">xiD</span><span class="p">)</span> <span class="c1"># prints lamination parameters of bending as a np.ndarray</span>
+</pre></div>
+</div>
+<p>Create a plate structure.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">PlateStructure</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
+<span class="go">---     x0 = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
+<span class="go">---     xa = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
+<span class="go">---     y0 = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
+<span class="go">---     yb = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
+<span class="go">--- }</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">panel</span> <span class="o">=</span> <span class="n">PlateStructure</span><span class="p">(</span><span class="n">laminate1</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">Nxx</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">constraints</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">buckling_analysis</span><span class="p">())</span> <span class="c1"># solve the eigenvalue problem.</span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Code References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/index.html">Examples</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="#">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Welcome to composipy’s documentation!</a></li>
+<li><a class="reference internal" href="#composipy">Composipy</a><ul>
+<li><a class="reference internal" href="#what-it-is">What it is</a></li>
+<li><a class="reference internal" href="#how-to-install">How to install</a><ul>
+<li><a class="reference internal" href="#directly-from-pypi">Directly From PYPI</a></li>
+<li><a class="reference internal" href="#built-from-source">Built from source</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#quick-start">Quick start</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation index</a><ul>
+      <li>Next: <a href="reference/index.html" title="next chapter">Code references</a></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2023, Rafael Pereira da Silva.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 6.1.3.
+  </div>
+  
+  </div>
+  
+  </body>
+</html>

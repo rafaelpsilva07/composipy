@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>composipy.core.material &#8212; composipy 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/readable.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">composipy 1.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">composipy.core.material</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for composipy.core.material</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">composipy.utils</span> <span class="kn">import</span> <span class="n">ComposipyValidator</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;OrthotropicMaterial&#39;</span><span class="p">,</span> <span class="s1">&#39;IsotropicMaterial&#39;</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">Material</span><span class="p">(</span><span class="n">ComposipyValidator</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="OrthotropicMaterial"><a class="viewcode-back" href="../../../reference/classes.html#composipy.OrthotropicMaterial">[docs]</a><span class="k">class</span> <span class="nc">OrthotropicMaterial</span><span class="p">(</span><span class="n">Material</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates an OrthotropicMaterial object.</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    e1 : float, int</span>
+<span class="sd">        Young modulus in the 1st direction</span>
+<span class="sd">    e2 : float, int</span>
+<span class="sd">        Young modulus in the 2nd direction</span>
+<span class="sd">    v12 : float</span>
+<span class="sd">        poisson modulus 12</span>
+<span class="sd">    g12 : float, int</span>
+<span class="sd">        Shear modulus</span>
+<span class="sd">    thickness : float, int</span>
+<span class="sd">        thickness of the ply</span>
+<span class="sd">    t1 : float, optional, default None</span>
+<span class="sd">        tension allowable in direction 1.</span>
+<span class="sd">    c1 : float, optional, default None</span>
+<span class="sd">        compression allowable in direction 1.</span>
+<span class="sd">    t2 : float, optional, default None</span>
+<span class="sd">        tension allowable in direction 2.</span>
+<span class="sd">    c2 : float, optional, default None</span>
+<span class="sd">        compression allowable in direction 2.</span>
+<span class="sd">    s : float, optional, default None</span>
+<span class="sd">        shear allowable.</span>
+<span class="sd">    name : str, optional, default None</span>
+<span class="sd">        Name of the ply</span>
+<span class="sd"> </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from composipy import OrthotropicMaterial</span>
+<span class="sd">    &gt;&gt;&gt; ply_1 = OrthotropicMaterial(129500, 9370, 0.38, 5240, 0.2)</span>
+<span class="sd">    &gt;&gt;&gt; ply_1.Q_0 # get the compliance matrix of the lamina</span>
+<span class="sd">    Out:</span>
+<span class="sd">    array([[130867.31382151,   3598.19426713,      0.     ],</span>
+<span class="sd">        [  3598.19426713,   9468.93228191,      0.        ],</span>
+<span class="sd">        [     0.        ,      0.        ,   5240.        ]])</span>
+<span class="sd"> </span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_ids</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># counts number of instances in order to generate names</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">e1</span><span class="p">,</span> 
+            <span class="n">e2</span><span class="p">,</span> 
+            <span class="n">v12</span><span class="p">,</span> 
+            <span class="n">g12</span><span class="p">,</span> 
+            <span class="n">thickness</span><span class="p">,</span> 
+            <span class="n">t1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+            <span class="n">c1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+            <span class="n">t2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+            <span class="n">c2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+            <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__e1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;e1&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__e2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__v12</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">v12</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;v12&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__g12</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">g12</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;g12&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__thickness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">thickness</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;thickness&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__t1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;t1&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__c1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;c1&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__t2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;t2&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__c2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">c2</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;c2&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__v21</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v12</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e2</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">e1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__Q_0</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1">#Calculated property</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="c1">#Propertie getters    </span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">e1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__e1</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">e2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__e2</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">v12</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__v12</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">g12</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__g12</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">thickness</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__thickness</span>
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">t1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__t1</span>
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">c1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__c1</span>
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">t2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__t2</span>
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">c2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__c2</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">s</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__s</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">v21</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__v21</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;ply_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Q_0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the compliance matrix of the material.       </span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self.Q_0 : numpy.ndarray</span>
+<span class="sd">            Compliance matrix (3x3) of the Material </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__Q_0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Q11</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">v12</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">v21</span><span class="p">)</span> 
+            <span class="n">Q12</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v12</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">e2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">v12</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">v21</span><span class="p">)</span>
+            <span class="n">Q22</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">v12</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">v21</span><span class="p">)</span>
+            <span class="n">Q66</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">g12</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__Q_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">Q11</span><span class="p">,</span> <span class="n">Q12</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                                   <span class="p">[</span><span class="n">Q12</span><span class="p">,</span> <span class="n">Q22</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Q66</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__Q_0</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Ply(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">, E1 = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">e1</span><span class="si">}</span><span class="s1">, E2 = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">e2</span><span class="si">}</span><span class="s1">, </span><span class="se">\n\</span>
+<span class="s1">            v12 = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">v12</span><span class="si">}</span><span class="s1">, G12 = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">g12</span><span class="si">}</span><span class="s1">, thickness = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="si">}</span><span class="s1">, </span><span class="se">\n\</span>
+<span class="s1">            T1 = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">t1</span><span class="si">}</span><span class="s1">, C1 = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">c1</span><span class="si">}</span><span class="s1">, T2 = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">t2</span><span class="si">}</span><span class="s1">, C2 = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">c2</span><span class="si">}</span><span class="s1">, S = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    
+<span class="c1">#Comparisons</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">OrthotropicMaterial</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e1</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">e1</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">e2</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">e2</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">v12</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">v12</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">g12</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">g12</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">thickness</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">t1</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">t1</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">c1</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">c1</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">t2</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">t2</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">c2</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">c2</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Not a instance of Material&#39;</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">IsotropicMaterial</span><span class="p">(</span><span class="n">Material</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates an instance of Ply.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    e : float</span>
+<span class="sd">        Young modulus</span>
+<span class="sd">    v : float</span>
+<span class="sd">        poisson modulus 12</span>
+<span class="sd">    g : float</span>
+<span class="sd">        Shear modulus</span>
+<span class="sd">    thickness : float</span>
+<span class="sd">        thickness of the ply</span>
+<span class="sd">    t : float, default None</span>
+<span class="sd">        tension allowable.</span>
+<span class="sd">    c : float, default None</span>
+<span class="sd">        compression allowable.</span>
+<span class="sd">    s : float, default None</span>
+<span class="sd">        shear allowable.</span>
+<span class="sd">    name : str, default None</span>
+<span class="sd">        Name of the ply</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_ids</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># counts number of instances in order to generate names</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">e</span><span class="p">,</span> 
+            <span class="n">v</span><span class="p">,</span> 
+            <span class="n">g</span><span class="p">,</span> 
+            <span class="n">thickness</span><span class="p">,</span> 
+            <span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+            <span class="n">s</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+            <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__thickness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">thickness</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;thickness&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__Q_0</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1">#Calculated property</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="c1">#Propertie getters    </span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">e</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__e</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__v</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__g</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">thickness</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__thickness</span>
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__t</span>
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">c</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__c</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">s</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__s</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__v</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;ply_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Q_0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the compliance matrix of the material.       </span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self.Q_0 : numpy.ndarray</span>
+<span class="sd">            Compliance matrix (3x3) of the Material </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__Q_0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Q11</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">)</span> 
+            <span class="n">Q12</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">Q22</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">Q66</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__Q_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">Q11</span><span class="p">,</span> <span class="n">Q12</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                                   <span class="p">[</span><span class="n">Q12</span><span class="p">,</span> <span class="n">Q22</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Q66</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__Q_0</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;IsotropicMaterial(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">, E = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="si">}</span><span class="s1">, </span><span class="se">\n\</span>
+<span class="s1">            v = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="si">}</span><span class="s1">, G = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="si">}</span><span class="s1">, thickness = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="si">}</span><span class="s1">, </span><span class="se">\n\</span>
+<span class="s1">            T = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="si">}</span><span class="s1">, C = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="si">}</span><span class="s1">, S = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+<span class="c1">#Comparisons</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">IsotropicMaterial</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">e</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">v</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">g</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">thickness</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">t</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">c</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Not a instance of Material&#39;</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation index</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2023, Rafael Pereira da Silva.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 6.1.3.
+  </div>
+  
+  </body>
+</html>

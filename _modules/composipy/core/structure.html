@@ -1,0 +1,405 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>composipy.core.structure &#8212; composipy 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/readable.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">composipy 1.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">composipy.core.structure</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for composipy.core.structure</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">eigsh</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+
+<span class="kn">from</span> <span class="nn">composipy.core.property</span> <span class="kn">import</span> <span class="n">Property</span>
+<span class="kn">from</span> <span class="nn">composipy.utils</span> <span class="kn">import</span> <span class="n">ComposipyValidator</span>
+<span class="kn">from</span> <span class="nn">composipy.pre_integrated_component.build_k</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="k">class</span> <span class="nc">Structure</span><span class="p">(</span><span class="n">ComposipyValidator</span><span class="p">):</span>
+      <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="PlateStructure"><a class="viewcode-back" href="../../../reference/classes.html#composipy.PlateStructure">[docs]</a><span class="k">class</span> <span class="nc">PlateStructure</span><span class="p">(</span><span class="n">Structure</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This class defines a PlateStructure.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dproperty : composipy.Property</span>
+<span class="sd">        Property of the plate.</span>
+<span class="sd">    a : float</span>
+<span class="sd">        Size of the plate parallel to the x axis.</span>
+<span class="sd">    b : float</span>
+<span class="sd">        Size of the plate parallel to the y axis.</span>
+<span class="sd">    constraints : str or dict. Default: \&quot;PINNED\&quot;</span>
+<span class="sd">        Plate boundary conditions.</span>
+<span class="sd">    Nxx : float, default 0</span>
+<span class="sd">        Linear force parallel x axis </span>
+<span class="sd">    Nyy : float, default 0</span>
+<span class="sd">        Linear force parallel y axis</span>
+<span class="sd">    Nxy : float, default 0</span>
+<span class="sd">        Linear shear force</span>
+<span class="sd">    m : int, default 10</span>
+<span class="sd">        Size of shape function along x axis</span>
+<span class="sd">    n : int, default 10</span>
+<span class="sd">        Size of shape function along y axis</span>
+
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure</span>
+<span class="sd">    &gt;&gt;&gt; ply_1 = OrthotropicMaterial(129500, 9370, 0.38, 5240, 0.2)</span>
+<span class="sd">    &gt;&gt;&gt; stacking = [90, 0, 90]</span>
+<span class="sd">    &gt;&gt;&gt; laminate = Laminate(stacking, ply_1)</span>
+<span class="sd">    &gt;&gt;&gt; constraints</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    -----</span>
+<span class="sd">    The ``constraint`` argument can be a str type \&#39;PINNED\&#39; or \&#39;CLAMPED\&#39;.</span>
+<span class="sd">    Or a dictionary like described below:</span>
+
+<span class="sd">    &gt;&gt;&gt; constraints = {    </span>
+<span class="sd">    ---     x0 = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
+<span class="sd">    ---     xa = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
+<span class="sd">    ---     y0 = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
+<span class="sd">    ---     yb = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
+<span class="sd">    --- }</span>
+
+<span class="sd">    Attention, the rotations aren&#39;t considered around the axis. They are related to the shape function.</span>
+<span class="sd">    That means, for example, the ``RZ`` turns around the x axis and moves the plate in z direction. </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">dproperty</span><span class="p">,</span>
+            <span class="n">a</span><span class="p">,</span>
+            <span class="n">b</span><span class="p">,</span>
+            <span class="n">constraints</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;x0&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;xa&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;y0&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;yb&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="n">Nxx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">Nyy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">Nxy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">m</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dproperty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_instance</span><span class="p">(</span><span class="n">dproperty</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="s1">&#39;dproperty&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__constraints</span> <span class="o">=</span> <span class="n">constraints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__Nxx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">Nxx</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Nxx&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__Nyy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">Nyy</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Nyy&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__Nxy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_float_number</span><span class="p">(</span><span class="n">Nxy</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Nxy&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_int_number</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_int_number</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dproperty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dproperty</span>
+        
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__a</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__b</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__constraints</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Nxx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__Nxx</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Nyy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__Nyy</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Nxy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__Nxy</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">m</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__m</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__n</span>
+
+
+    <span class="k">def</span> <span class="nf">_compute_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span> <span class="o">==</span> <span class="s1">&#39;PINNED&#39;</span><span class="p">:</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">]</span>
+            <span class="n">xa</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">]</span>
+            <span class="n">y0</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">]</span>
+            <span class="n">yb</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span> <span class="o">==</span> <span class="s1">&#39;CLAMPED&#39;</span><span class="p">:</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">,</span> <span class="s1">&#39;RX&#39;</span><span class="p">,</span> <span class="s1">&#39;RY&#39;</span><span class="p">,</span> <span class="s1">&#39;RZ&#39;</span><span class="p">]</span>
+            <span class="n">xa</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">,</span> <span class="s1">&#39;RX&#39;</span><span class="p">,</span> <span class="s1">&#39;RY&#39;</span><span class="p">,</span> <span class="s1">&#39;RZ&#39;</span><span class="p">]</span>
+            <span class="n">y0</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">,</span> <span class="s1">&#39;RX&#39;</span><span class="p">,</span> <span class="s1">&#39;RY&#39;</span><span class="p">,</span> <span class="s1">&#39;RZ&#39;</span><span class="p">]</span>
+            <span class="n">yb</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">,</span> <span class="s1">&#39;RX&#39;</span><span class="p">,</span> <span class="s1">&#39;RY&#39;</span><span class="p">,</span> <span class="s1">&#39;RZ&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="s1">&#39;x0&#39;</span><span class="p">]</span>
+            <span class="n">xa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="s1">&#39;xa&#39;</span><span class="p">]</span>
+            <span class="n">y0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="s1">&#39;y0&#39;</span><span class="p">]</span>
+            <span class="n">yb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="s1">&#39;yb&#39;</span><span class="p">]</span>
+
+        <span class="n">sm</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">+</span><span class="mi">4</span><span class="p">)]</span>
+        <span class="n">sn</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">+</span><span class="mi">4</span><span class="p">)]</span>
+
+        <span class="n">um</span><span class="p">,</span> <span class="n">un</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">sn</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">vm</span><span class="p">,</span> <span class="n">vn</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">sn</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">wm</span><span class="p">,</span> <span class="n">wn</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">sn</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c1"># x0</span>
+        <span class="k">if</span> <span class="s1">&#39;TX&#39;</span> <span class="ow">in</span> <span class="n">x0</span><span class="p">:</span>
+              <span class="n">um</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;TY&#39;</span> <span class="ow">in</span> <span class="n">x0</span><span class="p">:</span>
+              <span class="n">vm</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;TZ&#39;</span> <span class="ow">in</span> <span class="n">x0</span><span class="p">:</span>
+              <span class="n">wm</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;RX&#39;</span> <span class="ow">in</span> <span class="n">x0</span><span class="p">:</span>
+              <span class="n">um</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;RY&#39;</span> <span class="ow">in</span> <span class="n">x0</span><span class="p">:</span>
+              <span class="n">vm</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;RZ&#39;</span> <span class="ow">in</span> <span class="n">x0</span><span class="p">:</span>
+              <span class="n">wm</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1">#xa</span>
+        <span class="k">if</span> <span class="s1">&#39;TX&#39;</span> <span class="ow">in</span> <span class="n">xa</span><span class="p">:</span>
+              <span class="n">um</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;TY&#39;</span> <span class="ow">in</span> <span class="n">xa</span><span class="p">:</span>
+              <span class="n">vm</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;TZ&#39;</span> <span class="ow">in</span> <span class="n">xa</span><span class="p">:</span>
+              <span class="n">wm</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;RX&#39;</span> <span class="ow">in</span> <span class="n">xa</span><span class="p">:</span>
+              <span class="n">um</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;RY&#39;</span> <span class="ow">in</span> <span class="n">xa</span><span class="p">:</span>
+              <span class="n">vm</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;RZ&#39;</span> <span class="ow">in</span> <span class="n">xa</span><span class="p">:</span>
+              <span class="n">wm</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        
+        <span class="c1">#y0</span>
+        <span class="k">if</span> <span class="s1">&#39;TX&#39;</span> <span class="ow">in</span> <span class="n">y0</span><span class="p">:</span>
+              <span class="n">un</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;TY&#39;</span> <span class="ow">in</span> <span class="n">y0</span><span class="p">:</span>
+              <span class="n">vn</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;TZ&#39;</span> <span class="ow">in</span> <span class="n">y0</span><span class="p">:</span>
+              <span class="n">wn</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;RX&#39;</span> <span class="ow">in</span> <span class="n">y0</span><span class="p">:</span>
+              <span class="n">un</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;RY&#39;</span> <span class="ow">in</span> <span class="n">y0</span><span class="p">:</span>
+              <span class="n">vn</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;RZ&#39;</span> <span class="ow">in</span> <span class="n">y0</span><span class="p">:</span>
+              <span class="n">wn</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1">#yb</span>
+        <span class="k">if</span> <span class="s1">&#39;TX&#39;</span> <span class="ow">in</span> <span class="n">yb</span><span class="p">:</span>
+              <span class="n">un</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;TY&#39;</span> <span class="ow">in</span> <span class="n">yb</span><span class="p">:</span>
+              <span class="n">vn</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;TZ&#39;</span> <span class="ow">in</span> <span class="n">yb</span><span class="p">:</span>
+              <span class="n">wn</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;RX&#39;</span> <span class="ow">in</span> <span class="n">yb</span><span class="p">:</span>
+              <span class="n">un</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;RY&#39;</span> <span class="ow">in</span> <span class="n">yb</span><span class="p">:</span>
+              <span class="n">vn</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;RZ&#39;</span> <span class="ow">in</span> <span class="n">yb</span><span class="p">:</span>
+              <span class="n">wn</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        
+        <span class="n">um</span><span class="p">,</span> <span class="n">un</span> <span class="o">=</span> <span class="n">um</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="n">un</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">]</span>
+        <span class="n">vm</span><span class="p">,</span> <span class="n">vn</span> <span class="o">=</span> <span class="n">vm</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="n">un</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">]</span>
+        <span class="n">wm</span><span class="p">,</span> <span class="n">wn</span> <span class="o">=</span> <span class="n">wm</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="n">un</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">]</span>
+
+        <span class="n">uidx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="n">um</span><span class="p">,</span> <span class="n">un</span><span class="p">,</span> <span class="n">um</span><span class="p">,</span> <span class="n">un</span><span class="p">))</span>
+        <span class="n">vidx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span> <span class="n">vn</span><span class="p">,</span> <span class="n">vm</span><span class="p">,</span> <span class="n">vn</span><span class="p">))</span>
+        <span class="n">widx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="n">wm</span><span class="p">,</span> <span class="n">wn</span><span class="p">,</span> <span class="n">wm</span><span class="p">,</span> <span class="n">wn</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">uidx</span><span class="p">,</span> <span class="n">vidx</span><span class="p">,</span> <span class="n">widx</span><span class="p">)</span>
+    
+    <span class="c1">#TODO: parallel process, sparse matrix, cython</span>
+<div class="viewcode-block" id="PlateStructure.calc_K_KG"><a class="viewcode-back" href="../../../reference/classes.html#composipy.PlateStructure.calc_K_KG">[docs]</a>    <span class="k">def</span> <span class="nf">calc_K_KG</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculates the stiffness and geometrical stifness matrices.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        K_KG : tuple</span>
+<span class="sd">            A tuple of array containing (K, KG)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">A11</span><span class="p">,</span> <span class="n">A12</span><span class="p">,</span> <span class="n">A16</span><span class="p">,</span> <span class="n">B11</span><span class="p">,</span> <span class="n">B12</span><span class="p">,</span> <span class="n">B16</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">ABD</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">::]</span>
+        <span class="n">A12</span><span class="p">,</span> <span class="n">A22</span><span class="p">,</span> <span class="n">A26</span><span class="p">,</span> <span class="n">B12</span><span class="p">,</span> <span class="n">B22</span><span class="p">,</span> <span class="n">B26</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">ABD</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">::]</span>
+        <span class="n">A16</span><span class="p">,</span> <span class="n">A26</span><span class="p">,</span> <span class="n">A66</span><span class="p">,</span> <span class="n">B16</span><span class="p">,</span> <span class="n">B26</span><span class="p">,</span> <span class="n">B66</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">ABD</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">::]</span>
+        <span class="n">B11</span><span class="p">,</span> <span class="n">B12</span><span class="p">,</span> <span class="n">B16</span><span class="p">,</span> <span class="n">D11</span><span class="p">,</span> <span class="n">D12</span><span class="p">,</span> <span class="n">D16</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">ABD</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">::]</span>
+        <span class="n">B12</span><span class="p">,</span> <span class="n">B22</span><span class="p">,</span> <span class="n">B26</span><span class="p">,</span> <span class="n">D12</span><span class="p">,</span> <span class="n">D22</span><span class="p">,</span> <span class="n">D26</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">ABD</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="p">::]</span>
+        <span class="n">B16</span><span class="p">,</span> <span class="n">B26</span><span class="p">,</span> <span class="n">B66</span><span class="p">,</span> <span class="n">D16</span><span class="p">,</span> <span class="n">D26</span><span class="p">,</span> <span class="n">D66</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">ABD</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="p">::]</span>
+
+        <span class="n">k11</span><span class="p">,</span> <span class="n">k12</span><span class="p">,</span> <span class="n">k13</span><span class="p">,</span> <span class="n">k21</span><span class="p">,</span> <span class="n">k22</span><span class="p">,</span> <span class="n">k23</span><span class="p">,</span> <span class="n">k31</span><span class="p">,</span> <span class="n">k32</span><span class="p">,</span> <span class="n">k33</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="n">k33g</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">uidx</span><span class="p">,</span> <span class="n">vidx</span><span class="p">,</span> <span class="n">widx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_constraints</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">):</span>
+                <span class="n">ui</span><span class="p">,</span> <span class="n">uj</span><span class="p">,</span> <span class="n">uk</span><span class="p">,</span> <span class="n">ul</span> <span class="o">=</span> <span class="n">uidx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">vi</span><span class="p">,</span> <span class="n">vj</span><span class="p">,</span> <span class="n">vk</span><span class="p">,</span> <span class="n">vl</span> <span class="o">=</span> <span class="n">vidx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">wi</span><span class="p">,</span> <span class="n">wj</span><span class="p">,</span> <span class="n">wk</span><span class="p">,</span> <span class="n">wl</span> <span class="o">=</span> <span class="n">widx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+                <span class="n">k11</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_K11_ijkl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">ui</span><span class="p">,</span> <span class="n">uj</span><span class="p">,</span> <span class="n">uk</span><span class="p">,</span> <span class="n">ul</span><span class="p">,</span> <span class="n">A11</span><span class="p">,</span> <span class="n">A16</span><span class="p">,</span> <span class="n">A66</span><span class="p">))</span>
+                <span class="n">k12</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_k12_ijkl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">ui</span><span class="p">,</span> <span class="n">uj</span><span class="p">,</span> <span class="n">vk</span><span class="p">,</span> <span class="n">vl</span><span class="p">,</span> <span class="n">A12</span><span class="p">,</span> <span class="n">A16</span><span class="p">,</span> <span class="n">A26</span><span class="p">,</span> <span class="n">A66</span><span class="p">))</span>
+                <span class="n">k13</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_k13_ijkl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">ui</span><span class="p">,</span> <span class="n">uj</span><span class="p">,</span> <span class="n">wk</span><span class="p">,</span> <span class="n">wl</span><span class="p">,</span> <span class="n">B11</span><span class="p">,</span> <span class="n">B12</span><span class="p">,</span> <span class="n">B16</span><span class="p">,</span> <span class="n">B26</span><span class="p">,</span> <span class="n">B66</span><span class="p">))</span>
+                <span class="n">k21</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_k21_ijkl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">vi</span><span class="p">,</span> <span class="n">vj</span><span class="p">,</span> <span class="n">uk</span><span class="p">,</span> <span class="n">ul</span><span class="p">,</span> <span class="n">A12</span><span class="p">,</span> <span class="n">A16</span><span class="p">,</span> <span class="n">A26</span><span class="p">,</span> <span class="n">A66</span><span class="p">))</span>
+                <span class="n">k22</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_k22_ijkl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">vi</span><span class="p">,</span> <span class="n">vj</span><span class="p">,</span> <span class="n">vk</span><span class="p">,</span> <span class="n">vl</span><span class="p">,</span> <span class="n">A22</span><span class="p">,</span> <span class="n">A26</span><span class="p">,</span> <span class="n">A66</span><span class="p">))</span>
+                <span class="n">k23</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_k23_ijkl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">vi</span><span class="p">,</span> <span class="n">vj</span><span class="p">,</span> <span class="n">wk</span><span class="p">,</span> <span class="n">wl</span><span class="p">,</span> <span class="n">B12</span><span class="p">,</span> <span class="n">B16</span><span class="p">,</span> <span class="n">B22</span><span class="p">,</span> <span class="n">B26</span><span class="p">,</span> <span class="n">B66</span><span class="p">))</span>
+                <span class="n">k31</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_k31_ijkl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">wi</span><span class="p">,</span> <span class="n">wj</span><span class="p">,</span> <span class="n">uk</span><span class="p">,</span> <span class="n">ul</span><span class="p">,</span> <span class="n">B11</span><span class="p">,</span> <span class="n">B12</span><span class="p">,</span> <span class="n">B16</span><span class="p">,</span> <span class="n">B26</span><span class="p">,</span> <span class="n">B66</span><span class="p">))</span>
+                <span class="n">k32</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_k32_ijkl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">wi</span><span class="p">,</span> <span class="n">wj</span><span class="p">,</span> <span class="n">vk</span><span class="p">,</span> <span class="n">vl</span><span class="p">,</span> <span class="n">B11</span><span class="p">,</span> <span class="n">B12</span><span class="p">,</span> <span class="n">B16</span><span class="p">,</span> <span class="n">B22</span><span class="p">,</span> <span class="n">B26</span><span class="p">,</span> <span class="n">B66</span><span class="p">))</span>
+                <span class="n">k33</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_k33_ijkl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">wi</span><span class="p">,</span> <span class="n">wj</span><span class="p">,</span> <span class="n">wk</span><span class="p">,</span> <span class="n">wl</span><span class="p">,</span> <span class="n">D11</span><span class="p">,</span> <span class="n">D12</span><span class="p">,</span> <span class="n">D22</span><span class="p">,</span> <span class="n">D16</span><span class="p">,</span> <span class="n">D26</span><span class="p">,</span> <span class="n">D66</span><span class="p">))</span>
+                <span class="n">k33g</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calc_kG33_ijkl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">wi</span><span class="p">,</span> <span class="n">wj</span><span class="p">,</span> <span class="n">wk</span><span class="p">,</span> <span class="n">wl</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nxx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nyy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nxy</span><span class="p">))</span>
+        
+        <span class="n">k11</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k11</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">k12</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">k13</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k13</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">k21</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k21</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">k22</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k22</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">k23</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k23</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">k31</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k31</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">k32</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">k33</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k33</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">k00</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">k33g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k33g</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+
+        <span class="n">K</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">k11</span><span class="p">,</span> <span class="n">k12</span><span class="p">,</span> <span class="n">k13</span><span class="p">]),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">k21</span><span class="p">,</span> <span class="n">k22</span><span class="p">,</span> <span class="n">k31</span><span class="p">]),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">k31</span><span class="p">,</span> <span class="n">k32</span><span class="p">,</span> <span class="n">k33</span><span class="p">])</span>
+        <span class="p">])</span>
+
+        <span class="n">KG</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">k00</span><span class="p">,</span> <span class="n">k00</span><span class="p">,</span> <span class="n">k00</span><span class="p">]),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">k00</span><span class="p">,</span> <span class="n">k00</span><span class="p">,</span> <span class="n">k00</span><span class="p">]),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">k00</span><span class="p">,</span> <span class="n">k00</span><span class="p">,</span> <span class="n">k33g</span><span class="p">])</span>
+        <span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">K</span><span class="p">,</span> <span class="n">KG</span>  </div>
+
+<div class="viewcode-block" id="PlateStructure.buckling_analysis"><a class="viewcode-back" href="../../../reference/classes.html#composipy.PlateStructure.buckling_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">buckling_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_eigvalues</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Linear Buckling Analysis</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        silent : bool, optional</span>
+<span class="sd">            Prints time to compute calculation</span>
+<span class="sd">        num_eigvalues : int, optional</span>
+<span class="sd">            Number of calculated eigenvalues.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        eigvals, eigvecs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
+            <span class="n">ti</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>       
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;calculating K and KG&#39;</span><span class="p">)</span>
+        <span class="n">K</span><span class="p">,</span> <span class="n">KG</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_K_KG</span><span class="p">()</span>
+        <span class="n">K</span><span class="p">,</span> <span class="n">KG</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">K</span><span class="p">),</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">KG</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;K and KG calculated in </span><span class="si">{</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">ti</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="mi">0</span>
+    
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
+            <span class="n">ti</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Calculating eigenvalues&#39;</span><span class="p">)</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">num_eigvalues</span><span class="p">,</span> <span class="n">KG</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;cayley&#39;</span>
+
+        <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigsh</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="n">KG</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+              <span class="n">which</span><span class="o">=</span><span class="s1">&#39;SM&#39;</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        
+        <span class="n">eigvals</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span><span class="o">/</span><span class="n">eigvals</span>
+    
+        <span class="n">eigvals</span> <span class="o">=</span> <span class="n">eigvals</span>
+        <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigvecs</span> 
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
+             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;eigenvalues calculated in </span><span class="si">{</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">ti</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation index</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2023, Rafael Pereira da Silva.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 6.1.3.
+  </div>
+  
+  </body>
+</html>

@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Nastran API functions &#8212; composipy 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/readable.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Welcome to composipy’s user documentation!" href="../notebooks/index.html" />
+    <link rel="prev" title="OrthotropicMaterial" href="classes.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../notebooks/index.html" title="Welcome to composipy’s user documentation!"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="classes.html" title="OrthotropicMaterial"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">composipy 1.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Code references</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Nastran API functions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-composipy.nastranapi.pcomp_generator">
+<span id="nastran-api-functions"></span><h1>Nastran API functions<a class="headerlink" href="#module-composipy.nastranapi.pcomp_generator" title="Permalink to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="composipy.nastranapi.pcomp_generator.build_pcomp">
+<span class="sig-prename descclassname"><span class="pre">composipy.nastranapi.pcomp_generator.</span></span><span class="sig-name descname"><span class="pre">build_pcomp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">midi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'FIBER'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/nastranapi/pcomp_generator.html#build_pcomp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.nastranapi.pcomp_generator.build_pcomp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sequence</strong> (<em>list</em>) – Angles of the stacking sequence. A list (or a iterable) containing angles</p></li>
+<li><p><strong>midi</strong> (<em>list</em><em> or </em><em>int</em>) – A list of materials of plies or a material id (int) to be applied to all plies.</p></li>
+<li><p><strong>ti</strong> (<em>list</em><em> or </em><em>float</em>) – A list of thickness of plies or a thickness (float) to be applied to all plies.</p></li>
+<li><p><strong>pid</strong> (<em>int</em><em>, </em><em>default 1</em>) – NASTRAN property id</p></li>
+<li><p><strong>z0</strong> (<em>float</em><em>, </em><em>default ''</em>) – Laminate offset</p></li>
+<li><p><strong>sout</strong> (<em>list</em><em> or </em><em>str</em><em>, </em><em>default 'FIBER'</em>) – A list of output request of plies or a output request to be applied to all plies.
+Options = YES, NO, FIBER
+If FIBER is used, then only the first and the last plies will be set as YES</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>text</strong> – Returns a PCOMP card.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="composipy.nastranapi.pcomp_generator.build_sequence">
+<span class="sig-prename descclassname"><span class="pre">composipy.nastranapi.pcomp_generator.</span></span><span class="sig-name descname"><span class="pre">build_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stacking</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/nastranapi/pcomp_generator.html#build_sequence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.nastranapi.pcomp_generator.build_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stacking</strong> (<em>str</em>) – A string in Latex format</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>unities</strong> – A list that contains the stacking sequence</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stack</span> <span class="o">=</span> <span class="s1">&#39;[\pm45_</span><span class="si">{1}</span><span class="s1">/0_2/90/(0/90)_1]s&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">build_sequence</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span>
+<span class="go">out :</span>
+<span class="go">    [45.0, -45.0, 0.0, 90.0, 0.0, 90.0, 90.0, 0.0, 90.0, 0.0, -45.0, 45.0]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Nastran API functions</a><ul>
+<li><a class="reference internal" href="#composipy.nastranapi.pcomp_generator.build_pcomp"><code class="docutils literal notranslate"><span class="pre">build_pcomp()</span></code></a></li>
+<li><a class="reference internal" href="#composipy.nastranapi.pcomp_generator.build_sequence"><code class="docutils literal notranslate"><span class="pre">build_sequence()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div><h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation index</a><ul>
+  <li><a href="index.html">Code references</a><ul>
+      <li>Previous: <a href="classes.html" title="previous chapter">OrthotropicMaterial</a></li>
+      <li>Next: <a href="../notebooks/index.html" title="next chapter">Welcome to composipy’s user documentation!</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/NastranAPI.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2023, Rafael Pereira da Silva.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 6.1.3.
+  </div>
+  
+  </body>
+</html>

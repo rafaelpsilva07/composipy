@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>composipy.nastranapi.pcomp_generator &#8212; composipy 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/readable.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">composipy 1.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">composipy.nastranapi.pcomp_generator</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for composipy.nastranapi.pcomp_generator</h1><div class="highlight"><pre>
+<span></span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;build_sequence&#39;</span><span class="p">,</span> <span class="s1">&#39;build_pcomp&#39;</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">_build_pm_unit</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">times</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Returns a list when there is the plus minus sign &#39;&#39;&#39;</span>
+    <span class="n">stacking_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+        <span class="n">current_angle</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="n">i</span><span class="o">*</span><span class="n">angle</span>
+        <span class="n">stacking_values</span> <span class="o">+=</span> <span class="p">[</span><span class="n">current_angle</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">stacking_values</span>
+
+
+<span class="k">def</span> <span class="nf">_build_stack_unit</span><span class="p">(</span><span class="n">stacking</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Returns a list when given a unit for example \\pm45_13&#39;&#39;&#39;</span>
+    <span class="n">stacking_values</span> <span class="o">=</span> <span class="n">stacking</span>
+    <span class="n">is_pm</span> <span class="o">=</span> <span class="n">stacking_values</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;\pm&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">stacking_values</span> <span class="o">=</span> <span class="n">stacking_values</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;\pm&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">stacking_values</span> <span class="o">=</span> <span class="n">stacking_values</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>   
+    <span class="n">stacking_values</span> <span class="o">=</span> <span class="n">stacking_values</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="n">len_stacking_values</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stacking_values</span><span class="p">)</span>
+    <span class="n">is_unit</span> <span class="o">=</span> <span class="p">(</span><span class="n">len_stacking_values</span> <span class="o">==</span> <span class="mi">2</span>
+              <span class="ow">or</span> <span class="n">len_stacking_values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_unit</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">stacking</span><span class="si">}</span><span class="s1"> it is not a unit&#39;</span><span class="p">)</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">stacking_values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">len_stacking_values</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="n">stacking_values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">len_stacking_values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="mi">1</span>
+    
+    <span class="k">if</span> <span class="n">is_pm</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_build_pm_unit</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">times</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">angle</span><span class="p">]</span> <span class="o">*</span> <span class="n">times</span>
+   
+    
+<div class="viewcode-block" id="build_sequence"><a class="viewcode-back" href="../../../reference/NastranAPI.html#composipy.nastranapi.pcomp_generator.build_sequence">[docs]</a><span class="k">def</span> <span class="nf">build_sequence</span><span class="p">(</span><span class="n">stacking</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stacking : str</span>
+<span class="sd">        A string in Latex format</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    unities : list</span>
+<span class="sd">        A list that contains the stacking sequence</span>
+<span class="sd">        </span>
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; stack = &#39;[\pm45_{1}/0_2/90/(0/90)_1]s&#39;</span>
+<span class="sd">    &gt;&gt;&gt; build_sequence(stack)</span>
+<span class="sd">    out : </span>
+<span class="sd">        [45.0, -45.0, 0.0, 90.0, 0.0, 90.0, 90.0, 0.0, 90.0, 0.0, -45.0, 45.0]</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">stacking</span> <span class="o">=</span> <span class="n">stacking</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">is_symmetric</span> <span class="o">=</span> <span class="n">stacking</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span>
+    <span class="n">stacking</span> <span class="o">=</span> <span class="n">stacking</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">is_stacking</span> <span class="o">=</span> <span class="p">(</span><span class="n">stacking</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;[&#39;</span>
+                   <span class="ow">and</span> <span class="n">stacking</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;]&#39;</span><span class="p">)</span>
+    <span class="n">stacking</span> <span class="o">=</span> <span class="n">stacking</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">stacking</span> <span class="o">=</span> <span class="n">stacking</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
+    
+    <span class="n">unities</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">unity</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">block</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">current_block</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">is_in_block</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">is_multiplier</span> <span class="o">=</span> <span class="kc">False</span>
+    
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stacking</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;(&#39;</span><span class="p">:</span>
+            <span class="n">is_in_block</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span><span class="p">:</span>
+            <span class="n">unity</span> <span class="o">=</span> <span class="n">_build_stack_unit</span><span class="p">(</span><span class="n">current_block</span><span class="p">)</span>
+            <span class="n">block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">unity</span><span class="p">)</span>
+            <span class="n">current_block</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">is_multiplier</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;/&#39;</span> 
+              <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_in_block</span>
+              <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_multiplier</span>
+             <span class="p">):</span>
+            <span class="n">unity</span> <span class="o">=</span> <span class="n">_build_stack_unit</span><span class="p">(</span><span class="n">current_block</span><span class="p">)</span>
+            <span class="n">unities</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">unity</span><span class="p">)</span>
+            <span class="n">current_block</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">unity</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;/&#39;</span> 
+              <span class="ow">and</span> <span class="n">is_in_block</span>
+              <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_multiplier</span><span class="p">):</span>
+            <span class="n">unity</span> <span class="o">=</span> <span class="n">_build_stack_unit</span><span class="p">(</span><span class="n">current_block</span><span class="p">)</span>
+            <span class="n">block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">unity</span><span class="p">)</span>
+            <span class="n">current_block</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;/&#39;</span> 
+             <span class="ow">and</span> <span class="n">is_multiplier</span>
+             <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_in_block</span><span class="p">):</span>
+            <span class="n">times</span> <span class="o">=</span> <span class="n">current_block</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">times</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+            <span class="n">unity</span> <span class="o">=</span> <span class="n">times</span> <span class="o">*</span> <span class="n">unity</span>
+            <span class="n">unities</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">unity</span><span class="p">)</span>
+            <span class="n">unity</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+            <span class="n">current_block</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">is_multiplier</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;/&#39;</span>
+              <span class="ow">and</span> <span class="n">is_multiplier</span>
+              <span class="ow">and</span> <span class="n">is_in_block</span><span class="p">):</span>
+            <span class="n">times</span> <span class="o">=</span> <span class="n">current_block</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">times</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+            <span class="n">unity</span> <span class="o">=</span> <span class="n">times</span> <span class="o">*</span> <span class="n">block</span>
+            <span class="n">unities</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">unity</span><span class="p">)</span>
+            <span class="n">unity</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+            <span class="n">current_block</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">is_multiplier</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">is_in_block</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">current_block</span> <span class="o">+=</span> <span class="n">char</span>
+           
+    <span class="k">if</span> <span class="n">is_symmetric</span><span class="p">:</span>
+        <span class="n">symmetric_unities</span> <span class="o">=</span> <span class="n">unities</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">unities</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">symmetric_unities</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">unities</span></div>
+
+
+<span class="k">def</span> <span class="nf">_convert_to_list</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;If it is list return value, if value is a number return a list&#39;&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">size_value</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">size_value</span> <span class="o">==</span> <span class="n">size</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1"> does not fit with sequence size&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">)]</span>
+
+<span class="k">def</span> <span class="nf">_convert_sout</span><span class="p">(</span><span class="n">sout</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">sout</span> <span class="o">==</span> <span class="s1">&#39;FIBER&#39;</span><span class="p">:</span>
+        <span class="n">sout</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">)]</span>
+        <span class="n">sout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;YES&#39;</span>
+        <span class="n">sout</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;YES&#39;</span>
+        <span class="k">return</span> <span class="n">sout</span>
+    <span class="k">elif</span> <span class="n">sout</span> <span class="o">==</span> <span class="s1">&#39;NO&#39;</span><span class="p">:</span>
+        <span class="n">sout</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">sout</span>
+    <span class="k">elif</span> <span class="n">sout</span> <span class="o">==</span> <span class="s1">&#39;YES&#39;</span><span class="p">:</span>
+        <span class="n">sout</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;YES&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">sout</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">size_value</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sout</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">size_value</span> <span class="o">==</span> <span class="n">size</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">sout</span>
+            <span class="k">else</span><span class="p">:</span>
+                 <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sout</span><span class="si">}</span><span class="s1"> not accepted&#39;</span><span class="p">)</span>
+            
+
+<div class="viewcode-block" id="build_pcomp"><a class="viewcode-back" href="../../../reference/NastranAPI.html#composipy.nastranapi.pcomp_generator.build_pcomp">[docs]</a><span class="k">def</span> <span class="nf">build_pcomp</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">midi</span><span class="p">,</span> <span class="n">ti</span><span class="p">,</span> <span class="n">pid</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">z0</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">sout</span><span class="o">=</span><span class="s1">&#39;FIBER&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sequence : list</span>
+<span class="sd">        Angles of the stacking sequence. A list (or a iterable) containing angles</span>
+<span class="sd">    midi : list or int</span>
+<span class="sd">        A list of materials of plies or a material id (int) to be applied to all plies.</span>
+<span class="sd">    ti : list or float</span>
+<span class="sd">        A list of thickness of plies or a thickness (float) to be applied to all plies.</span>
+<span class="sd">    pid : int, default 1</span>
+<span class="sd">        NASTRAN property id</span>
+<span class="sd">    z0 : float, default &#39;&#39;</span>
+<span class="sd">        Laminate offset</span>
+<span class="sd">    sout : list or str, default &#39;FIBER&#39;</span>
+<span class="sd">        A list of output request of plies or a output request to be applied to all plies.</span>
+<span class="sd">        Options = YES, NO, FIBER</span>
+<span class="sd">        If FIBER is used, then only the first and the last plies will be set as YES</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    text : str</span>
+<span class="sd">        Returns a PCOMP card. </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+    <span class="n">ti</span> <span class="o">=</span> <span class="n">_convert_to_list</span><span class="p">(</span><span class="n">ti</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">midi</span> <span class="o">=</span> <span class="n">_convert_to_list</span><span class="p">(</span><span class="n">midi</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">sout</span> <span class="o">=</span> <span class="n">_convert_sout</span><span class="p">(</span><span class="n">sout</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    
+    <span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;PCOMP,</span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">z0</span><span class="si">}</span><span class="s1">,,,,,+</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">i0</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="n">i1</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">body</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;+,</span><span class="si">{</span><span class="n">midi</span><span class="p">[</span><span class="n">i0</span><span class="p">]</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">ti</span><span class="p">[</span><span class="n">i0</span><span class="p">]</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">sequence</span><span class="p">[</span><span class="n">i0</span><span class="p">]</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">sout</span><span class="p">[</span><span class="n">i0</span><span class="p">]</span><span class="si">}</span><span class="s1">,&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">midi</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">ti</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">sequence</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">sout</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span><span class="si">}</span><span class="s1">+</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># removes last comma</span>
+    
+    <span class="k">return</span> <span class="n">header</span> <span class="o">+</span> <span class="n">body</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation index</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2023, Rafael Pereira da Silva.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 6.1.3.
+  </div>
+  
+  </body>
+</html>
