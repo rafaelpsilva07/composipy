@@ -13,7 +13,7 @@ class Property(ComposipyValidator):
 
 class LaminateProperty(Property):
     '''
-    This class creates laminate object. It needs ply objects and the angle information.
+    This class creates laminate object. It needs Material objects (to define plies) and the angle information.
     Some formulation characteristics are:
     Laminate formulations ares used (see References)
     Main reference is the chapter 4 of reference 2.
@@ -28,21 +28,13 @@ class LaminateProperty(Property):
 
     Example
     -------
-    >>> from composipy import Ply, Laminate
+    >>> from composipy import OrthotropicMaterial, LaminateProperty
     >>> ply_1 = OrthotropicMaterial(129500, 9370, 0.38, 5240, 0.2)
     >>> stacking = [90, 0, 90]
     >>> laminate = Laminate(stacking, ply_1)
-    >>> laminate_1.D # retunrs an array containing bending stiffness matrix [D] of the laminate
-    >>> laminate_1.A # retunrs an array containing stiffness matrix [A] of the laminate
-    >>> laminate_1.B # retunrs an array containing coupled stiffness matrix [B] of the laminate
-    >>> laminate_1.ABD() # returns an array containing ABD matrices.
-    >>> laminate_1.ABD_p # returns an array containing the ABD prime matricies of the laminate
-
-    
-    References
-    ----------
-        1 - JONES, M. Robert. Mechanics of Composite Materials. Taylor & Francis: 2nd ed 1999.
-        2 - Analysis and Design of composite structures. Class notes. ITA 2020.
+    >>> laminate_1.ABD # retunrs an array containing bending stiffness matrix [D] of the laminate
+    >>> laminate_1.xiA # lamination parameters of extension
+    >>> laminate_1.xiA # lamination parameters of bending
 
     '''
 

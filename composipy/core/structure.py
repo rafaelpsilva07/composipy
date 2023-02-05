@@ -15,6 +15,57 @@ class Structure(ComposipyValidator):
 
 
 class PlateStructure(Structure):
+    '''
+    This class defines a PlateStructure.
+
+    Parameters
+    ----------
+    dproperty : composipy.Property
+        Property of the plate.
+    a : float
+        Size of the plate parallel to the x axis.
+    b : float
+        Size of the plate parallel to the y axis.
+    constraints : str or dict. Default: \"PINNED\"
+        Plate boundary conditions.
+    Nxx : float, default 0
+        Linear force parallel x axis 
+    Nyy : float, default 0
+        Linear force parallel y axis
+    Nxy : float, default 0
+        Linear shear force
+    m : int, default 10
+        Size of shape function along x axis
+    n : int, default 10
+        Size of shape function along y axis
+
+
+    Example
+    -------
+    >>> from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
+    >>> ply_1 = OrthotropicMaterial(129500, 9370, 0.38, 5240, 0.2)
+    >>> stacking = [90, 0, 90]
+    >>> laminate = Laminate(stacking, ply_1)
+    >>> constraints
+
+    Note
+    -----
+    The ``constraint`` argument can be a str type \'PINNED\' or \'CLAMPED\'.
+    Or a dictionary like described below:
+
+    >>> constraints = {    
+    ---     x0 = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+    ---     xa = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+    ---     y0 = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+    ---     yb = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+    --- }
+
+    Attention, the rotations aren't considered around the axis. They are related to the shape function.
+    That means, for example, the ``RZ`` turns around the x axis and moves the plate in z direction. 
+    '''
+
+
+
     def __init__(
             self,
             dproperty,
@@ -169,6 +220,15 @@ class PlateStructure(Structure):
     
     #TODO: parallel process, sparse matrix, cython
     def calc_K_KG(self):
+        '''
+        Calculates the stiffness and geometrical stifness matrices.
+
+        Returns
+        -------
+        K_KG : tuple
+            A tuple of array containing (K, KG)
+        '''
+
         A11, A12, A16, B11, B12, B16 = self.dproperty.ABD[0, ::]
         A12, A22, A26, B12, B22, B26 = self.dproperty.ABD[1, ::]
         A16, A26, A66, B16, B26, B66 = self.dproperty.ABD[2, ::]
@@ -224,7 +284,8 @@ class PlateStructure(Structure):
         return K, KG  
 
     def buckling_analysis(self, silent=True, num_eigvalues = 5):
-        r"""Linear Buckling Analysis
+        """
+        Linear Buckling Analysis
 
         Parameters
         ----------

@@ -16,17 +16,17 @@ import sys
 
 
 
-sys.path.insert(0, os.path.abspath("../"))
-#from composipy import VERSION
+sys.path.insert(0, "../composipy/")
+from version import __version__
 
 # -- Project information -----------------------------------------------------
 
 project = 'composipy'
-copyright = '2022, Rafael Pereira da Silva'
+copyright = '2023, Rafael Pereira da Silva'
 author = 'Rafael Pereira da Silva'
 
 # The full version, including alpha/beta/rc tags
-release = "0.3.0"
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------

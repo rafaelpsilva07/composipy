@@ -4,12 +4,18 @@ import numpy as np
 from composipy.utils import ComposipyValidator
 
 
+__all__ = ['OrthotropicMaterial', 'IsotropicMaterial']
+
+
 class Material(ComposipyValidator):
     pass
 
 
 class OrthotropicMaterial(Material):
-    """Creates an instance of Ply.
+    """
+    Creates an OrthotropicMaterial object.
+
+
     Parameters
     ----------
     e1 : float, int
@@ -22,32 +28,30 @@ class OrthotropicMaterial(Material):
         Shear modulus
     thickness : float, int
         thickness of the ply
-    t1 : float, default None
+    t1 : float, optional, default None
         tension allowable in direction 1.
-    c1 : float, default None
+    c1 : float, optional, default None
         compression allowable in direction 1.
-    t2 : float, default None
+    t2 : float, optional, default None
         tension allowable in direction 2.
-    c2 : float, default None
+    c2 : float, optional, default None
         compression allowable in direction 2.
-    s : float, default None
+    s : float, optional, default None
         shear allowable.
-    name : str, default None
+    name : str, optional, default None
         Name of the ply
+ 
     Examples
     --------
-    >>> from composipy import Ply
+    >>> from composipy import OrthotropicMaterial
     >>> ply_1 = OrthotropicMaterial(129500, 9370, 0.38, 5240, 0.2)
     >>> ply_1.Q_0 # get the compliance matrix of the lamina
     Out:
     array([[130867.31382151,   3598.19426713,      0.     ],
         [  3598.19426713,   9468.93228191,      0.        ],
         [     0.        ,      0.        ,   5240.        ]])
-    References
-    ----------
-    1. JONES, M. Robert. Mechanics of Composite Materials. Taylor & Francis: 2nd ed 1999.
-    2. Analysis and Design of composite structures. Class notes. ITA 2020.
-        
+ 
+
     """
 
     _ids = itertools.count(1) # counts number of instances in order to generate names
@@ -124,18 +128,13 @@ class OrthotropicMaterial(Material):
 
     @property
     def Q_0(self):
-        """Get the compliance matrix of the instance.
-        This is for a lamina under plane stress
-        It uses the engineering constants of the instance.
-        Parameters
-        ----------
-        self : self
-            Instance of Ply
+        """
+        Get the compliance matrix of the material.       
         
         Returns
         -------
         self.Q_0 : numpy.ndarray
-            Compliance matrix of the ply
+            Compliance matrix (3x3) of the Material 
         """
 
         if self.__Q_0 is None:
@@ -252,14 +251,13 @@ class IsotropicMaterial(Material):
 
     @property
     def Q_0(self):
-        """Get the compliance matrix of the instance.
-        This is for a lamina under plane stress
-        It uses the engineering constants of the instance.
+        """
+        Get the compliance matrix of the material.       
         
         Returns
         -------
         self.Q_0 : numpy.ndarray
-            Compliance matrix of the material
+            Compliance matrix (3x3) of the Material 
         """
 
         if self.__Q_0 is None:
@@ -289,4 +287,4 @@ class IsotropicMaterial(Material):
                     and self.c == other.c
                     and self.s == other.s)
         else:
-            raise ValueError(f'Not a instance of Ply')
+            raise ValueError(f'Not a instance of Material')
