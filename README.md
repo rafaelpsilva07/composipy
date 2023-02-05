@@ -47,7 +47,7 @@ Define the laminate.
 ```python
 >>> from composipy import LaminateProperty
 >>> stacking = [-45, 45, 90, 0, 0, 0, 0, 90, 45, -45]
->>> laminate1 = LaminateProperty(stacking, ply1)
+>>> laminate1 = LaminateProperty(stacking, mat_1)
 >>> print(laminate1.ABD) # prints the ABD matrix as a np.ndarray
 >>> print(laminate1.xiA) # prints lamination parameters of extension as a np.ndarray
 >>> print(laminate1.xiD) # prints lamination parameters of bending as a np.ndarray
@@ -59,10 +59,10 @@ Create a plate structure.
 >>> from composipy import PlateStructure
 >>> 
 >>> constraints = {    
----     x0 = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
----     xa = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
----     y0 = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
----     yb = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+---     'x0' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ'],
+---     'xa' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ'],
+---     'y0' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ'],
+---     'yb' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
 --- }
 >>> panel = PlateStructure(laminate1, 360, 360, m=10, n=10, Nxx=-1, constraints=constraints)
 >>> print(panel.buckling_analysis()) # solve the eigenvalue problem.
