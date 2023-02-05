@@ -1,7 +1,6 @@
 import sys
-sys.path.append('D:/repositories/composipy/composipy/bardell_pre_integrated')
 
-from functions import *
+from composipy.pre_integrated_component.functions import *
 
 
 def calc_K11_ijkl(a, b, ui, uj, uk, ul, A11, A16, A66):
@@ -36,15 +35,27 @@ def calc_k12_ijkl(a, b, ui, uj, vk, vl, A12, A16, A26, A66):
     return k12
 
 
-def calc_k13_ijkl():#(a, b, ijkl, B11, B12, B16, B26, B66):
+def calc_k13_ijkl(a, b, ui, uj, wk, wl, B11, B12, B16, B26, B66):
+    uiwk = (ui, wk)
+    ujwl = (uj, wl)
+    uxi_ij_wxixi_kl = ii_fxi_fxixi(uiwk) * ii_ff(ujwl)
+    uxi_wetaeta = ii_fxi_f(uiwk) * ii_f_fxixi(ujwl)
+    uxi_wxieta = ii_fxi_fxi(uiwk) * ii_f_fxi(ujwl)
+    ueta_wxixi = ii_f_fxixi(uiwk) * ii_fxi_f(ujwl)
+    ueta_wetaeta = ii_ff(uiwk) * ii_fxi_fxixi(ujwl)
+    ueta_wxieta = ii_f_fxi(uiwk) * ii_fxi_fxi(ujwl)
+    uxi_w = ii_fxi_f(uiwk) * ii_ff(ujwl)
+    ueta_w = ii_ff(uiwk) * ii_fxi_f(ujwl)
 
-    k13 = 0
-    #-2 * (b/a**2) * B11 #* ii_sxixi_sxi(klij)
-    #-(2/b) * B12 #* ii_setaeta_sxi(klij)
-    #-(2/a) * B16 #* (2*ii_sxieta_sxi(klij)+ii_setaeta_sxi(klij))
-    #-2 * (a/b**2) * B26 #* ii_sxixi_sxi(klij)
-    #-(4/b) * B66 #* ii_sxieta_sxi(klij)
-    return 0
+    k13 = (
+        -(2*b/a) * B11 * uxi_ij_wxixi_kl
+        -(2/b) * B12 * uxi_wetaeta
+        -(2/a) * B16 * (2*uxi_wxieta + ueta_wxixi)
+        -(2/b**2) * B26 * ueta_wetaeta
+        -(4/b) * B66 * ueta_wxieta
+    )
+
+    return k13
 
 
 def calc_k21_ijkl(a, b, vi, vj, uk, ul, A12, A16, A26, A66):
@@ -80,16 +91,67 @@ def calc_k22_ijkl(a, b, vi, vj, vk, vl, A22, A26, A66):
     return k22
 
 
-def calc_k23_ijkl(): #(a, b, vi, vj, wk, wl, B12, B16, B22, B26, B66):
-    return 0
+def calc_k23_ijkl(a, b, vi, vj, wk, wl, B12, B16, B22, B26, B66):
+    viwk = (vi, wk)
+    vjwl = (vj, wl)
+    veta_wxixi = ii_f_fxixi(viwk) * ii_fxi_f(vjwl)
+    vxi_wxixi = ii_fxi_fxixi(viwk) * ii_ff(vjwl)
+    veta_wetaeta = ii_ff(viwk) * ii_fxi_fxixi(vjwl)
+    vxi_wetaeta = ii_fxi_f(viwk) * ii_f_fxixi(vjwl)
+    veta_wxieta = ii_f_fxi(viwk) * ii_fxi_fxi(vjwl)
+    vxi_wxieta = ii_fxi_fxi(viwk) * ii_f_fxi(vjwl)
+
+    k23 = (
+        -(2/a) * B12 * veta_wxixi
+        -(2*b/(a**2)) * B16 * vxi_wxixi
+        -(2*a/(b**2)) * B22 * veta_wetaeta
+        -(2/b) * B26 * (vxi_wetaeta + 2*veta_wxieta)
+        -(4/a) * B66 * (vxi_wxieta)
+    )
+
+    return k23
 
 
-def calc_k31_ijkl():
-    return 0
+def calc_k31_ijkl(a, b, wi, wj, uk, ul, B11, B12, B16, B26, B66):
+    wiuk = (wi, uk)
+    wjul = (wj, ul)
+    wxixi_uxi = ii_fxi_fxixi(wiuk) * ii_ff(wjul)
+    wetaeta_uxi = ii_f_fxi(wiuk) * ii_fxixi_f(wjul)
+    wetaeta_ueta = ii_ff(wiuk) * ii_fxixi_fxi(wjul)
+    wxieta_ueta = ii_fxi_f(wiuk) * ii_fxi_fxi(wjul)
+    wxieta_uxi = ii_fxi_fxi(wiuk) * ii_fxi_f(wjul)
+    wxixi_ueta = ii_fxixi_f(wiuk) * ii_f_fxi(wjul)
+    
+    k31 = (
+        -(2*b/a**2) * B11 * wxixi_uxi
+        -(2/b) * B12 * wetaeta_uxi
+        -(2*a/b**2) * B26 * wetaeta_ueta
+        -(4/b) * B66 * wxieta_ueta
+        -(2/a) * B16 * (2*wxieta_uxi+wxixi_ueta)
+    )
+
+    return k31
 
 
-def calc_k32_ijkl():
-    return 0
+def calc_k32_ijkl(a, b, wi, wj, vk, vl, B11, B12, B16, B22, B26, B66):
+    wivk = (wi, vk)
+    wjvl = (wj, vl)
+    wxixi_veta = ii_fxixi_f(wivk) * ii_f_fxi(wjvl)
+    wetaeta_veta = ii_ff(wivk) * ii_fxixi_fxi(wjvl)
+    wxieta_vxi = ii_fxi_fxi(wivk) * ii_fxi_f(wjvl)
+    wetaeta_vxi = ii_f_fxi(wivk) * ii_fxixi_f(wjvl)
+    wxieta_veta = ii_fxi_f(wivk) * ii_fxi_fxi(wjvl)
+    wxixi_vxi = ii_fxixi_fxi(wivk) * ii_ff(wjvl)
+
+    k32 = (
+        -(2/a) * B12 * wxixi_veta
+        -(2*a/(b**2)) * B22 * wetaeta_veta
+        -(4/a) * B66 * wxieta_vxi
+        -(2/b) * B26 * (wetaeta_vxi+2*wxieta_veta)
+        -(2*b/a**2) * B16 * wxixi_vxi
+    )
+
+    return k32
 
 
 def calc_k33_ijkl(a, b, wi, wj, wk, wl, D11, D12, D22, D16, D26, D66):
@@ -130,5 +192,3 @@ def calc_kG33_ijkl(a, b, wi, wj, wk, wl, Nxx, Nyy, Nxy):
         + Nxy * (weta_ij_wxi_kl+wxi_ij_weta_kl)
     )
     return kG33
-
-
