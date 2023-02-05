@@ -23,7 +23,8 @@ python setup.py install
 
 
 ## Documentation
-TODO
+
+[Composipy documentation](https://rafaelpsilva07.github.io/composipy/)
 
 ## Quick start
 
