@@ -1,5 +1,7 @@
 import sys
 
+import numpy as np
+
 from composipy.pre_integrated_component._ii_F import *
 from composipy.pre_integrated_component._S import *
 
@@ -52,5 +54,17 @@ def fxi(i, xi):
     return eval(FXI[i])
     
 
-def sxieta(ij, xi, eta):
+def sxieta_ij(ij, xi, eta):
     return eval(S[ij])
+
+
+def sxieta(s_idx, xi, eta):
+    s = []
+    for ij in s_idx:
+        s.append(
+            sxieta_ij(ij, xi, eta)
+            )
+    s = np.array(s)
+
+    return s
+
