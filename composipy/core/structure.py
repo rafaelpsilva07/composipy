@@ -1,5 +1,7 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
+from matplotlib import cm
 from time import time
 from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import eigsh
@@ -8,6 +10,7 @@ from itertools import product
 from composipy.core.property import Property
 from composipy.utils import ComposipyValidator
 from composipy.pre_integrated_component.build_k import *
+from composipy.pre_integrated_component.functions import sxieta
 
 
 class Structure(ComposipyValidator):
@@ -92,6 +95,11 @@ class PlateStructure(Structure):
         self.__Nxy = self._float_number(Nxy, name='Nxy')
         self.__m = self._int_number(m, n_min=1, name='m')
         self.__n = self._int_number(n, n_min=1, name='n')
+        self.su_idx = None
+        self.sv_idx = None
+        self.sw_idx = None
+        self.eigenvalue = None
+        self.eigenvector = None
 
     @property
     def dproperty(self):
@@ -155,58 +163,58 @@ class PlateStructure(Structure):
 
         # x0
         if 'TX' in x0:
-              um.remove(0)
+            um.remove(0)
         if 'TY' in x0:
-              vm.remove(0)
+            vm.remove(0)
         if 'TZ' in x0:
-              wm.remove(0)
+            wm.remove(0)
         if 'RX' in x0:
-              um.remove(1)
+            um.remove(1)
         if 'RY' in x0:
-              vm.remove(1)
+            vm.remove(1)
         if 'RZ' in x0:
-              wm.remove(1)
+            wm.remove(1)
         #xa
         if 'TX' in xa:
-              um.remove(2)
+            um.remove(2)
         if 'TY' in xa:
-              vm.remove(2)
+            vm.remove(2)
         if 'TZ' in xa:
-              wm.remove(2)
+            wm.remove(2)
         if 'RX' in xa:
-              um.remove(3)
+            um.remove(3)
         if 'RY' in xa:
-              vm.remove(3)
+            vm.remove(3)
         if 'RZ' in xa:
-              wm.remove(3)
+            wm.remove(3)
         
         #y0
         if 'TX' in y0:
-              un.remove(0)
+            un.remove(0)
         if 'TY' in y0:
-              vn.remove(0)
+            vn.remove(0)
         if 'TZ' in y0:
-              wn.remove(0)
+            wn.remove(0)
         if 'RX' in y0:
-              un.remove(1)
+            un.remove(1)
         if 'RY' in y0:
-              vn.remove(1)
+            vn.remove(1)
         if 'RZ' in y0:
-              wn.remove(1)
+            wn.remove(1)
         
         #yb
         if 'TX' in yb:
-              un.remove(2)
+            un.remove(2)
         if 'TY' in yb:
-              vn.remove(2)
+            vn.remove(2)
         if 'TZ' in yb:
-              wn.remove(2)
+            wn.remove(2)
         if 'RX' in yb:
-              un.remove(3)
+            un.remove(3)
         if 'RY' in yb:
-              vn.remove(3)
+            vn.remove(3)
         if 'RZ' in yb:
-              wn.remove(3)
+            wn.remove(3)
         
         um, un = um[0:self.m], un[0:self.n]
         vm, vn = vm[0:self.m], un[0:self.n]
@@ -215,6 +223,10 @@ class PlateStructure(Structure):
         uidx = list(product(um, un, um, un))
         vidx = list(product(vm, vn, vm, vn))
         widx = list(product(wm, wn, wm, wn))
+
+        self.su_idx = list(product(um, un))
+        self.sv_idx = list(product(vm, vn))
+        self.sw_idx = list(product(wm, wn))
 
         return (uidx, vidx, widx)
     
@@ -323,4 +335,37 @@ class PlateStructure(Structure):
         if not silent:
              print(f'eigenvalues calculated in {time()-ti} seconds')
 
+        self.eigenvalue, self.eigenvector = eigvals, eigvecs
         return eigvals, eigvecs
+    
+    def plot_eigenvalue(self, nth=0, ngridx=20, ngridy=20):
+        if (not isinstance(self.eigenvalue, np.ndarray) 
+                and not isinstance(self.eigenvector, np.ndarray)):
+            self.buckling_analysis()
+        
+        c_values = self.eigenvector[:, nth] # ritz coefficients
+        len_c_values = len(c_values)
+        len_w = len(self.sw_idx)
+        cw_values = c_values[len_c_values-len_w:len_c_values]
+        xi_arr = np.linspace(-1, 1, ngridx)
+        eta_arr = np.linspace(-1, 1, ngridy)
+        xi_mesh, eta_mesh = np.meshgrid(xi_arr, eta_arr)
+        z = np.zeros(ngridx*ngridy).reshape(ngridx, ngridy)
+
+        for i in range(ngridx):
+            for j in range(ngridy):
+                sw = sxieta(self.sw_idx, xi_mesh[i, j], eta_mesh[i, j])
+                wij = float((sw @ cw_values))
+                z[i, j] = wij
+        
+        # coordinate transformation
+        x_mesh = (self.a/2) * (xi_mesh+1)
+        y_mesh = (self.b/2) * (eta_mesh+1)
+
+        ax = plt.figure().add_subplot(projection='3d')
+        surf = ax.plot_surface(x_mesh, y_mesh, z, cmap=cm.coolwarm)
+        ax.set_xticks(np.linspace(0, max(self.a, self.b), 6))
+        ax.set_yticks(np.linspace(0, max(self.a, self.b), 6))
+        plt.show()
+
+        return None
