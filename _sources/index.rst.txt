@@ -3,16 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to composipy's documentation!
-=====================================
 
 .. mdinclude :: ../README.md 
 
+Contents
+========
+
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Contents:
-   
-   Code References <reference/index>
+	
    Examples <notebooks/index>
-
-
+   Code References <reference/index>

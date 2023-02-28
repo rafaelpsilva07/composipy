@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>comparison with compmech &#8212; composipy 1.0.1 documentation</title>
+    <title>Boundary conditions and load cases examples &#8212; composipy 1.0.1 documentation</title>
   
   
   
@@ -41,11 +41,11 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/verification_plates';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Examples_BCs';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Code references" href="../reference/index.html" />
-    <link rel="prev" title="Boundary conditions and load cases examples" href="Examples_BCs.html" />
+    <link rel="next" title="comparison with compmech" href="verification_plates.html" />
+    <link rel="prev" title="Composipy Notebooks" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -251,8 +251,8 @@
   <div class="bd-toc-item navbar-nav">
     <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="Examples_BCs.html">Boundary Conditions and Load Cases</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Buckling Verification</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Boundary Conditions and Load Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="verification_plates.html">Buckling Verification</a></li>
 </ul>
 
   </div>
@@ -541,79 +541,219 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
+<section id="Boundary-conditions-and-load-cases-examples">
+<h1>Boundary conditions and load cases examples<a class="headerlink" href="#Boundary-conditions-and-load-cases-examples" title="Permalink to this heading">#</a></h1>
+<p>Thanks the Bardell equations implamentation, composipy is capable of simulating different boundary conditions and different combinations of load cases.</p>
+<section id="Importing-composipy-objects-and-creating-properties">
+<h2>Importing composipy objects and creating properties<a class="headerlink" href="#Importing-composipy-objects-and-creating-properties" title="Permalink to this heading">#</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[140]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-
-<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">eig</span>
-<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csc_matrix</span>
-<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">eigs</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">allclose</span>
-
-<span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;D:/repositories/composipy&#39;</span>
-
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
-
-<span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span><span class="p">,</span> <span class="n">LaminateProperty</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span><span class="p">,</span> <span class="n">LaminateProperty</span>
 <span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">PlateStructure</span>
-<br/><br/></pre></div>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+</pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[141]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Properties (N and mm)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Ply Material Properties (MPa and mm)</span>
 <span class="n">E1</span> <span class="o">=</span> <span class="mi">60800</span>
 <span class="n">E2</span> <span class="o">=</span> <span class="mi">58250</span>
 <span class="n">v12</span> <span class="o">=</span> <span class="mf">0.07</span>
 <span class="n">G12</span> <span class="o">=</span> <span class="mi">4550</span>
 <span class="n">t</span> <span class="o">=</span> <span class="mf">0.21</span>
 
-<span class="c1"># Plate Parameters</span>
-<span class="n">a</span> <span class="o">=</span> <span class="mi">360</span>
-<span class="n">b</span> <span class="o">=</span> <span class="mi">360</span>
-<span class="n">m</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
-
-
-<span class="n">stacking</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="o">-</span><span class="mi">45</span><span class="p">]</span>
-<span class="n">stacking</span> <span class="o">+=</span> <span class="n">stacking</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
+<span class="c1"># Plate Parameters (mm)</span>
 <span class="n">a</span> <span class="o">=</span> <span class="mf">360.</span>
 <span class="n">b</span> <span class="o">=</span> <span class="mf">360.</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># discretization in x direction</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># discretization in y direction</span>
+
+
+<span class="c1"># Stacking sequence</span>
+<span class="n">stacking</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="o">-</span><span class="mi">45</span><span class="p">]</span>
+<span class="n">stacking</span> <span class="o">+=</span> <span class="n">stacking</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># symmetry</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ply material and laminate property objects</span>
+
+<span class="n">ply_1</span> <span class="o">=</span> <span class="n">OrthotropicMaterial</span><span class="p">(</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="n">l1</span> <span class="o">=</span> <span class="n">LaminateProperty</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">ply_1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Pinned-Nxx">
+<h2>Pinned Nxx<a class="headerlink" href="#Pinned-Nxx" title="Permalink to this heading">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">panel_SSSS</span> <span class="o">=</span> <span class="n">PlateStructure</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">Nxx</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">constraints</span><span class="o">=</span><span class="s1">&#39;PINNED&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">panel_SSSS</span><span class="o">.</span><span class="n">buckling_analysis</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[142]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ply_1</span> <span class="o">=</span> <span class="n">OrthotropicMaterial</span><span class="p">(</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
-<span class="n">l1</span> <span class="o">=</span> <span class="n">LaminateProperty</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">ply_1</span><span class="p">)</span>
-<span class="n">constraints</span><span class="o">=</span><span class="p">{</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eigvals</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([ 97.04915682, 144.47730786, 246.83882036, 388.19669784,
+       393.21258067])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">panel_SSSS</span><span class="o">.</span><span class="n">plot_eigenvalue</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Examples_BCs_9_0.png" src="../_images/notebooks_Examples_BCs_9_0.png" />
+</div>
+</div>
+</section>
+<section id="Clamped-Nxy-and-Nyy">
+<h2>Clamped Nxy and Nyy<a class="headerlink" href="#Clamped-Nxy-and-Nyy" title="Permalink to this heading">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[92]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">panel_CCCC</span> <span class="o">=</span> <span class="n">PlateStructure</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="mf">1.5</span><span class="o">*</span><span class="n">b</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">Nxy</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">Nyy</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="s1">&#39;CLAMPED&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">panel_CCCC</span><span class="o">.</span><span class="n">buckling_analysis</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(array([138.79310181, 146.27293322, 214.40196835, 235.95368935,
+        345.90300267]),
+ array([[ 9.34248014e-16, -1.88156661e-14,  2.02134850e-14,
+          2.34440133e-15,  1.61245714e-14],
+        [-2.12462063e-14,  9.37191184e-14, -1.09651915e-13,
+          1.22922751e-15, -8.64977457e-14],
+        [-1.68030603e-14, -2.94928446e-15,  3.17565273e-15,
+          6.43801745e-15,  2.49531496e-15],
+        ...,
+        [ 1.48429879e-13, -6.09319462e-02,  5.26382491e-01,
+          6.94793823e-13,  8.03873977e-01],
+        [ 1.74056918e-01,  1.50428248e-13,  1.23757124e-13,
+         -1.99938292e-01,  1.44448141e-13],
+        [ 1.19772248e-13, -4.03658981e-02,  4.21566452e-01,
+          9.40855121e-13,  5.20345902e-01]]))
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[94]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">panel_CCCC</span><span class="o">.</span><span class="n">plot_eigenvalue</span><span class="p">()</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Examples_BCs_13_0.png" src="../_images/notebooks_Examples_BCs_13_0.png" />
+</div>
+</div>
+</section>
+<section id="Free-edge-Nxx-(custom-boundary-condition)">
+<h2>Free edge Nxx (custom boundary condition)<a class="headerlink" href="#Free-edge-Nxx-(custom-boundary-condition)" title="Permalink to this heading">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">constraints</span><span class="o">=</span><span class="p">{</span>
                 <span class="s1">&#39;x0&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">],</span>
                 <span class="s1">&#39;xa&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">],</span>
-                <span class="s1">&#39;y0&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;y0&#39;</span><span class="p">:</span> <span class="p">[],</span>
                 <span class="s1">&#39;yb&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">],</span>
             <span class="p">}</span>
-<span class="n">panel</span> <span class="o">=</span> <span class="n">PlateStructure</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">Nxx</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">Nyy</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">constraints</span><span class="p">)</span>
-
-<span class="n">ti</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;calculating K and KG&#39;</span><span class="p">)</span>
-<span class="n">K_KG</span> <span class="o">=</span> <span class="n">panel</span><span class="o">.</span><span class="n">calc_K_KG</span><span class="p">()</span>
-<span class="n">K</span> <span class="o">=</span> <span class="n">K_KG</span><span class="p">[</span><span class="s1">&#39;K&#39;</span><span class="p">]</span>
-<span class="n">KG</span> <span class="o">=</span> <span class="n">K_KG</span><span class="p">[</span><span class="s1">&#39;KG&#39;</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;calculation done in </span><span class="si">{</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">ti</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;calculating panel eig value&#39;</span><span class="p">)</span>
-<span class="n">ti</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">buckling_analysis</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;calculation done in </span><span class="si">{</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">ti</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+<span class="n">panel_SSFS</span> <span class="o">=</span> <span class="n">PlateStructure</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="mf">1.5</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">Nxx</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">constraints</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">panel_SSFS</span><span class="o">.</span><span class="n">buckling_analysis</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(array([ 20.12080055,  47.13886913,  92.5739614 , 156.53663617,
+        185.19779529]),
+ array([[-5.54254543e-15,  8.54682964e-15,  2.02336476e-15,
+          2.14117401e-14,  2.25590066e-14],
+        [ 2.70857705e-13, -3.87614772e-13,  1.33465332e-13,
+         -2.01037659e-12, -4.41333984e-13],
+        [-2.62755574e-14,  1.09823238e-13, -6.76289507e-15,
+          1.36766074e-13,  1.13523615e-14],
+        ...,
+        [ 6.90309193e-03,  6.95127053e-05, -5.12419786e-03,
+          3.38168226e-02, -1.43816796e-05],
+        [ 9.66068997e-04, -2.79805029e-05,  4.46813288e-04,
+         -2.74685452e-02, -3.51157619e-05],
+        [ 3.64137204e-03,  3.67529764e-05, -2.79731072e-03,
+          3.43269351e-02, -6.21653806e-06]]))
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[97]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">panel_SSFS</span><span class="o">.</span><span class="n">plot_eigenvalue</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -621,145 +761,65 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
+<img alt="../_images/notebooks_Examples_BCs_17_0.png" src="../_images/notebooks_Examples_BCs_17_0.png" />
+</div>
+</div>
+</section>
+<section id="Nxy-Loading">
+<h2>Nxy Loading<a class="headerlink" href="#Nxy-Loading" title="Permalink to this heading">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">panel_CCCC_nxy</span> <span class="o">=</span> <span class="n">PlateStructure</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">Nxy</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="s1">&#39;CLAMPED&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">panel_CCCC_nxy</span><span class="o">.</span><span class="n">buckling_analysis</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div class="highlight"><pre>
-calculating K and KG
-calculation done in 2.4665584564208984 seconds
-calculating panel eig value
-48.52457849227318
-calculation done in 2.4968631267547607 seconds
+(array([338.84283307, 389.26571459, 776.82143839, 824.28455938,
+        882.94931083]),
+ array([[-9.85787017e-14,  5.49320863e-14, -5.53627846e-14,
+         -5.47863549e-14, -1.63309599e-13],
+        [-1.14383443e-13,  4.82531544e-14, -2.16269855e-14,
+         -8.98291546e-14, -2.25169408e-13],
+        [-8.24080163e-15,  5.29270154e-14, -4.71651923e-15,
+         -9.11230373e-14, -1.89295317e-14],
+        ...,
+        [ 5.84301288e-01,  7.76122020e-13,  3.22800174e-01,
+          3.29448845e-12,  2.20803287e-12],
+        [-7.64092132e-13, -1.01135119e-01,  6.65989832e-12,
+         -1.79699680e-01, -3.68197373e-01],
+        [ 3.89453084e-01,  5.26513867e-13,  2.20302574e-01,
+          1.92960329e-12, -5.54281896e-14]]))
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[149]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">lb</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">KG</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">eigvals</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">panel_CCCC_nxy</span><span class="o">.</span><span class="n">plot_eigenvalue</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-Running linear buckling analysis...
-                Eigenvalue solver...
-                        eigsh() solver...
-                        finished!
-                finished!
-        first 5 eigenvalues:
-                48.52457849227213
-                115.33986497435149
-                115.60711330382483
-                194.09686865625642
-                221.57771298566516
-</pre></div></div>
+<img alt="../_images/notebooks_Examples_BCs_21_0.png" src="../_images/notebooks_Examples_BCs_21_0.png" />
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[149]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-array([ 48.52457849, 115.33986497, 115.6071133 , 194.09686866,
-       221.57771299, 222.15591277, 308.86123656, 309.48317985,
-       368.99999417, 370.08445037, 436.71118574, 461.47246526,
-       462.33970189, 561.6366027 , 563.3834036 , 599.62788016,
-       600.77815938, 656.8345812 , 658.36588959, 776.37052798,
-       801.3471514 , 802.96144218, 803.91915658, 804.12792152,
-       898.07786955])
-</pre></div></div>
-</div>
-<section id="comparison-with-compmech">
-<h1>comparison with compmech<a class="headerlink" href="#comparison-with-compmech" title="Permalink to this heading">#</a></h1>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[144]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">compmech.panel.panel</span> <span class="kn">import</span> <span class="n">Panel</span>
-<span class="kn">from</span> <span class="nn">compmech.analysis</span> <span class="kn">import</span> <span class="n">lb</span><span class="p">,</span> <span class="n">static</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[145]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># skin panels</span>
-<span class="n">laminaprop</span> <span class="o">=</span> <span class="p">(</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span> <span class="n">G12</span><span class="p">)</span>
-<span class="n">p1</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;skin&#39;</span><span class="p">,</span> <span class="n">Nxx</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">Nyy</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span><span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">plyt</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="n">stacking</span><span class="p">,</span> <span class="n">laminaprop</span><span class="o">=</span><span class="n">laminaprop</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[146]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p1</span><span class="o">.</span><span class="n">u1tx</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">u1rx</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">u2tx</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">u2rx</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">p1</span><span class="o">.</span><span class="n">v1tx</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">v1rx</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">v2tx</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">v2rx</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">p1</span><span class="o">.</span><span class="n">w1tx</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">w1rx</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">w2tx</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">w2rx</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">p1</span><span class="o">.</span><span class="n">u1ty</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">u1ry</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">u2ty</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">u2ry</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">p1</span><span class="o">.</span><span class="n">v1ty</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">v1ry</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">v2ty</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">v2ry</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">p1</span><span class="o">.</span><span class="n">w1ty</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">w1ry</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">w2ty</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">p1</span><span class="o">.</span><span class="n">w2ry</span> <span class="o">=</span> <span class="mi">1</span>
-<br/></pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[147]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k0_1</span> <span class="o">=</span> <span class="n">p1</span><span class="o">.</span><span class="n">calc_k0</span><span class="p">()</span>
-<span class="n">kG0_1</span> <span class="o">=</span> <span class="n">p1</span><span class="o">.</span><span class="n">calc_kG0</span><span class="p">()</span>
-
-<span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">lb</span><span class="p">(</span><span class="n">k0_1</span><span class="p">,</span> <span class="n">kG0_1</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">eigvals</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-                Calculating k0...
-                finished!
-                Calculating kG0...
-                finished!
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[147]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-array([ 48.52457849, 115.33986497, 115.6071133 , 194.09686866,
-       221.57771299, 222.15591277, 308.86123656, 309.48317985,
-       368.99999417, 370.08445037, 436.71118574, 461.47246526,
-       462.33970189, 561.6366027 , 563.3834036 , 599.62788016,
-       600.77815939, 656.8345812 , 658.36588959, 776.37052798,
-       801.34715129, 802.96144214, 803.91915658, 804.12792151,
-       898.07786953])
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[148]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k0_1</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[148]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-&lt;432x432 sparse matrix of type &#39;&lt;class &#39;numpy.float64&#39;&gt;&#39;
-        with 186624 stored elements in Compressed Sparse Row format&gt;
-</pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -770,6 +830,7 @@ array([ 48.52457849, 115.33986497, 115.6071133 , 194.09686866,
 </div>
 </div>
 </section>
+</section>
 
 
             </article>
@@ -779,17 +840,17 @@ array([ 48.52457849, 115.33986497, 115.6071133 , 194.09686866,
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="Examples_BCs.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="index.html" title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Boundary conditions and load cases examples</p>
+          <p class="prev-next-title">Composipy Notebooks</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="../reference/index.html" title="next page">
+  <a class='right-next' id="next-link" href="verification_plates.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Code references</p>
+      <p class="prev-next-title">comparison with compmech</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>
@@ -804,6 +865,43 @@ array([ 48.52457849, 115.33986497, 115.6071133 , 194.09686866,
               
 <div class="toc-item">
   
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Importing-composipy-objects-and-creating-properties">
+   Importing composipy objects and creating properties
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Pinned-Nxx">
+   Pinned Nxx
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Clamped-Nxy-and-Nyy">
+   Clamped Nxy and Nyy
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Free-edge-Nxx-(custom-boundary-condition)">
+   Free edge Nxx (custom boundary condition)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Nxy-Loading">
+   Nxy Loading
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+<div class="toc-item">
+  
 <div id="searchbox"></div>
 </div>
 
@@ -814,7 +912,7 @@ array([ 48.52457849, 115.33986497, 115.6071133 , 194.09686866,
 <div class="toc-item">
   
 <div class="tocsection sourcelink">
-    <a href="../_sources/notebooks/verification_plates.ipynb.txt">
+    <a href="../_sources/notebooks/Examples_BCs.ipynb.txt">
         <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
 </div>
