@@ -8,7 +8,7 @@
 Composipy is able to perform buckling calculation considering different boundary conditions and in-plane load applications. See **examples**.
 
 
-<img src="https://github.com/rafaelpsilva07/composipy/blob/main/doc/images/load_bcs_examples.PNG" width="400">
+<img src="https://github.com/rafaelpsilva07/composipy/blob/main/doc/images/load_bcs_examples.PNG" width="700">
 
 
 
