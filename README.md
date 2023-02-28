@@ -67,3 +67,11 @@ Create a plate structure.
 >>> panel = PlateStructure(laminate1, 360, 360, m=10, n=10, Nxx=-1, constraints=constraints)
 >>> print(panel.buckling_analysis()) # solve the eigenvalue problem.
 ```
+
+
+## Theoretical References
+
+The implementation of composipy is based on the following references
+
+- [Mechanics Of Composite Materials by Robert M. Jones](https://www.routledge.com/Mechanics-Of-Composite-Materials/Jones/p/book/9781560327127)
+- [Castro S.G.P., Donadon M.V. Assembly of semi-analytical models to address linear buckling and vibration of stiffened composite panels with debonding defect. Compos. Struct., 160 (2017), pp. 232-247,](https://www.sciencedirect.com/science/article/abs/pii/S026382231631008X)

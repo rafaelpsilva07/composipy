@@ -134,3 +134,6 @@ setup_.bat
 test.py
 activate_env.bat
 *.bat
+
+# images build
+.pptx
