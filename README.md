@@ -5,7 +5,7 @@
 
 **composipy** is a python library to calculate composite plates using the classical laminate theory. This library is designed to be simple, userfriendly and helpfull.
 
-Composipy is able to perform buckling calculation considering different boundary conditions and in-plane load applications. See **examples**.
+Composipy is able to perform buckling calculation considering different boundary conditions and in-plane load applications. See [Examples](https://rafaelpsilva07.github.io/composipy/notebooks/Examples_BCs.html).
 
 
 <img src="https://github.com/rafaelpsilva07/composipy/blob/main/doc/images/load_bcs_examples.PNG" width="700">
@@ -52,6 +52,9 @@ python setup.py install
 >>> mat_1 = OrthotropicMaterial(E1, E2, v12, G12, t)
 ```
 
+See [OrthotropicMaterial](https://rafaelpsilva07.github.io/composipy/reference/classes.html) for reference.
+
+
 ### Define the Laminate.
 
 ```python
@@ -59,6 +62,8 @@ python setup.py install
 >>> stacking = [-45, 45, 90, 0, 0, 0, 0, 90, 45, -45]
 >>> laminate1 = LaminateProperty(stacking, mat_1)
 ```
+
+See [LaminateProperty](https://rafaelpsilva07.github.io/composipy/reference/classes.html#laminateproperty) for reference.
 
 ### Calculate Stiffnnes Matrix and Lamination Parameters
 
@@ -81,6 +86,9 @@ python setup.py install
 --- }
 >>> panel = PlateStructure(laminate1, 360, 360, m=10, n=10, Nxx=-1, constraints=constraints)
 ```
+
+See [PlateStructure](https://rafaelpsilva07.github.io/composipy/reference/classes.html#platestructure) for reference.
+
 
 ### Calculate Buckling
 ```python
