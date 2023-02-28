@@ -5,6 +5,11 @@
 
 **composipy** is a python library to calculate composite plates using the classical laminate theory. This library is designed to be simple, userfriendly and helpfull.
 
+Composipy is able to perform buckling calculation considering different boundary conditions and in-plane load applications. See **examples**.
+
+
+<img src="https://github.com/rafaelpsilva07/composipy/blob/main/doc/images/load_bcs_examples.PNG" width="400">
+
 
 
 ## How to install
@@ -25,10 +30,13 @@ python setup.py install
 ## Documentation
 
 [Composipy documentation](https://rafaelpsilva07.github.io/composipy/)
+[Examples](https://rafaelpsilva07.github.io/composipy/notebooks/index.html)
+[Code References](https://rafaelpsilva07.github.io/composipy/reference/index.html)
+
 
 ## Quick start
 
-Create the material.
+### Create the Material Properties.
 
 ```python
 >>> from composipy import OrthotropicMaterial
@@ -42,18 +50,23 @@ Create the material.
 >>> mat_1 = OrthotropicMaterial(E1, E2, v12, G12, t)
 ```
 
-Define the laminate.
+### Define the Laminate.
 
 ```python
 >>> from composipy import LaminateProperty
 >>> stacking = [-45, 45, 90, 0, 0, 0, 0, 90, 45, -45]
 >>> laminate1 = LaminateProperty(stacking, mat_1)
+```
+
+### Calculate Stiffnnes Matrix and Lamination Parameters
+
+```python
 >>> print(laminate1.ABD) # prints the ABD matrix as a np.ndarray
 >>> print(laminate1.xiA) # prints lamination parameters of extension as a np.ndarray
 >>> print(laminate1.xiD) # prints lamination parameters of bending as a np.ndarray
 ```
 
-Create a plate structure.
+### Create a Plate Structure.
 
 ```python
 >>> from composipy import PlateStructure
@@ -65,8 +78,18 @@ Create a plate structure.
 ---     'yb' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
 --- }
 >>> panel = PlateStructure(laminate1, 360, 360, m=10, n=10, Nxx=-1, constraints=constraints)
+```
+
+### Calculate Buckling
+```python
 >>> print(panel.buckling_analysis()) # solve the eigenvalue problem.
 ```
+
+### Plot Buckling shape mode
+```python
+>>> print(panel.plot_eigenvalue())
+```
+
 
 
 ## Theoretical References
