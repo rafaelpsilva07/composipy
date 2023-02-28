@@ -3,3 +3,4 @@ nbsphinx
 m2r2
 pydata_sphinx_theme
 pandoc
+jinja2==3.0.3

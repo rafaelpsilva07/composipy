@@ -29,9 +29,11 @@ python setup.py install
 
 ## Documentation
 
-[Composipy documentation](https://rafaelpsilva07.github.io/composipy/)
-[Examples](https://rafaelpsilva07.github.io/composipy/notebooks/index.html)
-[Code References](https://rafaelpsilva07.github.io/composipy/reference/index.html)
+- [Composipy documentation](https://rafaelpsilva07.github.io/composipy/)
+
+- [Examples](https://rafaelpsilva07.github.io/composipy/notebooks/index.html)
+
+- [Code References](https://rafaelpsilva07.github.io/composipy/reference/index.html)
 
 
 ## Quick start

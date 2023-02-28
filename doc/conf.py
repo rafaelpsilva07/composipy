@@ -9,6 +9,7 @@
 import os
 import sys
 import sphinx_readable_theme
+import pydata_sphinx_theme
 
 sys.path.insert(0, "../composipy/")
 
@@ -43,9 +44,10 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 #html_theme = 'alabaster'
-#html_theme = 'pydata_sphinx_theme'
+html_theme = 'pydata_sphinx_theme'
+#html_theme_path = [pydata_sphinx_theme.get_html_theme_path()]
 #html_theme = 'yummy_sphinx_theme'
 #html_theme = 'sphinx-readable-theme'
 html_static_path = ['_static']
-html_theme_path = [sphinx_readable_theme.get_html_theme_path()]
-html_theme = 'readable'
+#html_theme_path = [sphinx_readable_theme.get_html_theme_path()]
+#html_theme = 'readable'

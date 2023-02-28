@@ -5,3 +5,13 @@
 
 
 .. mdinclude :: ../README.md 
+
+Contents
+========
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+	
+   Examples <notebooks/index>
+   Code References <reference/index>
