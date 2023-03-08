@@ -1,3 +1,5 @@
+[![Downloads](https://static.pepy.tech/badge/composipy)](https://pepy.tech/project/composipy)
+
 
 # Composipy
 
