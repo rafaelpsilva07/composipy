@@ -1,4 +1,6 @@
 [![Downloads](https://static.pepy.tech/badge/composipy)](https://pepy.tech/project/composipy)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/rafaelpsilva07/composipy/pypi.yml)
+![PyPI](https://img.shields.io/pypi/v/composipy)
 
 
 # Composipy
@@ -31,7 +33,7 @@ python setup.py install
 
 ## Documentation
 
-- [Composipy documentation](https://rafaelpsilva07.github.io/composipy/)
+- [Composipy documentation](https://rafaelpsilva07.github.io/composipy/#contents)
 
 - [Examples](https://rafaelpsilva07.github.io/composipy/notebooks/index.html)
 
