@@ -95,7 +95,7 @@ class PlateStructure(Structure):
         self.__Nxy = self._float_number(Nxy, name='Nxy')
         self.__m = self._int_number(m, n_min=1, name='m')
         self.__n = self._int_number(n, n_min=1, name='n')
-        self.su_idx = None
+        self.su_idx = None #TODO: Put back, it is used to plot
         self.sv_idx = None
         self.sw_idx = None
         self.eigenvalue = None
