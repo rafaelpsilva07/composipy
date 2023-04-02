@@ -1,0 +1,1 @@
+from ._shape_function_index import _generate_index
