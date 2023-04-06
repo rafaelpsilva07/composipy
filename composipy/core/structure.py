@@ -276,3 +276,4 @@ class PlateStructure(Structure):
         plt.show()
 
         return None
+    
