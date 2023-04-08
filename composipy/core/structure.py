@@ -100,6 +100,8 @@ class PlateStructure(Structure):
         self.sw_idx = None
         self.eigenvalue = None
         self.eigenvector = None
+        self.row0 = 0
+        self.col0 = 0
 
     @property
     def dproperty(self):
