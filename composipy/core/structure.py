@@ -95,9 +95,6 @@ class PlateStructure(Structure):
         self.__Nxy = self._float_number(Nxy, name='Nxy')
         self.__m = self._int_number(m, n_min=1, name='m')
         self.__n = self._int_number(n, n_min=1, name='n')
-        self.su_idx = None #TODO: Put back, it is used to plot
-        self.sv_idx = None
-        self.sw_idx = None
         self.eigenvalue = None
         self.eigenvector = None
         self.row0 = 0
@@ -160,7 +157,7 @@ class PlateStructure(Structure):
         k11, k12, k13, k21, k22, k23, k31, k32, k33 = [], [], [], [], [], [], [], [], []
         k33g = []
 
-        uidx, vidx, widx = _generate_index(self.constraints, self.m, self.n)
+        uidx, vidx, widx = _generate_index(self.constraints, self.m, self.n, idx_option = 'ijkl')
 
         for i in range(self.m**2*self.n**2):
                 ui, uj, uk, ul = uidx[i]
@@ -251,10 +248,11 @@ class PlateStructure(Structure):
         if (not isinstance(self.eigenvalue, np.ndarray) 
                 and not isinstance(self.eigenvector, np.ndarray)):
             self.buckling_analysis()
-        
+
+        _, _, widx = _generate_index(self.constraints, self.m, self.n, idx_option = 'ij')
         c_values = self.eigenvector[:, nth] # ritz coefficients
         len_c_values = len(c_values)
-        len_w = len(self.sw_idx)
+        len_w = len(widx)
         cw_values = c_values[len_c_values-len_w:len_c_values]
         xi_arr = np.linspace(-1, 1, ngridx)
         eta_arr = np.linspace(-1, 1, ngridy)
@@ -263,7 +261,7 @@ class PlateStructure(Structure):
 
         for i in range(ngridx):
             for j in range(ngridy):
-                sw = sxieta(self.sw_idx, xi_mesh[i, j], eta_mesh[i, j])
+                sw = sxieta(widx, xi_mesh[i, j], eta_mesh[i, j])
                 wij = float((sw @ cw_values))
                 z[i, j] = wij
         
