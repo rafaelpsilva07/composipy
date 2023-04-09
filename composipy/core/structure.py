@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pyvista as pv
+
 
 from matplotlib import cm
 from time import time
@@ -277,7 +279,7 @@ class PlateStructure(Structure):
         self.eigenvalue, self.eigenvector = eigvals, eigvecs
         return eigvals, eigvecs
     
-    def plot_eigenvalue(self, nth=0, ngridx=20, ngridy=20):
+    def plot_eigenvalue(self, nth=0, ngridx=20, ngridy=20, factor=1):
         if (not isinstance(self.eigenvalue, np.ndarray) 
                 and not isinstance(self.eigenvector, np.ndarray)):
             self.buckling_analysis()
@@ -313,12 +315,24 @@ class PlateStructure(Structure):
         # coordinate transformation
         x_mesh = (self.a/2) * (xi_mesh+1)
         y_mesh = (self.b/2) * (eta_mesh+1)
+        z = z * factor
 
-        ax = plt.figure().add_subplot(projection='3d')       
-        surf = ax.plot_surface(x_mesh, y_mesh, z, cmap=cm.coolwarm)
-        ax.set_xticks(np.linspace(0, max(self.a, self.b), 6))
-        ax.set_yticks(np.linspace(0, max(self.a, self.b), 6))
-        plt.show()
+#        ax = plt.figure().add_subplot(projection='3d')       
+#        surf = ax.plot_surface(x_mesh, y_mesh, z, cmap=cm.coolwarm)
+#        ax.set_xticks(np.linspace(0, max(self.a, self.b), 6))
+#        ax.set_yticks(np.linspace(0, max(self.a, self.b), 6))
+#        plt.show()
+
+        if self.plane == 'xy':
+            x, y, z = x_mesh, y_mesh, z
+        elif self.plane == 'yz':
+            x, y, z = z, y_mesh, x_mesh
+        elif self.plane == 'zx':
+            x, y, z = x_mesh, z, y_mesh
+
+        grid = pv.StructuredGrid(x, y, z)
+        # Plot mean curvature as well
+        grid.plot_curvature(clim=[-1, 1])
 
         return None
     
