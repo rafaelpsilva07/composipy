@@ -6,7 +6,7 @@ This module contains functions to treat shape functions indexes and boundary con
 from itertools import product
 
 
-def _generate_index(constraints, m, n, plane='xy', idx_option='ijkl'):
+def _generate_index(constraints, m, n, idx_option='ijkl'):
     '''
     Paramenters
     -----------
@@ -128,15 +128,7 @@ def _generate_index(constraints, m, n, plane='xy', idx_option='ijkl'):
     else:
         raise ValueError('idx_option must be ijkl or ij')
 
-    if plane == 'xy':
-        return (uidx, vidx, widx)
-    elif plane == 'yz':
-        return (widx, vidx, uidx)
-    elif plane == 'zx':
-        return (uidx, widx, vidx)
-    else:
-        raise ValueError('plane must be xy, yz or zx')
-
+    return (uidx, vidx, widx)
 
 
 if __name__ == '__main__':

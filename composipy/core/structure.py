@@ -84,7 +84,8 @@ class PlateStructure(Structure):
             Nyy=0,
             Nxy=0,
             m=10,
-            n=10):
+            n=10,
+            plane='xy'):
 
         self.__dproperty = self._is_instance(dproperty, Property, 'dproperty')
         self.__a = self._float_number(a, n_min=0, name='a')
@@ -95,6 +96,7 @@ class PlateStructure(Structure):
         self.__Nxy = self._float_number(Nxy, name='Nxy')
         self.__m = self._int_number(m, n_min=1, name='m')
         self.__n = self._int_number(n, n_min=1, name='n')
+        self.__plane = plane
         self.eigenvalue = None
         self.eigenvector = None
         self.row0 = 0
@@ -102,7 +104,7 @@ class PlateStructure(Structure):
 
     @property
     def dproperty(self):
-            return self.__dproperty
+        return self.__dproperty
         
     @property
     def a(self):
@@ -110,32 +112,39 @@ class PlateStructure(Structure):
     
     @property
     def b(self):
-            return self.__b
+        return self.__b
 
     @property
     def constraints(self):
-            return self.__constraints
+        return self.__constraints
     
     @property
     def Nxx(self):
-            return self.__Nxx
+        return self.__Nxx
     @property
     def Nyy(self):
-            return self.__Nyy
+        return self.__Nyy
     
     @property
     def Nxy(self):
-            return self.__Nxy
+        return self.__Nxy
     
     @property
     def m(self):
-            return self.__m
+        return self.__m
     
     @property
     def n(self):
-            return self.__n
-
+        return self.__n
     
+    @property
+    def plane(self):
+        planes = {'xy', 'yz', 'zx'}
+        if self.__plane in planes:
+            return self.__plane
+        else:
+            raise ValueError(f'plane must be one of the followings {planes}')
+        
     #TODO: parallel process, sparse matrix, cython
     def calc_K_KG(self):
         '''
@@ -187,19 +196,43 @@ class PlateStructure(Structure):
         k00 = np.zeros(self.m**2*self.n**2).reshape(self.m*self.n, self.m*self.n)
         k33g = np.array(k33g).reshape(self.m*self.n, self.m*self.n)
 
-        K = np.vstack([
-        np.hstack([k11, k12, k13]),
-        np.hstack([k21, k22, k31]),
-        np.hstack([k31, k32, k33])
-        ])
+        if self.plane == 'xy':
+            K = np.vstack([
+            np.hstack([k11, k12, k13]),
+            np.hstack([k21, k22, k31]),
+            np.hstack([k31, k32, k33])
+            ])
+            KG = np.vstack([
+            np.hstack([k00, k00, k00]),
+            np.hstack([k00, k00, k00]),
+            np.hstack([k00, k00, k33g])
+            ])
 
-        KG = np.vstack([
-        np.hstack([k00, k00, k00]),
-        np.hstack([k00, k00, k00]),
-        np.hstack([k00, k00, k33g])
-        ])
+        elif self.plane == 'yz':
+            K = np.vstack([
+            np.hstack([k33, k32, k31]),
+            np.hstack([k23, k22, k21]),
+            np.hstack([k13, k12, k11])
+            ])
+            KG = np.vstack([
+            np.hstack([k33g, k00, k00]),
+            np.hstack([k00, k00, k00]),
+            np.hstack([k00, k00, k00])
+            ])
 
-        return K, KG  
+        elif self.plane == 'zx':
+            K = np.vstack([
+            np.hstack([k11, k13, k12]),
+            np.hstack([k31, k33, k32]),
+            np.hstack([k21, k23, k22])
+            ])
+            KG = np.vstack([
+            np.hstack([k00, k00, k00]),
+            np.hstack([k00, k33g, k00]),
+            np.hstack([k00, k00, k00])
+            ])
+
+        return K, KG
 
     def buckling_analysis(self, silent=True, num_eigvalues = 5):
         """
