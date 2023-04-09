@@ -286,7 +286,19 @@ class PlateStructure(Structure):
         c_values = self.eigenvector[:, nth] # ritz coefficients
         len_c_values = len(c_values)
         len_w = len(widx)
-        cw_values = c_values[len_c_values-len_w:len_c_values]
+
+
+        cu_values = c_values[0: len_w]
+        cv_values = c_values[len_w: len_c_values-len_w]
+        cw_values = c_values[len_c_values-len_w: len_c_values]
+
+        if self.plane == 'xy':
+            cw_values = cw_values
+        elif self.plane == 'yz':
+            cw_values = cu_values
+        elif self.plane == 'zx':
+            cw_values = cv_values
+
         xi_arr = np.linspace(-1, 1, ngridx)
         eta_arr = np.linspace(-1, 1, ngridy)
         xi_mesh, eta_mesh = np.meshgrid(xi_arr, eta_arr)
@@ -302,14 +314,7 @@ class PlateStructure(Structure):
         x_mesh = (self.a/2) * (xi_mesh+1)
         y_mesh = (self.b/2) * (eta_mesh+1)
 
-        if self.plane == 'xy':
-            pass
-        elif self.plane == 'yz':
-            x_mesh, y_mesh, z = z, y_mesh, x_mesh
-        elif self.plane == 'zx':
-            x_mesh, y_mesh, z = x_mesh, z, y_mesh
-
-        ax = plt.figure().add_subplot(projection='3d')
+        ax = plt.figure().add_subplot(projection='3d')       
         surf = ax.plot_surface(x_mesh, y_mesh, z, cmap=cm.coolwarm)
         ax.set_xticks(np.linspace(0, max(self.a, self.b), 6))
         ax.set_yticks(np.linspace(0, max(self.a, self.b), 6))
