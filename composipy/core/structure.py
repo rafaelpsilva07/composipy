@@ -279,7 +279,7 @@ class PlateStructure(Structure):
         self.eigenvalue, self.eigenvector = eigvals, eigvecs
         return eigvals, eigvecs
     
-    def plot_eigenvalue(self, nth=0, ngridx=20, ngridy=20, factor=1):
+    def plot_eigenvalue(self, nth=0, ngridx=20, ngridy=20, deform=1):
         if (not isinstance(self.eigenvalue, np.ndarray) 
                 and not isinstance(self.eigenvector, np.ndarray)):
             self.buckling_analysis()
@@ -315,7 +315,7 @@ class PlateStructure(Structure):
         # coordinate transformation
         x_mesh = (self.a/2) * (xi_mesh+1)
         y_mesh = (self.b/2) * (eta_mesh+1)
-        z = z * factor
+        z = z * deform
 
 #        ax = plt.figure().add_subplot(projection='3d')       
 #        surf = ax.plot_surface(x_mesh, y_mesh, z, cmap=cm.coolwarm)
@@ -332,7 +332,8 @@ class PlateStructure(Structure):
 
         grid = pv.StructuredGrid(x, y, z)
         # Plot mean curvature as well
-        grid.plot_curvature(clim=[-1, 1])
+        pv.set_plot_theme('paraview')
+        grid.plot_curvature()
 
         return None
     
