@@ -147,6 +147,31 @@ class OrthotropicMaterial(Material):
                                    [0, 0, Q66]])
         return self.__Q_0
 
+    def Invariants(self):
+        '''
+        Get the laminate invariants
+
+        Returns
+        -------
+        Invariants : numpy.ndarray
+           array([U1, U2, U3, U4, U5])
+        
+        '''
+
+        Q11 = self.Q_0[0, 0]
+        Q12 = self.Q_0[0, 1]
+        Q22 = self.Q_0[1, 1]
+        Q66 = self.Q_0[2, 2]
+
+        U1 = 1/8 * (3*Q11 + 3*Q22 + 2*Q12 + 4*Q66)
+        U2 = 1/2 * (Q11 - Q22)
+        U3 = 1/8 * (Q11 + Q22 - 2*Q12 - 4*Q66)
+        U4 = 1/8 * (Q11 + Q22 + 6*Q12 - 4*Q66)
+        U5 = 1/8 * (Q11 + Q22 - 2*Q12 + 4*Q66)
+        
+        return np.array([U1, U2, U3, U4, U5])
+
+
     def __repr__(self):
         return (
             f'Ply({self.name}, E1 = {self.e1}, E2 = {self.e2}, \n\
