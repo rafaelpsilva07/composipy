@@ -307,11 +307,11 @@ class PlateStructure(Structure):
             A tuple of array containing (K, KG)
         '''
 
-        B11, B12, B16, D11, D12, D16 = self.dproperty.ABD[3, ::]
-        B12, B22, B26, D12, D22, D26 = self.dproperty.ABD[4, ::]
-        B16, B26, B66, D16, D26, D66 = self.dproperty.ABD[5, ::]
+        D11, D12, D16 = self.dproperty.D[0, ::]
+        D12, D22, D26 = self.dproperty.D[1, ::]
+        D16, D26, D66 = self.dproperty.D[2, ::]
 
-        k11, k12, k13, k21, k22, k23, k31, k32, k33 = [], [], [], [], [], [], [], [], []
+        k33 = []
         k33g = []
 
         uidx, vidx, widx = self._compute_constraints()

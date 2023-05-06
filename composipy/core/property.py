@@ -20,8 +20,14 @@ class LaminateProperty(Property):
 
     Parameters
     ----------
-    stacking : list
-        An iterable containing the angles (in degrees) of layup.
+    stacking : list or dict
+        To define a angle stacking sequence
+            An iterable containing the angles (in degrees) of layup.
+        To define a stack based on lamination parameters.
+            {xiA: [xiA1, xiA2, xiA3, xiA4],
+            xiB: [xiB1, xiB2, xiB3, xiB4],
+            xiD: [xiD1, xiD2, xiD3, xiD4],
+            T: thickness}
     plies : Material or list
         A single Material or a list of OrthotropicMaterial object
 
@@ -40,15 +46,39 @@ class LaminateProperty(Property):
 
     def __init__(self, stacking, plies):
         # Checking layup
-        if isinstance(plies, Material):
-            n_plies = len(stacking)
-            plies = [plies for s in range(n_plies)]
-        elif len(plies) != len(stacking):
-            raise ValueError('Number of plies and number of stacking must match')
+        if not isinstance(stacking, dict): # implements angle stacking sequence
+            if isinstance(plies, Material):
+                n_plies = len(stacking)
+                plies = [plies for s in range(n_plies)]
+            elif len(plies) != len(stacking):
+                raise ValueError('Number of plies and number of stacking must match')
+            xiA = None
+            xiB = None
+            xiD = None
+            total_thickness = None
+            layup = list(zip(stacking, plies))
+        else:
+            try:
+                xiA = stacking['xiA']
+            except KeyError:
+                xiA = None
+            try:             
+                xiB = stacking['xiB']
+            except KeyError:
+                xiB = None
+            try: 
+                xiD = stacking['xiD']
+            except KeyError:
+                KeyError('xiD must be a key')
+            try:
+                total_thickness = stacking['T']
+            except KeyError:
+                KeyError('T must be a key')
+            layup = []
 
         self.stacking = stacking
         self.plies = plies
-        self.layup = list(zip(stacking, plies))
+        self.layup = layup
         self._z_position = None
         self._Q_layup = None
         self._T_layup = None
@@ -57,8 +87,10 @@ class LaminateProperty(Property):
         self._D = None
         self._ABD = None
         self._ABD_p = None
-        self._xiA = None
-        self._xiB = None
+        self._xiA = xiA
+        self._xiB = xiB
+        self._xiD = xiD
+        self._total_thickness = total_thickness
 
 #Properties
     @property
@@ -131,6 +163,8 @@ class LaminateProperty(Property):
     def A(self):
         '''[A] Matrix as numpy.ndarray '''
 
+        if not self._xiA is None:
+            raise NotImplementedError
         if self._A is None:
             self._A = np.zeros(9).reshape(3,3)
 
@@ -143,7 +177,8 @@ class LaminateProperty(Property):
     @property
     def B(self):
         '''[B] Matrix as numpy.ndarray '''
-
+        if not self._xiB is None:
+            raise NotImplementedError
         if self._B is None:
             self._B = np.zeros(9).reshape(3,3)
 
@@ -156,6 +191,26 @@ class LaminateProperty(Property):
     @property
     def D(self):
         '''[D] Matrix as numpy.ndarray '''
+
+        if not self._xiD is None:
+
+            U1, U2, U3, U4, U5 = self.plies.Invariants()
+            xi1, xi2, xi3, xi4 = self._xiD
+            T = self._total_thickness
+
+            D11 = T**3*(U1 + U2*xi1 + U3*xi3)/12
+            D12 = T**3*(-U3*xi3 + U4)/12
+            D13 = T**3*(U2*xi2/2 + U3*xi4)/12
+            D21 = T**3*(-U3*xi3 + U4)/12
+            D22 = T**3*(U1 - U2*xi1 + U3*xi3)/12
+            D23 = T**3*(U2*xi2/2 - U3*xi4)/12
+            D31 = T**3*(U2*xi2/2 + U3*xi4)/12
+            D32 = T**3*(U2*xi2/2 - U3*xi4)/12
+            D33 = T**3*(-U3*xi3 + U5)/12
+
+            self._D = np.array([[D11, D12, D13],
+                                [D21, D22, D23],
+                                [D31, D32, D33]])
 
         if self._D is None:
             self._D = np.zeros(9).reshape(3,3)
@@ -189,7 +244,9 @@ class LaminateProperty(Property):
             xiA[1] += (zk1-zk0) * np.sin(2*angle)
             xiA[2] += (zk1-zk0) * np.cos(4*angle)
             xiA[3] += (zk1-zk0) * np.sin(4*angle)                        
-        return xiA / T
+        
+        self._xiA = xiA / T
+        return self._xiA
 
     @property
     def xiD(self):
