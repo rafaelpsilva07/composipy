@@ -231,9 +231,10 @@ class PlateStructure(Structure):
         return (uidx, vidx, widx)
     
     #TODO: parallel process, sparse matrix, cython
-    def calc_K_KG(self):
+    def calc_K_KG_ABD(self):
         '''
         Calculates the stiffness and geometrical stifness matrices.
+        Considers full ABD matrix.
 
         Returns
         -------
@@ -295,6 +296,40 @@ class PlateStructure(Structure):
 
         return K, KG  
 
+    def calc_K_KG_D(self):
+        '''
+        Calculates the stiffness and geometrical stifness matrices.
+        Considers only the bending stiffness D matrix.
+
+        Returns
+        -------
+        K_KG : tuple
+            A tuple of array containing (K, KG)
+        '''
+
+        D11, D12, D16 = self.dproperty.D[0, ::]
+        D12, D22, D26 = self.dproperty.D[1, ::]
+        D16, D26, D66 = self.dproperty.D[2, ::]
+
+        k33 = []
+        k33g = []
+
+        uidx, vidx, widx = self._compute_constraints()
+
+        for i in range(self.m**2*self.n**2):
+                wi, wj, wk, wl = widx[i]
+
+                k33.append(calc_k33_ijkl(self.a, self.b, wi, wj, wk, wl, D11, D12, D22, D16, D26, D66))
+                k33g.append(calc_kG33_ijkl(self.a, self.b, wi, wj, wk, wl, self.Nxx, self.Nyy, self.Nxy))
+        
+        k33 = np.array(k33).reshape(self.m*self.n, self.m*self.n)
+        k33g = np.array(k33g).reshape(self.m*self.n, self.m*self.n)
+
+        K = k33
+        KG = k33g
+
+        return K, KG  
+
     def buckling_analysis(self, silent=True, num_eigvalues = 5):
         """
         Linear Buckling Analysis
@@ -313,7 +348,7 @@ class PlateStructure(Structure):
         if not silent:
             ti = time()       
             print('calculating K and KG')
-        K, KG = self.calc_K_KG()
+        K, KG = self.calc_K_KG_D()
         K, KG = csr_matrix(K), csr_matrix(KG)
         if not silent:
             print(f'K and KG calculated in {time()-ti} seconds')
