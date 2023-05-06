@@ -149,7 +149,7 @@ class OrthotropicMaterial(Material):
 
     def Invariants(self):
         '''
-        Get the laminate invariants
+        Get the material invariants
 
         Returns
         -------

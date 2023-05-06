@@ -37,11 +37,18 @@ class LaminateProperty(Property):
     >>> from composipy import OrthotropicMaterial, LaminateProperty
     >>> ply_1 = OrthotropicMaterial(129500, 9370, 0.38, 5240, 0.2)
     >>> stacking = [90, 0, 90]
-    >>> laminate = Laminate(stacking, ply_1)
+    >>> laminate_1 = Laminate(stacking, ply_1)
     >>> laminate_1.ABD # retunrs an array containing bending stiffness matrix [D] of the laminate
     >>> laminate_1.xiA # lamination parameters of extension
     >>> laminate_1.xiA # lamination parameters of bending
 
+    Example
+    -------
+    >>> stacking = {'xiD': [0., 0., -1., 0.], 'T': 1.0} #using lamination parameters to define D
+    >>> laminate_2 = Laminate(stacking, ply_1)
+    >>> laminate_2.ABD # retunrs an array containing bending stiffness matrix [D] of the laminate
+    >>> laminate_2.xiA # lamination parameters of extension
+    >>> laminate_2.xiA # lamination parameters of bending
     '''
 
     def __init__(self, stacking, plies):
