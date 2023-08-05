@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
 from scipy.optimize import NonlinearConstraint, Bounds, minimize, LinearConstraint
@@ -55,7 +56,9 @@ def maximize_buckling_load(a, b, T,
                    m=7, n=7,
                    panel_constraint='PINNED',
                    options=None,
-                   tol=None 
+                   tol=None,
+                   plot=False,
+                   points_to_plot=30
                    ):
     '''
     Parameters
@@ -86,6 +89,82 @@ def maximize_buckling_load(a, b, T,
    
     res = minimize(critical_load, x0, method='SLSQP', constraints=[c2, c3], bounds=b1, options=options, tol=tol)
 
+    if plot:
+        print('generating plot...')
+        x = np.linspace(-1., 1., points_to_plot)
+        init_args = [0, 0, -1]
+        Nx_arr = []
+        xi1_arr, xi3_arr = [], []
+
+        def constraint(xi1, xi3, silent=True):
+            #g = xi3 - 2*xi1**2 + 1
+            g1 = xi3 + 2*xi1 + 1
+            g2 = xi3 - 2*xi1 + 1
+
+            if xi1 < 0:
+                g = g1
+            else:
+                g = g2
+
+            if g < 0:
+                if not silent:
+                    print(xi1, xi3)
+                return False
+            else:
+                return True
+
+
+        for xi1_ in x:
+            for xi3_ in x:
+                g_curr = constraint(xi1_, xi3_, silent=True)
+                if g_curr:
+                    critc_N = _Ncr(a, b, T, m, n, xi1_, xi3_, E1, E2, v12, G12, Nxx, Nyy, Nxy, panel_constraint)
+                    Nx_arr.append(critc_N)
+                    xi1_arr.append(xi1_)
+                    xi3_arr.append(xi3_)
+
+                    if critc_N > init_args[2]:
+                        init_args = [xi1_, xi3_, critc_N]
+                else:
+                    pass
+                    Nx_arr.append(np.nan)
+                    xi1_arr.append(xi1_)
+                    xi3_arr.append(xi3_)
+
+        g1_xi1 = np.linspace(-1, 0, points_to_plot)
+        g1_xi3 = -2*g1_xi1 - 1
+
+        g2_xi1 = np.linspace(0, 1, points_to_plot)
+        g2_xi3 = 2*g2_xi1 - 1
+
+        n_valid_points = int(np.sqrt(len(Nx_arr)))
+        Nx_arr = np.array(Nx_arr)
+        xi1_arr = np.array(xi1_arr)
+        xi3_arr = np.array(xi3_arr)                       
+        Nx_arr = Nx_arr.reshape(n_valid_points, n_valid_points)
+        xi1_arr = xi1_arr.reshape(n_valid_points, n_valid_points)
+        xi3_arr = xi3_arr.reshape(n_valid_points, n_valid_points)
+
+        #plots
+        plt.figure()
+
+        # Nxcrit
+        cs1 = plt.contour(xi1_arr, xi3_arr, Nx_arr, 20)
+        plt.clabel(cs1)
+
+        #g1 and g2
+        plt.plot(g1_xi1, g1_xi3, 'k')
+        plt.plot(g2_xi1, g2_xi3, 'k')
+
+        #
+        plt.plot(*res['x'], 'ro', label='optimum')
+
+
+        plt.xlabel('xi1')
+        plt.ylabel('xi3')
+        plt.legend()
+        plt.show()
+
 
     return res
 
@@ -111,9 +190,11 @@ if __name__ == '__main__':
     n = 7
 
 
-    print(
-        maximize_buckling_load(a, b, T, E1, E2, nu12, G12, Nxx, Nyy, Nxy, m, n, panel_constraint="PINNED")
-        )
+    res = maximize_buckling_load(a, b, T, E1, E2, nu12, G12, Nxx, Nyy, Nxy, m, n, panel_constraint="PINNED", plot=False)
+
+    print(res)
+
+    print(res['x'])
 
     print(
         _Ncr(a, b, T, m, n, -0.235, -0.529, E1, E2, nu12, G12, Nxx, Nyy, Nxy, constraints="PINNED")
