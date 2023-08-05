@@ -1,10 +1,11 @@
+import warnings
 import numpy as np
 import matplotlib.pyplot as plt
+
 
 from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
 from scipy.optimize import NonlinearConstraint, Bounds, minimize, LinearConstraint
 from scipy.sparse.linalg import ArpackError
-
 
 
 def _Ncr(a, b, T, m, n, xi1, xi3, E1, E2, v12, G12, Nxx, Nyy, Nxy, constraints):
@@ -35,9 +36,6 @@ def _penalty_g2(y0):
     return g2
 
 
-
-
-
 def _define_critical_load(Nxx, Nyy, Nxy):
     max_abs_load = [abs(Nxx), abs(Nyy), abs(Nxy)]
     max_abs_load.sort()
@@ -52,7 +50,7 @@ def _define_critical_load(Nxx, Nyy, Nxy):
 
 def maximize_buckling_load(a, b, T,
                    E1, E2, v12, G12,
-                   Nxx, Nyy, Nxy,
+                   Nxx=0, Nyy=0, Nxy=0,
                    m=7, n=7,
                    panel_constraint='PINNED',
                    options=None,
@@ -63,10 +61,49 @@ def maximize_buckling_load(a, b, T,
     '''
     Parameters
     ----------
+    a : float
+        Plate dimension a
+    b : float
+        Plate dimension b
+    E1 : float
+        Young Modulus direction 1
+    E2 : float
+        Young Modulus direction 2
+    v12 : float
+        Poisson ratio
+    G12 : float
+        Shear Modulus
+    Nxx : float, default 0
+        Normal load in x direction
+    Nyy : float, default 0
+        Normal load in y direction
+    Nxy : float, default 0
+        Normal load in xy direction
+    m : float, dafault 7
+        Size of shape function along x axis
+    n : float, default 0
+        Size of shape function along y axis
+    panel_constraint : composipy constraints format
+        Plate boundary constraints
+    options : scipyminimize optiions
+    tol : scipy minimize tol
+    plot : bool, default False
+        Plot optimization function
+    points_to_plot : float, default 30
+      Number of points to plot
 
     Returns
-    -------  
+    ------- 
+    res : scipy minimize result
     '''
+
+    # Positive loads warning   
+    if Nxx >= 0 and Nyy >= 0 and Nxy == 0:
+        warnings.warn(f'Buckling analysis is supposed to take at least a negative normal load or shear. (Nxx = {Nxx}, Nyy = {Nyy}, Nxy = {Nxy})')
+
+    #Non normalized loads warning
+    if abs(Nxx) > 1 or abs(Nyy) > 1 or abs(Nxy) > 1:
+        warnings.warn(f'Loads will be normalized, prefer to use loads between -1 and 1 (Nxx = {Nxx}, Nyy = {Nyy}, Nxy = {Nxy})')
 
     # Normalizing loads
     Nxx_norm, Nyy_norm, Nxy_norm, max_load = _define_critical_load(Nxx, Nyy, Nxy)
@@ -165,9 +202,7 @@ def maximize_buckling_load(a, b, T,
         plt.legend()
         plt.show()
 
-
     return res
-
 
 
 if __name__ == '__main__':
@@ -182,12 +217,13 @@ if __name__ == '__main__':
     b = 254
     T = 3.048
 
-    Nxx = -1
-    Nyy = -.5
+    Nxx = -1.1
+    Nyy = .5
     Nxy = -0.
 
     m=7
     n = 7
+
 
 
     res = maximize_buckling_load(a, b, T, E1, E2, nu12, G12, Nxx, Nyy, Nxy, m, n, panel_constraint="PINNED", plot=False)
