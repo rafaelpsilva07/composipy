@@ -56,6 +56,7 @@ def minimize_panel_weight(a, b,
                    E1, E2, v12, G12,
                    Nxx=0, Nyy=0, Nxy=0,
                    m=7, n=7,
+                   x0 = [0.1, 0.0, 0.0],
                    panel_constraint='PINNED',
                    options=None,
                    tol=None,
@@ -87,6 +88,8 @@ def minimize_panel_weight(a, b,
         Size of shape function along x axis
     n : float, default 0
         Size of shape function along y axis
+    x0 : list, default [0.1, 0.0, 0.0]
+        Initial value
     panel_constraint : composipy constraints format
         Plate boundary constraints
     options : scipyminimize optiions
@@ -122,8 +125,6 @@ def minimize_panel_weight(a, b,
     c2 = NonlinearConstraint(_penalty_g1, -0.0001, 10000)
     c3 = NonlinearConstraint(_penalty_g2, -0.0001, 10000)
     b1 = ([0.001, 1000000], [-1.0, 1.0], [-1.0, 1.0])
-
-    x0 = [0.1, 0.0, 0.0]
    
     res = minimize(_obj, x0, method='SLSQP', constraints=[c1, c2, c3], bounds=b1, options=options, tol=tol)
 
@@ -156,7 +157,7 @@ def minimize_panel_weight(a, b,
             for xi3_ in x:
                 g_curr = constraint(xi1_, xi3_, silent=True)
                 if g_curr:
-                    critc_N = _Ncr(a, b, res['x'][0], m, n, xi1_, xi3_, E1, E2, v12, G12, Nxx, Nyy, Nxy, panel_constraint)
+                    critc_N = critical_load([res['x'][0], xi1_, xi3_])                   
                     Nx_arr.append(critc_N)
                     xi1_arr.append(xi1_)
                     xi3_arr.append(xi3_)
@@ -225,7 +226,7 @@ if __name__ == '__main__':
     m = 7
     n = 7
 
-    res = minimize_panel_weight(a, b, E1, E2, nu12, G12, Nxx, Nyy, Nxy, m, n, panel_constraint="PINNED", plot=False)
+    res = minimize_panel_weight(a, b, E1, E2, nu12, G12, Nxx, Nyy, Nxy, m, n, panel_constraint="PINNED", plot=True)
 
     print(res)
 
