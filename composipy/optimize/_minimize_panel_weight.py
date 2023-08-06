@@ -196,11 +196,13 @@ def minimize_panel_weight(a, b,
         plt.plot(g2_xi1, g2_xi3, 'k')
 
         #
-        plt.plot(*res['x'], 'ro', label='optimum')
+        plt.plot(res['x'][1], res['x'][2], 'ro', label='optimum')
 
 
         plt.xlabel('xi1')
         plt.ylabel('xi3')
+        plt.xlim([-1, 1])
+        plt.ylim([-1, 1])
         plt.legend()
         plt.show()
 

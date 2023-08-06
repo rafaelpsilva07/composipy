@@ -200,6 +200,8 @@ def maximize_buckling_load(a, b, T,
         plt.xlabel('xi1')
         plt.ylabel('xi3')
         plt.legend()
+        plt.xlim([-1, 1])
+        plt.ylim([-1, 1])
         plt.show()
 
     return res
@@ -217,7 +219,7 @@ if __name__ == '__main__':
     b = 254
     T = 3.048
 
-    Nxx = -1.1
+    Nxx = -1.
     Nyy = .5
     Nxy = -0.
 
@@ -226,7 +228,7 @@ if __name__ == '__main__':
 
 
 
-    res = maximize_buckling_load(a, b, T, E1, E2, nu12, G12, Nxx, Nyy, Nxy, m, n, panel_constraint="PINNED", plot=False)
+    res = maximize_buckling_load(a, b, T, E1, E2, nu12, G12, Nxx, Nyy, Nxy, m, n, panel_constraint="PINNED", plot=True)
 
     print(res)
 
