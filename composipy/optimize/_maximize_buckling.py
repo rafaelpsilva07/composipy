@@ -208,33 +208,3 @@ def maximize_buckling_load(a, b, T,
         plt.show()
 
     return res
-
-
-if __name__ == '__main__':
-
-    E1 = 128e3
-    E2 = 13e3
-    G12 = 6.4e3
-    nu12 = 0.3
-    t = 0.127 # not used
-
-    a = 508
-    b = 254
-    T = 3.048
-
-    Nxx = -1.
-    Nyy = .5
-    Nxy = -0.
-
-    m=7
-    n = 7
-
-    res = maximize_buckling_load(a, b, T, E1, E2, nu12, G12, Nxx, Nyy, Nxy, m, n, panel_constraint="PINNED", plot=True)
-
-    print(res)
-
-    print(res['x'])
-
-    print(
-        _Ncr(a, b, T, m, n, -0.235, -0.529, E1, E2, nu12, G12, Nxx, Nyy, Nxy, constraints="PINNED")
-        )
