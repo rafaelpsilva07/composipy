@@ -8,6 +8,9 @@ from scipy.optimize import NonlinearConstraint, Bounds, minimize, LinearConstrai
 from scipy.sparse.linalg import ArpackError
 
 
+__all__ = ['maximize_buckling_load']
+
+
 def _Ncr(a, b, T, m, n, xi1, xi3, E1, E2, v12, G12, Nxx, Nyy, Nxy, constraints):
     '''
     Calculates critical buckling load based in lamination parameters   
@@ -225,8 +228,6 @@ if __name__ == '__main__':
 
     m=7
     n = 7
-
-
 
     res = maximize_buckling_load(a, b, T, E1, E2, nu12, G12, Nxx, Nyy, Nxy, m, n, panel_constraint="PINNED", plot=True)
 

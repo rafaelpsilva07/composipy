@@ -7,6 +7,10 @@ from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
 from scipy.optimize import NonlinearConstraint, Bounds, minimize, LinearConstraint
 from scipy.sparse.linalg import ArpackError
 
+
+__all__ = ['minimize_panel_weight']
+
+
 def _obj(y0):
     T, xi1, xi3 = y0
     return T**3
