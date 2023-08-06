@@ -211,35 +211,3 @@ def minimize_panel_weight(a, b,
         plt.show()
 
     return res
-
-
-if __name__ == '__main__':
-
-    # haftka plate
-    E1 = 127560 # MPa
-    E2 = 13030. # MPa
-    G12 = 6410. # MPa
-    nu12 = 0.3
-    ply_thickness = 0.127 # mm
-
-    # Plate dimensions
-    #panel
-    a = 1181.1
-    b = 746.74
-
-    Nxx, Nyy, Nxy = -3100.,	-907, 236
-
-    m = 7
-    n = 7
-
-    res = minimize_panel_weight(a, b, E1, E2, nu12, G12, Nxx, Nyy, Nxy, m, n, panel_constraint="PINNED", plot=True)
-
-    print(res)
-
-    print(res['x'])
-
-    #check
-    crit_load = _Ncr(a, b, res['x'][0], m, n, res['x'][1], res['x'][2], E1, E2, nu12, G12, Nxx, Nyy, Nxy, "PINNED")
-    print(crit_load)
-
-
