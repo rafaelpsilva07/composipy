@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>composipy.optimize._maximize_buckling &mdash; composipy 1.2.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/fonts.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            composipy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Code References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">composipy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">composipy.optimize._maximize_buckling</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for composipy.optimize._maximize_buckling</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+
+<span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span><span class="p">,</span> <span class="n">LaminateProperty</span><span class="p">,</span> <span class="n">PlateStructure</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">NonlinearConstraint</span><span class="p">,</span> <span class="n">Bounds</span><span class="p">,</span> <span class="n">minimize</span><span class="p">,</span> <span class="n">LinearConstraint</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">ArpackError</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;maximize_buckling_load&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_Ncr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">xi1</span><span class="p">,</span> <span class="n">xi3</span><span class="p">,</span> <span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span> <span class="n">Nxx</span><span class="p">,</span> <span class="n">Nyy</span><span class="p">,</span> <span class="n">Nxy</span><span class="p">,</span> <span class="n">constraints</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculates critical buckling load based in lamination parameters   </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">stacking</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;xiD&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">xi1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">xi3</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+     <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="n">T</span><span class="p">}</span>
+
+    <span class="n">mat1</span> <span class="o">=</span> <span class="n">OrthotropicMaterial</span><span class="p">(</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">laminate1</span> <span class="o">=</span> <span class="n">LaminateProperty</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">mat1</span><span class="p">)</span>
+    <span class="n">plate1</span> <span class="o">=</span> <span class="n">PlateStructure</span><span class="p">(</span><span class="n">dproperty</span><span class="o">=</span><span class="n">laminate1</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">constraints</span><span class="p">,</span> <span class="n">Nxx</span><span class="o">=</span><span class="n">Nxx</span><span class="p">,</span> <span class="n">Nyy</span><span class="o">=</span><span class="n">Nyy</span><span class="p">,</span> <span class="n">Nxy</span><span class="o">=</span><span class="n">Nxy</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">plate1</span><span class="o">.</span><span class="n">buckling_analysis</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_penalty_g1</span><span class="p">(</span><span class="n">y0</span><span class="p">):</span>
+    <span class="n">xi1</span><span class="p">,</span> <span class="n">xi3</span> <span class="o">=</span> <span class="n">y0</span>
+    <span class="n">g1</span> <span class="o">=</span> <span class="n">xi3</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">xi1</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">g1</span>
+
+
+<span class="k">def</span> <span class="nf">_penalty_g2</span><span class="p">(</span><span class="n">y0</span><span class="p">):</span>
+    <span class="n">xi1</span><span class="p">,</span> <span class="n">xi3</span> <span class="o">=</span> <span class="n">y0</span>
+    <span class="n">g2</span> <span class="o">=</span> <span class="n">xi3</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">xi1</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">g2</span>
+
+
+<span class="k">def</span> <span class="nf">_define_critical_load</span><span class="p">(</span><span class="n">Nxx</span><span class="p">,</span> <span class="n">Nyy</span><span class="p">,</span> <span class="n">Nxy</span><span class="p">):</span>
+    <span class="n">max_abs_load</span> <span class="o">=</span> <span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">Nxx</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Nyy</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Nxy</span><span class="p">)]</span>
+    <span class="n">max_abs_load</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="n">max_abs_load</span> <span class="o">=</span> <span class="n">max_abs_load</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">Nxx_norm</span> <span class="o">=</span> <span class="n">Nxx</span> <span class="o">/</span> <span class="n">max_abs_load</span>
+    <span class="n">Nyy_norm</span> <span class="o">=</span> <span class="n">Nyy</span> <span class="o">/</span> <span class="n">max_abs_load</span>
+    <span class="n">Nxy_norm</span> <span class="o">=</span> <span class="n">Nxy</span> <span class="o">/</span> <span class="n">max_abs_load</span>
+
+    <span class="k">return</span> <span class="n">Nxx_norm</span><span class="p">,</span> <span class="n">Nyy_norm</span><span class="p">,</span> <span class="n">Nxy_norm</span><span class="p">,</span> <span class="n">max_abs_load</span>
+
+
+<div class="viewcode-block" id="maximize_buckling_load"><a class="viewcode-back" href="../../../reference/classes.html#composipy.optimize.maximize_buckling_load">[docs]</a><span class="k">def</span> <span class="nf">maximize_buckling_load</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span>
+                   <span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span>
+                   <span class="n">Nxx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">Nyy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">Nxy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                   <span class="n">m</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+                   <span class="n">panel_constraint</span><span class="o">=</span><span class="s1">&#39;PINNED&#39;</span><span class="p">,</span>
+                   <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">tol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">points_to_plot</span><span class="o">=</span><span class="mi">30</span>
+                   <span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : float</span>
+<span class="sd">        Plate dimension a</span>
+<span class="sd">    b : float</span>
+<span class="sd">        Plate dimension b</span>
+<span class="sd">    E1 : float</span>
+<span class="sd">        Young Modulus direction 1</span>
+<span class="sd">    E2 : float</span>
+<span class="sd">        Young Modulus direction 2</span>
+<span class="sd">    v12 : float</span>
+<span class="sd">        Poisson ratio</span>
+<span class="sd">    G12 : float</span>
+<span class="sd">        Shear Modulus</span>
+<span class="sd">    Nxx : float, default 0</span>
+<span class="sd">        Normal load in x direction</span>
+<span class="sd">    Nyy : float, default 0</span>
+<span class="sd">        Normal load in y direction</span>
+<span class="sd">    Nxy : float, default 0</span>
+<span class="sd">        Normal load in xy direction</span>
+<span class="sd">    m : float, dafault 7</span>
+<span class="sd">        Size of shape function along x axis</span>
+<span class="sd">    n : float, default 0</span>
+<span class="sd">        Size of shape function along y axis</span>
+<span class="sd">    panel_constraint : composipy constraints format</span>
+<span class="sd">        Plate boundary constraints</span>
+<span class="sd">    options : scipyminimize optiions</span>
+<span class="sd">    tol : scipy minimize tol</span>
+<span class="sd">    plot : bool, default False</span>
+<span class="sd">        Plot optimization function</span>
+<span class="sd">    points_to_plot : float, default 30</span>
+<span class="sd">      Number of points to plot</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ------- </span>
+<span class="sd">    res : scipy minimize result</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Positive loads warning   </span>
+    <span class="k">if</span> <span class="n">Nxx</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">Nyy</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">Nxy</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Buckling analysis is supposed to take at least a negative normal load or shear. (Nxx = </span><span class="si">{</span><span class="n">Nxx</span><span class="si">}</span><span class="s1">, Nyy = </span><span class="si">{</span><span class="n">Nyy</span><span class="si">}</span><span class="s1">, Nxy = </span><span class="si">{</span><span class="n">Nxy</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+    <span class="c1">#Non normalized loads warning</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Nxx</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Nyy</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Nxy</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Loads will be normalized, prefer to use loads between -1 and 1 (Nxx = </span><span class="si">{</span><span class="n">Nxx</span><span class="si">}</span><span class="s1">, Nyy = </span><span class="si">{</span><span class="n">Nyy</span><span class="si">}</span><span class="s1">, Nxy = </span><span class="si">{</span><span class="n">Nxy</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Normalizing loads</span>
+    <span class="n">Nxx_norm</span><span class="p">,</span> <span class="n">Nyy_norm</span><span class="p">,</span> <span class="n">Nxy_norm</span><span class="p">,</span> <span class="n">max_load</span> <span class="o">=</span> <span class="n">_define_critical_load</span><span class="p">(</span><span class="n">Nxx</span><span class="p">,</span> <span class="n">Nyy</span><span class="p">,</span> <span class="n">Nxy</span><span class="p">)</span>
+
+    <span class="c1"># Critical load error handling</span>
+    <span class="k">def</span> <span class="nf">critical_load</span><span class="p">(</span><span class="n">y0</span><span class="p">):</span>
+        <span class="n">xi1</span><span class="p">,</span> <span class="n">xi3</span> <span class="o">=</span> <span class="n">y0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">eig</span> <span class="o">=</span> <span class="n">_Ncr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">xi1</span><span class="p">,</span> <span class="n">xi3</span><span class="p">,</span> <span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span> <span class="n">Nxx_norm</span><span class="p">,</span> <span class="n">Nyy_norm</span><span class="p">,</span> <span class="n">Nxy_norm</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">panel_constraint</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ArpackError</span><span class="p">:</span> <span class="c1">#cause if xi1 and xi3 chosen by optimizer is out of the bounds, it may crash</span>
+            <span class="n">eig</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">eig</span> <span class="c1">#negative so the solver can maximize instead of minimize</span>
+    
+    <span class="c1"># Constraints and boundaries</span>
+    <span class="n">c2</span> <span class="o">=</span> <span class="n">NonlinearConstraint</span><span class="p">(</span><span class="n">_penalty_g1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+    <span class="n">c3</span> <span class="o">=</span> <span class="n">NonlinearConstraint</span><span class="p">(</span><span class="n">_penalty_g2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+    <span class="n">b1</span> <span class="o">=</span> <span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+
+    <span class="n">x0</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+   
+    <span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">critical_load</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;SLSQP&#39;</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="p">[</span><span class="n">c2</span><span class="p">,</span> <span class="n">c3</span><span class="p">],</span> <span class="n">bounds</span><span class="o">=</span><span class="n">b1</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;generating plot...&#39;</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">points_to_plot</span><span class="p">)</span>
+        <span class="n">init_args</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">Nx_arr</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">xi1_arr</span><span class="p">,</span> <span class="n">xi3_arr</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+        <span class="k">def</span> <span class="nf">constraint</span><span class="p">(</span><span class="n">xi1</span><span class="p">,</span> <span class="n">xi3</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="c1">#g = xi3 - 2*xi1**2 + 1</span>
+            <span class="n">g1</span> <span class="o">=</span> <span class="n">xi3</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">xi1</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">g2</span> <span class="o">=</span> <span class="n">xi3</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">xi1</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">xi1</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="n">g1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="n">g2</span>
+
+            <span class="k">if</span> <span class="n">g</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">xi1</span><span class="p">,</span> <span class="n">xi3</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+
+        <span class="k">for</span> <span class="n">xi1_</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">xi3_</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+                <span class="n">g_curr</span> <span class="o">=</span> <span class="n">constraint</span><span class="p">(</span><span class="n">xi1_</span><span class="p">,</span> <span class="n">xi3_</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">g_curr</span><span class="p">:</span>
+                    <span class="n">critc_N</span> <span class="o">=</span> <span class="n">_Ncr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">xi1_</span><span class="p">,</span> <span class="n">xi3_</span><span class="p">,</span> <span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span> <span class="n">Nxx</span><span class="p">,</span> <span class="n">Nyy</span><span class="p">,</span> <span class="n">Nxy</span><span class="p">,</span> <span class="n">panel_constraint</span><span class="p">)</span>
+                    <span class="n">Nx_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">critc_N</span><span class="p">)</span>
+                    <span class="n">xi1_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xi1_</span><span class="p">)</span>
+                    <span class="n">xi3_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xi3_</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">critc_N</span> <span class="o">&gt;</span> <span class="n">init_args</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+                        <span class="n">init_args</span> <span class="o">=</span> <span class="p">[</span><span class="n">xi1_</span><span class="p">,</span> <span class="n">xi3_</span><span class="p">,</span> <span class="n">critc_N</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                    <span class="n">Nx_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+                    <span class="n">xi1_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xi1_</span><span class="p">)</span>
+                    <span class="n">xi3_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xi3_</span><span class="p">)</span>
+
+        <span class="n">g1_xi1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">points_to_plot</span><span class="p">)</span>
+        <span class="n">g1_xi3</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">g1_xi1</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="n">g2_xi1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">points_to_plot</span><span class="p">)</span>
+        <span class="n">g2_xi3</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">g2_xi1</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="n">n_valid_points</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Nx_arr</span><span class="p">)))</span>
+        <span class="n">Nx_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Nx_arr</span><span class="p">)</span>
+        <span class="n">xi1_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xi1_arr</span><span class="p">)</span>
+        <span class="n">xi3_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xi3_arr</span><span class="p">)</span>                       
+        <span class="n">Nx_arr</span> <span class="o">=</span> <span class="n">Nx_arr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_valid_points</span><span class="p">,</span> <span class="n">n_valid_points</span><span class="p">)</span>
+        <span class="n">xi1_arr</span> <span class="o">=</span> <span class="n">xi1_arr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_valid_points</span><span class="p">,</span> <span class="n">n_valid_points</span><span class="p">)</span>
+        <span class="n">xi3_arr</span> <span class="o">=</span> <span class="n">xi3_arr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_valid_points</span><span class="p">,</span> <span class="n">n_valid_points</span><span class="p">)</span>
+
+        <span class="c1">#plots</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
+        <span class="c1"># Nxcrit</span>
+        <span class="n">cs1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">xi1_arr</span><span class="p">,</span> <span class="n">xi3_arr</span><span class="p">,</span> <span class="n">Nx_arr</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs1</span><span class="p">)</span>
+
+        <span class="c1">#g1 and g2</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">g1_xi1</span><span class="p">,</span> <span class="n">g1_xi3</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">g2_xi1</span><span class="p">,</span> <span class="n">g2_xi3</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
+
+        <span class="c1">#</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;optimum&#39;</span><span class="p">)</span>
+
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;xi1&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;xi3&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Rafael Pereira da Silva.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

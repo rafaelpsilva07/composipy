@@ -4,9 +4,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Composipy &#8212; composipy 1.0.1 documentation</title>
+    <title>Contents &#8212; composipy 1.2.1 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Composipy Notebooks" href="notebooks/index.html" />
+    <link rel="next" title="Composipy" href="quickstart.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -98,7 +98,7 @@
 
   
   
-    <p class="title logo__title">composipy 1.0.1 documentation</p>
+    <p class="title logo__title">composipy 1.2.1 documentation</p>
   
 </a>
     
@@ -116,8 +116,8 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="notebooks/index.html">
-                        Examples
+                      <a class="nav-link nav-internal" href="quickstart.html">
+                        Quick Start
                       </a>
                     </li>
                 
@@ -125,6 +125,13 @@
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="reference/index.html">
                         Code References
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="notebooks/index.html">
+                        Examples
                       </a>
                     </li>
                 
@@ -199,8 +206,8 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="notebooks/index.html">
-                        Examples
+                      <a class="nav-link nav-internal" href="quickstart.html">
+                        Quick Start
                       </a>
                     </li>
                 
@@ -208,6 +215,13 @@
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="reference/index.html">
                         Code References
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="notebooks/index.html">
+                        Examples
                       </a>
                     </li>
                 
@@ -264,119 +278,61 @@
             
             <article class="bd-article" role="main">
               
-  <section id="composipy">
-<h1>Composipy<a class="headerlink" href="#composipy" title="Permalink to this heading">#</a></h1>
-<section id="what-it-is">
-<h2>What it is<a class="headerlink" href="#what-it-is" title="Permalink to this heading">#</a></h2>
-<p><strong>composipy</strong> is a python library to calculate composite plates using the classical laminate theory. This library is designed to be simple, userfriendly and helpfull.</p>
-<p>Composipy is able to perform buckling calculation considering different boundary conditions and in-plane load applications. See <strong>examples</strong>.</p>
-</section>
-<section id="how-to-install">
-<h2>How to install<a class="headerlink" href="#how-to-install" title="Permalink to this heading">#</a></h2>
-<section id="directly-from-pypi">
-<h3>Directly From PYPI<a class="headerlink" href="#directly-from-pypi" title="Permalink to this heading">#</a></h3>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>composipy
-</pre></div>
-</div>
-</section>
-<section id="built-from-source">
-<h3>Built from source<a class="headerlink" href="#built-from-source" title="Permalink to this heading">#</a></h3>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>setup.py<span class="w"> </span>install
-</pre></div>
-</div>
-</section>
-</section>
-<section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference external" href="https://rafaelpsilva07.github.io/composipy/">Composipy documentation</a></p></li>
-<li><p><a class="reference external" href="https://rafaelpsilva07.github.io/composipy/notebooks/index.html">Examples</a></p></li>
-<li><p><a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/index.html">Code References</a></p></li>
-</ul>
-</section>
-<section id="quick-start">
-<h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this heading">#</a></h2>
-<section id="create-the-material-properties">
-<h3>Create the Material Properties.<a class="headerlink" href="#create-the-material-properties" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">E1</span> <span class="o">=</span> <span class="mi">60800</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">E2</span> <span class="o">=</span> <span class="mi">58250</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v12</span> <span class="o">=</span> <span class="mf">0.07</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G12</span> <span class="o">=</span> <span class="mi">4550</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="mf">0.21</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mat_1</span> <span class="o">=</span> <span class="n">OrthotropicMaterial</span><span class="p">(</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="define-the-laminate">
-<h3>Define the Laminate.<a class="headerlink" href="#define-the-laminate" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">LaminateProperty</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stacking</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate1</span> <span class="o">=</span> <span class="n">LaminateProperty</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">mat_1</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="calculate-stiffnnes-matrix-and-lamination-parameters">
-<h3>Calculate Stiffnnes Matrix and Lamination Parameters<a class="headerlink" href="#calculate-stiffnnes-matrix-and-lamination-parameters" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">ABD</span><span class="p">)</span> <span class="c1"># prints the ABD matrix as a np.ndarray</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">xiA</span><span class="p">)</span> <span class="c1"># prints lamination parameters of extension as a np.ndarray</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">xiD</span><span class="p">)</span> <span class="c1"># prints lamination parameters of bending as a np.ndarray</span>
-</pre></div>
-</div>
-</section>
-<section id="create-a-plate-structure">
-<h3>Create a Plate Structure.<a class="headerlink" href="#create-a-plate-structure" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">PlateStructure</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
-<span class="go">---     &#39;x0&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;],</span>
-<span class="go">---     &#39;xa&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;],</span>
-<span class="go">---     &#39;y0&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;],</span>
-<span class="go">---     &#39;yb&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
-<span class="go">--- }</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">panel</span> <span class="o">=</span> <span class="n">PlateStructure</span><span class="p">(</span><span class="n">laminate1</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">Nxx</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">constraints</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="calculate-buckling">
-<h3>Calculate Buckling<a class="headerlink" href="#calculate-buckling" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">buckling_analysis</span><span class="p">())</span> <span class="c1"># solve the eigenvalue problem.</span>
-</pre></div>
-</div>
-</section>
-<section id="plot-buckling-shape-mode">
-<h3>Plot Buckling shape mode<a class="headerlink" href="#plot-buckling-shape-mode" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">plot_eigenvalue</span><span class="p">())</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="theoretical-references">
-<h2>Theoretical References<a class="headerlink" href="#theoretical-references" title="Permalink to this heading">#</a></h2>
-<p>The implementation of composipy is based on the following references</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://www.routledge.com/Mechanics-Of-Composite-Materials/Jones/p/book/9781560327127">Mechanics Of Composite Materials by Robert M. Jones</a></p></li>
-<li><p><a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/S026382231631008X">Castro S.G.P., Donadon M.V. Assembly of semi-analytical models to address linear buckling and vibration of stiffened composite panels with debonding defect. Compos. Struct., 160 (2017), pp. 232-247,</a></p></li>
-</ul>
-</section>
-</section>
+  <p>This page provides documentation for composipy project.
+Composipy has functions to calculate classical laminate theory, buckling, lamination parameters and optimization.</p>
 <section id="contents">
 <h1>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/index.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/Examples_BCs.html">Boundary Conditions and Load Cases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/verification_plates.html">Buckling Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#what-it-is">What it is</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#how-to-install">How to install</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#directly-from-pypi">Directly From PYPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#built-from-source">Built from source</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#quick-start">Quick start</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#create-the-material-properties">Create the Material Properties.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#define-the-laminate">Define the Laminate.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#calculate-stiffnnes-matrix-and-lamination-parameters">Calculate Stiffnnes Matrix and Lamination Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#create-a-plate-structure">Create a Plate Structure.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#calculate-buckling">Calculate Buckling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#plot-buckling-shape-mode">Plot Buckling shape mode</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#theoretical-references">Theoretical References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="reference/index.html">Code References</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference/classes.html">OrthotropicMaterial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/classes.html#laminateproperty">LaminateProperty</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/classes.html#platestructure">PlateStructure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/NastranAPI.html">Composipy APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/classes.html">Composipy classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/classes.html#orthotropicmaterial">OrthotropicMaterial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/classes.html#laminateproperty">LaminateProperty</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/classes.html#platestructure">PlateStructure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/optimization_functions.html">Composipy functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/optimization_functions.html#maximize-buckling-load">Maximize Buckling Load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/optimization_functions.html#minimize-panel-weight">Minimize panel weight</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/NastranAPI.html">Composipy APIs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/NastranAPI.html#module-composipy.nastranapi.pcomp_generator">Generator of NASTRAN PCOMP property</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/Examples_BCs.html">Boundary Conditions and Load Cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Examples_BCs.html#Importing-composipy-objects-and-creating-properties">Importing composipy objects and creating properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Examples_BCs.html#Pinned-Nxx">Pinned Nxx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Examples_BCs.html#Clamped-Nxy-and-Nyy">Clamped Nxy and Nyy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Examples_BCs.html#Free-edge-Nxx-(custom-boundary-condition)">Free edge Nxx (custom boundary condition)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Examples_BCs.html#Nxy-Loading">Nxy Loading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/verification_plates.html">Buckling Verification</a></li>
 </ul>
 </li>
 </ul>
@@ -391,10 +347,10 @@
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='right-next' id="next-link" href="notebooks/index.html" title="next page">
+  <a class='right-next' id="next-link" href="quickstart.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Composipy Notebooks</p>
+      <p class="prev-next-title">Composipy</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>
@@ -407,99 +363,6 @@
           
             <div class="bd-sidebar-secondary bd-toc">
               
-<div class="toc-item">
-  
-<div class="tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-</div>
-<nav id="bd-toc-nav" class="page-toc">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Composipy
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#what-it-is">
-     What it is
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#how-to-install">
-     How to install
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#directly-from-pypi">
-       Directly From PYPI
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#built-from-source">
-       Built from source
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#documentation">
-     Documentation
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#quick-start">
-     Quick start
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#create-the-material-properties">
-       Create the Material Properties.
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#define-the-laminate">
-       Define the Laminate.
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#calculate-stiffnnes-matrix-and-lamination-parameters">
-       Calculate Stiffnnes Matrix and Lamination Parameters
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#create-a-plate-structure">
-       Create a Plate Structure.
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#calculate-buckling">
-       Calculate Buckling
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#plot-buckling-shape-mode">
-       Plot Buckling shape mode
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#theoretical-references">
-     Theoretical References
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#contents">
-   Contents
-  </a>
- </li>
-</ul>
-
-</nav>
-</div>
-
 <div class="toc-item">
   
 <div id="searchbox"></div>

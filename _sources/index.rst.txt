@@ -3,15 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+This page provides documentation for composipy project.
+Composipy has functions to calculate classical laminate theory, buckling, lamination parameters and optimization.
 
-.. mdinclude :: ../README.md 
 
 Contents
 ========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 	
-   Examples <notebooks/index>
+   Quick Start <quickstart>
    Code References <reference/index>
+   Examples <notebooks/index>
