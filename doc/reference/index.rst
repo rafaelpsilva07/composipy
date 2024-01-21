@@ -1,12 +1,12 @@
 Code references
 ===============
-
-Code classes, methods, attributes, functions and APIs are listed below.
+This page contains Composipy classes, methods, attributes, functions and APIs.
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Contents:
 	
    Composipy classes <classes>
+   Composipy functions <optimization_functions>
    Composipy APIs <NastranAPI>

@@ -45,6 +45,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 #html_theme = 'alabaster'
 html_theme = 'pydata_sphinx_theme'
+#html_theme = 'renku'
 #html_theme_path = [pydata_sphinx_theme.get_html_theme_path()]
 #html_theme = 'yummy_sphinx_theme'
 #html_theme = 'sphinx-readable-theme'
