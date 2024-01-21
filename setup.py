@@ -2,11 +2,7 @@ import setuptools
 import sys
 import os
 
-THIS_FOLDER = os.path.abspath(__file__)
-sys.path.extend([
-    "./composipy",
-    THIS_FOLDER])
-
+sys.path.insert(0, ("./composipy"))
 
 from version import __version__
 
