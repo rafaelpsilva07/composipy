@@ -2,6 +2,7 @@
 [![Deploy](https://github.com/rafaelpsilva07/composipy/actions/workflows/python-publish.yml/badge.svg)](https://github.com/rafaelpsilva07/composipy/actions/workflows/python-publish.yml)
 [![Test](https://github.com/rafaelpsilva07/composipy/actions/workflows/pytest_test.yml/badge.svg)](https://github.com/rafaelpsilva07/composipy/actions/workflows/pytest_test.yml)
 ![PyPI](https://img.shields.io/pypi/v/composipy)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rafael-pereira-da-silva07/)
 [![DOI](https://zenodo.org/badge/332543985.svg)](https://zenodo.org/badge/latestdoi/332543985)
 
 
