@@ -1,5 +1,5 @@
 [![Downloads](https://static.pepy.tech/badge/composipy)](https://pepy.tech/project/composipy)
-[![Deploy](https://github.com/rafaelpsilva07/composipy/actions/workflows/python-publish.yml\badge.svg)](https://github.com/rafaelpsilva07/composipy/actions/workflows/python-publish.yml)
+[![Deploy](https://github.com/rafaelpsilva07/composipy/actions/workflows/python-publish.yml/badge.svg)](https://github.com/rafaelpsilva07/composipy/actions/workflows/python-publish.yml)
 [![Test](https://github.com/rafaelpsilva07/composipy/actions/workflows/pytest_test.yml/badge.svg)](https://github.com/rafaelpsilva07/composipy/actions/workflows/pytest_test.yml)
 ![PyPI](https://img.shields.io/pypi/v/composipy)
 [![DOI](https://zenodo.org/badge/332543985.svg)](https://zenodo.org/badge/latestdoi/332543985)
