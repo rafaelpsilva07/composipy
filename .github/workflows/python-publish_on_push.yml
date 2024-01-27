@@ -37,6 +37,8 @@ jobs:
       run: |
         ls
         echo python -m build
+        python -m pip install setuptools
+        python -m pip install wheel
         python setup.py sdist_bdist wheel
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
