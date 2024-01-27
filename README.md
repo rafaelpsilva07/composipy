@@ -1,5 +1,5 @@
 [![Downloads](https://static.pepy.tech/badge/composipy)](https://pepy.tech/project/composipy)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/rafaelpsilva07/composipy/pypi.yml)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/rafaelpsilva07/composipy/python-publish.yml)
 ![PyPI](https://img.shields.io/pypi/v/composipy)
 [![DOI](https://zenodo.org/badge/332543985.svg)](https://zenodo.org/badge/latestdoi/332543985)
 
