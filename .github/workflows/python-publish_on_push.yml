@@ -36,7 +36,8 @@ jobs:
     - name: Build package
       run: |
         ls
-        python -m build
+        echo python -m build
+        python setup.py sdist_bdist wheel
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
       with:
