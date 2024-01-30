@@ -2,7 +2,7 @@ sphinx
 nbsphinx
 m2r2
 pydata_sphinx_theme
-pandoc
+pandoc==2.0.3
 jinja2==3.0.3
 sphinx-readable-theme
 ipynb
