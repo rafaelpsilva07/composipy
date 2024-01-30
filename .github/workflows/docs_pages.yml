@@ -34,7 +34,7 @@ jobs:
 
       - name: Init new repo in dist folder and commit generated files
         run: |
-          git config --global --add safe.directory ./*
+          git config --global --add safe.directory './*'
           cd ./doc/_build/html/
           git init
           touch .nojekyll
