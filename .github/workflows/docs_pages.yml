@@ -31,6 +31,8 @@ jobs:
           make -C doc clean 
           # sphinx-apidoc -f -o doc/source . -H Test -e -t doc/source/_templates
           make -C doc html
+          git config --global --add safe.directory /github/workspace/doc/_build/html
+
 
       - name: Init new repo in dist folder and commit generated files
         run: |
@@ -41,11 +43,12 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -m 'deploy'
+          git config --global --add safe.directory /github/workspace/doc/_build/html
 
       - name: Force push to destination branch
         uses: ad-m/github-push-action@v0.5.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: test
+          branch: gh-pages
           force: true
           directory: ./doc/_build/html
