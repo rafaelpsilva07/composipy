@@ -23,6 +23,7 @@ jobs:
  
       - name: Install dependencies
         run: |
+          python -m pip install composipy
           python -m pip install -r doc_requirements.txt
           sudo apt install pandoc
 
