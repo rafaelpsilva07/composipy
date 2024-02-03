@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>comparison with compmech &#8212; composipy 1.2.3 documentation</title>
+    <title>Verification of the Rayleigh Ritz formulation &#8212; composipy 1.2.3 documentation</title>
   
   
   
@@ -42,9 +42,10 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/verification_plates';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Ritz_verification';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Composipy Notebooks" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -145,7 +146,7 @@
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="index.html">
                         Examples
                       </a>
@@ -220,9 +221,7 @@ document.write(`
       
       
       
-        
-      
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -249,7 +248,7 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="index.html">
                         Examples
                       </a>
@@ -279,6 +278,19 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Critical Buckling Examples</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -312,7 +324,10 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">comparison...</li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Composipy Notebooks</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Verification...</li>
   </ul>
 </nav>
 </div>
@@ -329,100 +344,55 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[140]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
-import sys
-
-from scipy.linalg import eig
-from scipy.sparse import csc_matrix
-from scipy.sparse.linalg import eigs
-from numpy import allclose
-
-path = &#39;D:/repositories/composipy&#39;
-
-sys.path.append(path)
-
-from time import time
-
-from composipy import OrthotropicMaterial, LaminateProperty
-from composipy import PlateStructure
-<br/><br/></pre></div>
-</div>
-</div>
+  <section id="Verification-of-the-Rayleigh-Ritz-formulation">
+<h1>Verification of the Rayleigh Ritz formulation<a class="headerlink" href="#Verification-of-the-Rayleigh-Ritz-formulation" title="Link to this heading">#</a></h1>
+<p>Presented within Rafael’s master dissertation “COMPOSITE PLATE OPTIMIZATION COMBINING SEMIANALYTICAL MODEL, LAMINATION PARAMETERS AND A GRADIENT-BASED OPTIMIZER”.</p>
+<p>Access the full repository with complete study and NASTRAN FEM model at: <a class="github reference external" href="https://github.com/rafaelpsilva07/rafaelmscdissertation">rafaelpsilva07/rafaelmscdissertation</a></p>
+<section id="Simply-Supported-study-case-(SSSS)">
+<h2>Simply Supported study case (SSSS)<a class="headerlink" href="#Simply-Supported-study-case-(SSSS)" title="Link to this heading">#</a></h2>
+<p>This study case aims to verify the Rayleigh-Ritz implementation made with Composipy (Silva, R.P. 2023). Mathematical verification of the Rayleigh-Ritz implementation is made against analytical buckling equation and FEM model. The benchmarking example is a simply supported plate with biaxial load, which considers a quasi-isotropic layup [(45/-45)2/02/902]s and properties according Table below. This example came from Kassapoglou (2010).</p>
+<p><img alt="90c9c1bbcc0c4631a9e935ae94905a3d" class="no-scaled-link" src="../_images/mechanical_prop_verification_problem.png" style="width: 400px; height: 200px;" /></p>
+<p>Dimension of the square plate is 100 mm and the load ratio (𝑁𝑦/𝑁𝑥) is 0.5. Analytical solution for this problem using Equation below is 234.7 N/mm.</p>
+<div class="math notranslate nohighlight">
+\[\lambda = \pi^2\frac{[D_{11}m^4 +2(D_{12}+2D_{66})m^2n^2(a/b)^2 + D_{22}n^4(a/b)^4  ]}{a^2 (m^2 + (N_{x}/N_{y}) n^2 (a/b)^2)}\]</div>
+<p>This problem using composipy results in 225.9 N/mm. See code below.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[141]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#Properties (N and mm)
-E1 = 60800
-E2 = 58250
-v12 = 0.07
-G12 = 4550
-t = 0.21
-
-# Plate Parameters
-a = 360
-b = 360
-m = 10
-n = 10
-
-
-stacking = [45,-45,0,90,45,-45,0,90,45,-45]
-stacking += stacking[::-1]
-
-a = 360.
-b = 360.
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[142]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ply_1 = OrthotropicMaterial(E1, E2, v12, G12, t)
-l1 = LaminateProperty(stacking, ply_1)
-constraints={
-                &#39;x0&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-                &#39;xa&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-                &#39;y0&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-                &#39;yb&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-            }
-panel = PlateStructure(l1, a, b, m=m, n=n, Nxx=-1, Nyy=-1, constraints=constraints)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>E1 = 137.9e3
+E2 = 11.7e3
+v12 = 0.31
+G12 = 4.82e3
+t = 0.1524
 
-ti = time()
-print(&#39;calculating K and KG&#39;)
-K_KG = panel.calc_K_KG()
-K = K_KG[&#39;K&#39;]
-KG = K_KG[&#39;KG&#39;]
-print(f&#39;calculation done in {time()-ti} seconds&#39;)
-print(&#39;calculating panel eig value&#39;)
-ti = time()
-print(panel.buckling_analysis())
-print(f&#39;calculation done in {time()-ti} seconds&#39;)
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-calculating K and KG
-calculation done in 2.4665584564208984 seconds
-calculating panel eig value
-48.52457849227318
-calculation done in 2.4968631267547607 seconds
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[149]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>eigvals, eigvecs = lb(K, KG, silent=False)
-eigvals
+a = 100
+b = 100
+
+Nxx = -1
+Nyy = -0.5
+
+m = 7
+n = 7
+
+mat = OrthotropicMaterial(E1, E2, v12, G12, t)
+stack = [45, -45]*2 + [0]*2 + [90]*2
+stack += stack[::-1]
+lam = LaminateProperty(stack, mat)
+plate = PlateStructure(lam, a, b, &quot;PINNED&quot;, Nxx=Nxx, Nyy=Nyy, m=m, n=n)
+
+eigenvalue, eigenvector = plate.buckling_analysis()
+print(f&#39;min eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
+
+plate.plot_eigenvalue()
 </pre></div>
 </div>
 </div>
@@ -431,77 +401,34 @@ eigvals
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Running linear buckling analysis...
-                Eigenvalue solver...
-                        eigsh() solver...
-                        finished!
-                finished!
-        first 5 eigenvalues:
-                48.52457849227213
-                115.33986497435149
-                115.60711330382483
-                194.09686865625642
-                221.57771298566516
+min eigenvalue is  225.9 N/mm
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[149]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-array([ 48.52457849, 115.33986497, 115.6071133 , 194.09686866,
-       221.57771299, 222.15591277, 308.86123656, 309.48317985,
-       368.99999417, 370.08445037, 436.71118574, 461.47246526,
-       462.33970189, 561.6366027 , 563.3834036 , 599.62788016,
-       600.77815938, 656.8345812 , 658.36588959, 776.37052798,
-       801.3471514 , 802.96144218, 803.91915658, 804.12792152,
-       898.07786955])
-</pre></div></div>
-</div>
-<section id="comparison-with-compmech">
-<h1>comparison with compmech<a class="headerlink" href="#comparison-with-compmech" title="Link to this heading">#</a></h1>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[144]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from compmech.panel.panel import Panel
-from compmech.analysis import lb, static
-</pre></div>
+<img alt="../_images/notebooks_Ritz_verification_3_1.png" src="../_images/notebooks_Ritz_verification_3_1.png" />
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[145]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># skin panels
-laminaprop = (E1, E2, v12, G12, G12, G12)
-p1 = Panel(group=&#39;skin&#39;, Nxx=-1, Nyy=-1, x0=0, y0=0., a=a, b=b,m=12, n=12, plyt=t, stack=stacking, laminaprop=laminaprop)
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[146]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>p1.u1tx = 0 ; p1.u1rx = 0 ; p1.u2tx = 0 ; p1.u2rx = 0
-p1.v1tx = 0 ; p1.v1rx = 0 ; p1.v2tx = 0 ; p1.v2rx = 0
-p1.w1tx = 0 ; p1.w1rx = 1 ; p1.w2tx = 0 ; p1.w2rx = 1
-p1.u1ty = 0 ; p1.u1ry = 0 ; p1.u2ty = 0 ; p1.u2ry = 0
-p1.v1ty = 0 ; p1.v1ry = 0 ; p1.v2ty = 0 ; p1.v2ry = 0
-p1.w1ty = 0 ; p1.w1ry = 1 ; p1.w2ty = 0 ; p1.w2ry = 1
-<br/></pre></div>
-</div>
-</div>
+</section>
+<section id="Different-boundary-conditions">
+<h2>Different boundary conditions<a class="headerlink" href="#Different-boundary-conditions" title="Link to this heading">#</a></h2>
+<p>Table below extends the study for different boundary conditions in order to verify polynomial functions presented in section 2.1.3. The results are verified against a NASTRAN FEM model and the maximum difference is 0.7%. Table 6 presents the first buckling mode deformation shape.</p>
+<p><img alt="507984d2b8454ffe99ee4df7b7555ed7" class="no-scaled-link" src="../_images/first_eigenvalue_BC.png" style="height: 150px;" /></p>
+<section id="Clamped-study-case-(CCCC)">
+<h3>Clamped study case (CCCC)<a class="headerlink" href="#Clamped-study-case-(CCCC)" title="Link to this heading">#</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[147]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>k0_1 = p1.calc_k0()
-kG0_1 = p1.calc_kG0()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lam = LaminateProperty(stack, mat)
+plate = PlateStructure(lam, a, b, &quot;CLAMPED&quot;, Nxx=Nxx, Nyy=Nyy, m=m, n=n)
 
-eigvals, eigvecs = lb(k0_1, kG0_1, silent=True)
-eigvals
+eigenvalue, eigenvector = plate.buckling_analysis()
+print(f&#39;min eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
+
+plate.plot_eigenvalue()
 </pre></div>
 </div>
 </div>
@@ -510,53 +437,63 @@ eigvals
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-                Calculating k0...
-                finished!
-                Calculating kG0...
-                finished!
+min eigenvalue is  495.0 N/mm
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[147]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-array([ 48.52457849, 115.33986497, 115.6071133 , 194.09686866,
-       221.57771299, 222.15591277, 308.86123656, 309.48317985,
-       368.99999417, 370.08445037, 436.71118574, 461.47246526,
-       462.33970189, 561.6366027 , 563.3834036 , 599.62788016,
-       600.77815939, 656.8345812 , 658.36588959, 776.37052798,
-       801.34715129, 802.96144214, 803.91915658, 804.12792151,
-       898.07786953])
-</pre></div></div>
+<img alt="../_images/notebooks_Ritz_verification_5_1.png" src="../_images/notebooks_Ritz_verification_5_1.png" />
 </div>
+</div>
+</section>
+<section id="Simply-supported-with-one-free-edge-study-case-(SSSC)">
+<h3>Simply supported with one free edge study case (SSSC)<a class="headerlink" href="#Simply-supported-with-one-free-edge-study-case-(SSSC)" title="Link to this heading">#</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[148]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>k0_1
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>constraints = {
+     &#39;x0&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
+     &#39;xa&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
+     &#39;y0&#39; : [],
+     &#39;yb&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;]
+ }
+
+plate = PlateStructure(lam, a, b, constraints, Nxx=Nxx, Nyy=Nyy)
+eigenvalue, eigenvector = plate.buckling_analysis()
+print(f&#39;min eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
+
+plate.plot_eigenvalue()
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[148]:
-</pre></div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;432x432 sparse matrix of type &#39;&lt;class &#39;numpy.float64&#39;&gt;&#39;
-        with 186624 stored elements in Compressed Sparse Row format&gt;
+min eigenvalue is  89.6 N/mm
 </pre></div></div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Ritz_verification_7_1.png" src="../_images/notebooks_Ritz_verification_7_1.png" />
 </div>
 </div>
+</section>
+<section id="Comparison-with-NASTRAN-deformed-shape">
+<h3>Comparison with NASTRAN deformed shape<a class="headerlink" href="#Comparison-with-NASTRAN-deformed-shape" title="Link to this heading">#</a></h3>
+<p><img alt="1403d6040f374100b0109f177c33f53b" class="no-scaled-link" src="../_images/Nastran_deformed.png" style="width: 600px;" /></p>
+</section>
+</section>
+<section id="References">
+<h2>References<a class="headerlink" href="#References" title="Link to this heading">#</a></h2>
+<p>Kassapoglou, Christos. Design and Analysis of Composite Structures: With Applications to Aerospace Structures. John Wiley &amp; Sons, 2010.</p>
+</section>
 </section>
 
 
@@ -569,6 +506,15 @@ array([ 48.52457849, 115.33986497, 115.6071133 , 194.09686866,
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Composipy Notebooks</p>
+      </div>
+    </a>
 </div>
                 </footer>
               
@@ -580,9 +526,28 @@ array([ 48.52457849, 115.33986497, 115.6071133 , 194.09686866,
 
 
   <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Simply-Supported-study-case-(SSSS)">Simply Supported study case (SSSS)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Different-boundary-conditions">Different boundary conditions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Clamped-study-case-(CCCC)">Clamped study case (CCCC)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Simply-supported-with-one-free-edge-study-case-(SSSC)">Simply supported with one free edge study case (SSSC)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Comparison-with-NASTRAN-deformed-shape">Comparison with NASTRAN deformed shape</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#References">References</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/notebooks/verification_plates.ipynb.txt">
+    <a href="../_sources/notebooks/Ritz_verification.ipynb.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
