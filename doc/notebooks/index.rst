@@ -10,5 +10,4 @@ Check out some jupyter notebooks.
    :maxdepth: 1
    :caption: Contents:
    
-   Boundary Conditions and Load Cases <Examples_BCs.ipynb>
-   Buckling Verification <verification_plates.ipynb>
+   Critical Buckling Examples <Ritz_verification.ipynb>
