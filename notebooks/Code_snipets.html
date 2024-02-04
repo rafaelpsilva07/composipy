@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Critical Buckling Examples &#8212; composipy 1.2.3 documentation</title>
+    <title>Code snipets &#8212; composipy 1.2.3 documentation</title>
   
   
   
@@ -42,11 +42,10 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Ritz_verification';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Code_snipets';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Code snipets" href="Code_snipets.html" />
-    <link rel="prev" title="Composipy Notebooks" href="index.html" />
+    <link rel="prev" title="Critical Buckling Examples" href="Ritz_verification.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -287,8 +286,8 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Critical Buckling Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Code_snipets.html">Sample Code Snipets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ritz_verification.html">Critical Buckling Examples</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Sample Code Snipets</a></li>
 </ul>
 </div>
 </nav></div>
@@ -329,7 +328,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Composipy Notebooks</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Critical...</li>
+    <li class="breadcrumb-item active" aria-current="page">Code snipets</li>
   </ul>
 </nav>
 </div>
@@ -346,92 +345,58 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="Critical-Buckling-Examples">
-<h1>Critical Buckling Examples<a class="headerlink" href="#Critical-Buckling-Examples" title="Link to this heading">#</a></h1>
-<p>Presented within Rafael’s master dissertation “COMPOSITE PLATE OPTIMIZATION COMBINING SEMIANALYTICAL MODEL, LAMINATION PARAMETERS AND A GRADIENT-BASED OPTIMIZER”.</p>
-<p>Access the full repository with complete study and NASTRAN FEM model at: <a class="github reference external" href="https://github.com/rafaelpsilva07/rafaelmscdissertation">rafaelpsilva07/rafaelmscdissertation</a></p>
-<p>The following examples are part of the Ritz verification against FEM model.</p>
-<section id="Simply-Supported-study-case-(SSSS)">
-<h2>Simply Supported study case (SSSS)<a class="headerlink" href="#Simply-Supported-study-case-(SSSS)" title="Link to this heading">#</a></h2>
-<p>This study case aims to verify the Rayleigh-Ritz implementation made with Composipy (Silva, R.P. 2023). Mathematical verification of the Rayleigh-Ritz implementation is made against analytical buckling equation and FEM model. The benchmarking example is a simply supported plate with biaxial load, which considers a quasi-isotropic layup [(45/-45)2/02/902]s and properties according Table below. This example came from Kassapoglou (2010).</p>
-<p><img alt="b95e30c789fe4159898b7656055ba80b" class="no-scaled-link" src="../_images/mechanical_prop_verification_problem.png" style="width: 400px; height: 200px;" /></p>
-<p>Dimension of the square plate is 100 mm and the load ratio (𝑁𝑦/𝑁𝑥) is 0.5. Analytical solution for this problem using Equation below is 234.7 N/mm.</p>
+  <section id="Code-snipets">
+<h1>Code snipets<a class="headerlink" href="#Code-snipets" title="Link to this heading">#</a></h1>
+<p>The code snipets are supposed to present the major functionalities of composipy. They are supposed to be published within SoftwareX Elselvier Journal.</p>
+<section id="Plate-buckling-analysis">
+<h2>Plate buckling analysis<a class="headerlink" href="#Plate-buckling-analysis" title="Link to this heading">#</a></h2>
+<p>The buckling_analysis() core method solves a eigenvalue problem like</p>
 <div class="math notranslate nohighlight">
-\[\lambda = \pi^2\frac{[D_{11}m^4 +2(D_{12}+2D_{66})m^2n^2(a/b)^2 + D_{22}n^4(a/b)^4  ]}{a^2 (m^2 + (N_{x}/N_{y}) n^2 (a/b)^2)}\]</div>
-<p>This problem using composipy results in 225.9 N/mm. See code below.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>E1 = 137.9e3
-E2 = 11.7e3
-v12 = 0.31
-G12 = 4.82e3
-t = 0.1524
-
-a = 100
-b = 100
-
-Nxx = -1
-Nyy = -0.5
-
-m = 7
-n = 7
-
-mat = OrthotropicMaterial(E1, E2, v12, G12, t)
-stack = [45, -45]*2 + [0]*2 + [90]*2
-stack += stack[::-1]
-lam = LaminateProperty(stack, mat)
-plate = PlateStructure(lam, a, b, &quot;PINNED&quot;, Nxx=Nxx, Nyy=Nyy, m=m, n=n)
-
-eigenvalue, eigenvector = plate.buckling_analysis()
-print(f&#39;min eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
-
-plate.plot_eigenvalue()
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-min eigenvalue is  225.9 N/mm
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_Ritz_verification_3_1.png" src="../_images/notebooks_Ritz_verification_3_1.png" />
-</div>
-</div>
-</section>
-<section id="Different-boundary-conditions">
-<h2>Different boundary conditions<a class="headerlink" href="#Different-boundary-conditions" title="Link to this heading">#</a></h2>
-<p>Table below extends the study for different boundary conditions in order to verify polynomial functions presented in section 2.1.3. The results are verified against a NASTRAN FEM model and the maximum difference is 0.7%. Table 6 presents the first buckling mode deformation shape.</p>
-<p><img alt="33c5e7e193bc4591b7de8d81296e4948" class="no-scaled-link" src="../_images/first_eigenvalue_BC.png" style="height: 150px;" /></p>
-<section id="Clamped-study-case-(CCCC)">
-<h3>Clamped study case (CCCC)<a class="headerlink" href="#Clamped-study-case-(CCCC)" title="Link to this heading">#</a></h3>
+\[([K]-λ[K_G ]){c}={0}\]</div>
+<p>where <span class="math notranslate nohighlight">\([K]\)</span> is the stiffeness matrix of the panel, <span class="math notranslate nohighlight">\([K_G]\)</span> is the geometrical stiffness matrix that depends on internal loads, <span class="math notranslate nohighlight">\({c}\)</span> is the vector of Ritz constants that determines the buckled shape and <span class="math notranslate nohighlight">\(λ\)</span> is the eigenvalue, that determines the critical buckling load. More details about this formulation are found at [1] and [2].</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lam = LaminateProperty(stack, mat)
-plate = PlateStructure(lam, a, b, &quot;CLAMPED&quot;, Nxx=Nxx, Nyy=Nyy, m=m, n=n)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
 
-eigenvalue, eigenvector = plate.buckling_analysis()
-print(f&#39;min eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
+#Ply Material Properties
+E1 = 60800 #MPa
+E2 = 58250 #MPa
+v12 = 0.07
+G12 = 4550 #MPa
+t = 0.21 #mm
 
-plate.plot_eigenvalue()
+# Plate geometry
+a = 360. #mm
+b = 360. #mm
+m = 7 # discretization in x direction
+n = 7 # discretization in y direction
+
+# Stacking sequence
+stacking = [45,-45,0,90,45,-45,0,90,45,-45] #angles in degrees
+stacking += stacking[::-1] # symmetry
+
+material = OrthotropicMaterial(E1, E2, v12, G12, t)
+laminate = LaminateProperty(stacking, material)
+
+# Plate boundary conditions
+constraints={
+                &#39;x0&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
+                &#39;xa&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
+                &#39;y0&#39;: [],
+                &#39;yb&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
+            }
+
+#Plate loads
+Nxx = -1
+Nyy = -0.5
+Nxy = 0.5
+
+panel = PlateStructure(dproperty=laminate, a=a, b=b, m=m, n=n, Nxx=Nxx, Nyy=Nyy, Nxy=Nxy, constraints=constraints)
+eigenvalue, eigenvector = panel.buckling_analysis()
+print(f&#39;Critical eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
+panel.plot_eigenvalue()
 </pre></div>
 </div>
 </div>
@@ -440,62 +405,109 @@ plate.plot_eigenvalue()
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-min eigenvalue is  495.0 N/mm
+Critical eigenvalue is  26.6 N/mm
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Ritz_verification_5_1.png" src="../_images/notebooks_Ritz_verification_5_1.png" />
+<img alt="../_images/notebooks_Code_snipets_1_1.png" src="../_images/notebooks_Code_snipets_1_1.png" />
 </div>
 </div>
 </section>
-<section id="Simply-supported-with-one-free-edge-study-case-(SSSC)">
-<h3>Simply supported with one free edge study case (SSSC)<a class="headerlink" href="#Simply-supported-with-one-free-edge-study-case-(SSSC)" title="Link to this heading">#</a></h3>
+<section id="Maximize-Critical-Buckling-Load">
+<h2>Maximize Critical Buckling Load<a class="headerlink" href="#Maximize-Critical-Buckling-Load" title="Link to this heading">#</a></h2>
+<p>The maximize_buckling_load() function solves a optimization problem like</p>
+<div class="math notranslate nohighlight">
+\[max⁡λ( W_1, W_3 )\]</div>
+<div class="math notranslate nohighlight">
+\[g_1=W_3+2W_1-1≥0\]</div>
+<div class="math notranslate nohighlight">
+\[g_2=W_3-2W_1+1≥0\]</div>
+<div class="math notranslate nohighlight">
+\[-1≤W_1, W_3≤1\]</div>
+<p>that finds the pair of lamination parameters <span class="math notranslate nohighlight">\(( W_1, W_3 )\)</span> that maximizes buckling load, given the constraints <span class="math notranslate nohighlight">\(g_1\)</span> and <span class="math notranslate nohighlight">\(g_2\)</span>. The flexural Lamination Parameters, established by [14], are</p>
+<div class="math notranslate nohighlight">
+\[W_1 =&gt; cos(2\theta)\]</div>
+<div class="math notranslate nohighlight">
+\[W_2 =&gt; sin(2\theta)\]</div>
+<div class="math notranslate nohighlight">
+\[W_3 =&gt; cos(4\theta)\]</div>
+<div class="math notranslate nohighlight">
+\[W_4 =&gt; sin(4\theta)\]</div>
+<p>where <span class="math notranslate nohighlight">\(θ_l\)</span> is the angle of the laminate in continuous dominium and <span class="math notranslate nohighlight">\(h\)</span> is the laminate thickness. For practical reasons, only Lamination Parameters <span class="math notranslate nohighlight">\(W_1\)</span> and <span class="math notranslate nohighlight">\(W_3\)</span> are used as project variables, while <span class="math notranslate nohighlight">\(W_2\)</span> and <span class="math notranslate nohighlight">\(W_4\)</span> are considered equal zero, therefore a symmetric and balanced laminated is considered. For more details on how to interpret them and convert them into a feasible stacking sequence, check the references [1], [3] and [4].</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>constraints = {
-     &#39;x0&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-     &#39;xa&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-     &#39;y0&#39; : [],
-     &#39;yb&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;]
- }
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy.optimize import maximize_buckling_load
 
-plate = PlateStructure(lam, a, b, constraints, Nxx=Nxx, Nyy=Nyy)
-eigenvalue, eigenvector = plate.buckling_analysis()
-print(f&#39;min eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
+total_thickness = 20*0.21 #4.2 mm
+res = maximize_buckling_load(a=a, b=b, T=total_thickness, E1=E1, E2=E2,
+                            v12=v12, G12=G12, Nxx=Nxx, Nyy=Nyy,
+                            Nxy=Nxy, m=m, n=n, panel_constraint=constraints)
 
-plate.plot_eigenvalue()
+print(f&#39;W1={res.x[0]: .3f} and W3={res.x[1]: .3f}&#39;)
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-min eigenvalue is  89.6 N/mm
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Ritz_verification_7_1.png" src="../_images/notebooks_Ritz_verification_7_1.png" />
-</div>
+<div class="highlight"><pre>
+W1= 0.487 and W3=-0.026
+</pre></div></div>
 </div>
 </section>
-<section id="Comparison-with-NASTRAN-deformed-shape">
-<h3>Comparison with NASTRAN deformed shape<a class="headerlink" href="#Comparison-with-NASTRAN-deformed-shape" title="Link to this heading">#</a></h3>
-<p><img alt="02ecc3d699c94976af9a4417d13754ed" class="no-scaled-link" src="../_images/Nastran_deformed.png" style="width: 600px;" /></p>
-</section>
+<section id="Minimize-Panel-Weight">
+<h2>Minimize Panel Weight<a class="headerlink" href="#Minimize-Panel-Weight" title="Link to this heading">#</a></h2>
+<p>The minimize_panel_weight() function solves a optimization problem like</p>
+<div class="math notranslate nohighlight">
+\[min⁡V(T, W_1, W_3 )=T^3\]</div>
+<div class="math notranslate nohighlight">
+\[g_1=λ(T, W_1, W_3 )-1≥0\]</div>
+<div class="math notranslate nohighlight">
+\[g_2=W_3+2W_1-1≥0\]</div>
+<div class="math notranslate nohighlight">
+\[g_3=W_3-2W_1+1≥0\]</div>
+<div class="math notranslate nohighlight">
+\[T&gt;0\]</div>
+<div class="math notranslate nohighlight">
+\[-1≤W_1, W_3≤1\]</div>
+<p>that minimizes the volume of the plate submitted to the constraints <span class="math notranslate nohighlight">\(g_1\)</span>, <span class="math notranslate nohighlight">\(g_2\)</span> and <span class="math notranslate nohighlight">\(g_3\)</span>. Where <span class="math notranslate nohighlight">\(T\)</span>, the total thickness of the plate, is used as design variable.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy.optimize import minimize_panel_weight
+
+res = minimize_panel_weight(a=a, b=b, E1=E1, E2=E2,
+                            v12=v12, G12=G12, Nxx=26.6*Nxx, Nyy=26.6*Nyy,
+                            Nxy=26.6*Nxy, m=m, n=n, panel_constraint=constraints)
+
+print(f&#39;T={res.x[0]: .3f} W1={res.x[1]: .3f} and W3={res.x[2]: .3f}&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+T= 4.190 W1= 0.487 and W3=-0.026
+</pre></div></div>
+</div>
 </section>
 <section id="References">
 <h2>References<a class="headerlink" href="#References" title="Link to this heading">#</a></h2>
-<p>Kassapoglou, Christos. Design and Analysis of Composite Structures: With Applications to Aerospace Structures. John Wiley &amp; Sons, 2010.</p>
+<ul class="simple">
+<li><p>[1] SILVA, Rafael Pereira da. Composite Plate optimization combining semi-analytical model, Lamination Parameters and a Gradient-Based Optimizer. 2023. 82f. Dissertation of Master of Science – Instituto Tecnológico de Aeronáutica, São José dos Campos.</p></li>
+<li><p>[2] Castro, Saullo; Donadon, Mauricio. (2016). Assembly of Semi-Analytical models to Address Linear Buckling and Vibration of Stiffened Composite Panels with Debonding Defect. Composite Structures. 160. 10.1016/j.compstruct.2016.10.026.</p></li>
+<li><p>[3] Miki, M. Sugiyama, Y. (1993). Optimum Design of Laminated Composite Plates Using Lamination Parameters. Aiaa Journal - AIAA J. 31. 921-922. 10.2514/3.49033.</p></li>
+<li><p>[4] Gurdal, Z.; Haftka, R. T. Elements of Structural Optimization. Third revised and expanded edition. Springer-Science Business Media, B. V. 1991.</p></li>
+</ul>
 </section>
 </section>
 
@@ -510,22 +522,13 @@ min eigenvalue is  89.6 N/mm
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="Ritz_verification.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Composipy Notebooks</p>
+        <p class="prev-next-title">Critical Buckling Examples</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="Code_snipets.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Code snipets</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -545,13 +548,9 @@ min eigenvalue is  89.6 N/mm
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Simply-Supported-study-case-(SSSS)">Simply Supported study case (SSSS)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Different-boundary-conditions">Different boundary conditions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Clamped-study-case-(CCCC)">Clamped study case (CCCC)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Simply-supported-with-one-free-edge-study-case-(SSSC)">Simply supported with one free edge study case (SSSC)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Comparison-with-NASTRAN-deformed-shape">Comparison with NASTRAN deformed shape</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Plate-buckling-analysis">Plate buckling analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Maximize-Critical-Buckling-Load">Maximize Critical Buckling Load</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Minimize-Panel-Weight">Minimize Panel Weight</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#References">References</a></li>
 </ul>
   </nav></div>
@@ -559,7 +558,7 @@ min eigenvalue is  89.6 N/mm
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/notebooks/Ritz_verification.ipynb.txt">
+    <a href="../_sources/notebooks/Code_snipets.ipynb.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

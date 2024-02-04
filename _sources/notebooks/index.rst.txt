@@ -11,3 +11,4 @@ Check out some jupyter notebooks.
    :caption: Contents:
    
    Critical Buckling Examples <Ritz_verification.ipynb>
+   Sample Code Snipets <Code_snipets.ipynb>
