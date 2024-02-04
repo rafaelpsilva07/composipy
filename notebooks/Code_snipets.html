@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Code snipets &#8212; composipy 1.2.3 documentation</title>
+    <title>Sample Code Snippets &#8212; composipy 1.2.3 documentation</title>
   
   
   
@@ -287,7 +287,7 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Ritz_verification.html">Critical Buckling Examples</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Sample Code Snipets</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Sample Code Snippets</a></li>
 </ul>
 </div>
 </nav></div>
@@ -328,7 +328,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Composipy Notebooks</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Code snipets</li>
+    <li class="breadcrumb-item active" aria-current="page">Sample Code Snippets</li>
   </ul>
 </nav>
 </div>
@@ -345,8 +345,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="Code-snipets">
-<h1>Code snipets<a class="headerlink" href="#Code-snipets" title="Link to this heading">#</a></h1>
+  <section id="Sample-Code-Snippets">
+<h1>Sample Code Snippets<a class="headerlink" href="#Sample-Code-Snippets" title="Link to this heading">#</a></h1>
 <p>The code snipets are supposed to present the major functionalities of composipy. They are supposed to be published within SoftwareX Elselvier Journal.</p>
 <section id="Plate-buckling-analysis">
 <h2>Plate buckling analysis<a class="headerlink" href="#Plate-buckling-analysis" title="Link to this heading">#</a></h2>
@@ -393,7 +393,8 @@ Nxx = -1
 Nyy = -0.5
 Nxy = 0.5
 
-panel = PlateStructure(dproperty=laminate, a=a, b=b, m=m, n=n, Nxx=Nxx, Nyy=Nyy, Nxy=Nxy, constraints=constraints)
+panel = PlateStructure(dproperty=laminate, a=a, b=b, m=m, n=n, Nxx=Nxx,
+                       Nyy=Nyy, Nxy=Nxy, constraints=constraints)
 eigenvalue, eigenvector = panel.buckling_analysis()
 print(f&#39;Critical eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
 panel.plot_eigenvalue()
