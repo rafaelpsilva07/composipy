@@ -11,7 +11,7 @@
 
 ## What it is
 
-**composipy** is a python library to calculate composite plates using the classical laminate theory. This library is designed to be simple, userfriendly and helpfull.
+Composipy is a Python-based library designed to address the challenges of composite plate analysis and optimization in the aerospace industry, where weight reduction is crucial for efficient and profitable aircraft design. The library offers tools for plate buckling analysis and lamination parameter optimization, empowering engineers to streamline the design process and enhance structural performance. Utilizing object-oriented programming and native Python structures, Composipy ensures a seamless workflow and easy integration into existing engineering practices. Through continuous integration and delivery practices, Composipy maintains reliability and efficiency. 
 
 Composipy is able to perform buckling calculation considering different boundary conditions and in-plane load applications. See [Examples](https://rafaelpsilva07.github.io/composipy/notebooks/Examples_BCs.html).
 
@@ -34,30 +34,28 @@ pip install composipy
 python setup.py install
 ```
 
-
 ## Documentation
-
-- [Composipy documentation](https://rafaelpsilva07.github.io/composipy/#contents)
 
 - [Examples](https://rafaelpsilva07.github.io/composipy/notebooks/index.html)
 
 - [Code References](https://rafaelpsilva07.github.io/composipy/reference/index.html)
 
+- [Optitmization functions](https://rafaelpsilva07.github.io/composipy/reference/optimization_functions.html)
 
 ## Quick start
 
 ### Create the Material Properties.
 
 ```python
->>> from composipy import OrthotropicMaterial
->>> 
->>> E1 = 60800
->>> E2 = 58250
->>> v12 = 0.07
->>> G12 = 4550
->>> t = 0.21
->>>
->>> mat_1 = OrthotropicMaterial(E1, E2, v12, G12, t)
+from composipy import OrthotropicMaterial
+ 
+E1 = 60800
+E2 = 58250
+v12 = 0.07
+G12 = 4550
+t = 0.21
+
+mat_1 = OrthotropicMaterial(E1, E2, v12, G12, t)
 ```
 
 See [OrthotropicMaterial](https://rafaelpsilva07.github.io/composipy/reference/classes.html) for reference.
@@ -66,9 +64,9 @@ See [OrthotropicMaterial](https://rafaelpsilva07.github.io/composipy/reference/c
 ### Define the Laminate.
 
 ```python
->>> from composipy import LaminateProperty
->>> stacking = [-45, 45, 90, 0, 0, 0, 0, 90, 45, -45]
->>> laminate1 = LaminateProperty(stacking, mat_1)
+from composipy import LaminateProperty
+stacking = [-45, 45, 90, 0, 0, 0, 0, 90, 45, -45]
+laminate1 = LaminateProperty(stacking, mat_1)
 ```
 
 See [LaminateProperty](https://rafaelpsilva07.github.io/composipy/reference/classes.html#laminateproperty) for reference.
@@ -76,23 +74,23 @@ See [LaminateProperty](https://rafaelpsilva07.github.io/composipy/reference/clas
 ### Calculate Stiffnnes Matrix and Lamination Parameters
 
 ```python
->>> print(laminate1.ABD) # prints the ABD matrix as a np.ndarray
->>> print(laminate1.xiA) # prints lamination parameters of extension as a np.ndarray
->>> print(laminate1.xiD) # prints lamination parameters of bending as a np.ndarray
+print(laminate1.ABD) # prints the ABD matrix as a np.ndarray
+print(laminate1.xiA) # prints lamination parameters of extension as a np.ndarray
+print(laminate1.xiD) # prints lamination parameters of bending as a np.ndarray
 ```
 
 ### Create a Plate Structure.
 
 ```python
->>> from composipy import PlateStructure
->>> 
->>> constraints = {    
----     'x0' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ'],
----     'xa' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ'],
----     'y0' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ'],
----     'yb' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
---- }
->>> panel = PlateStructure(laminate1, 360, 360, m=10, n=10, Nxx=-1, constraints=constraints)
+from composipy import PlateStructure
+ 
+constraints = {    
+     'x0' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ'],
+     'xa' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ'],
+     'y0' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ'],
+     'yb' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+}
+panel = PlateStructure(laminate1, 360, 360, m=10, n=10, Nxx=-1, constraints=constraints)
 ```
 
 See [PlateStructure](https://rafaelpsilva07.github.io/composipy/reference/classes.html#platestructure) for reference.
@@ -100,19 +98,19 @@ See [PlateStructure](https://rafaelpsilva07.github.io/composipy/reference/classe
 
 ### Calculate Buckling
 ```python
->>> print(panel.buckling_analysis()) # solve the eigenvalue problem.
+print(panel.buckling_analysis()) # solve the eigenvalue problem.
 ```
 
 ### Plot Buckling shape mode
 ```python
->>> print(panel.plot_eigenvalue())
+print(panel.plot_eigenvalue())
 ```
-
 
 
 ## Theoretical References
 
-The implementation of composipy is based on the following references
+The implementation of composipy is based on the following reference:
 
-- [Mechanics Of Composite Materials by Robert M. Jones](https://www.routledge.com/Mechanics-Of-Composite-Materials/Jones/p/book/9781560327127)
-- [Castro S.G.P., Donadon M.V. Assembly of semi-analytical models to address linear buckling and vibration of stiffened composite panels with debonding defect. Compos. Struct., 160 (2017), pp. 232-247,](https://www.sciencedirect.com/science/article/abs/pii/S026382231631008X)
+- SILVA, Rafael Pereira da. Composite Plate optimization combining semi-analytical model, Lamination Parameters and a Gradient-Based Optimizer. 2023. 82f. Dissertation of Master of Science – Instituto Tecnológico de Aeronáutica, São José dos Campos.
+- rafaelpsilva07. (2024). rafaelpsilva07/rafaelmscdissertation: v1.0.0 (1.0.0). Zenodo. https://doi.org/10.5281/zenodo.10546621
+- Application repository: https://github.com/rafaelpsilva07/rafaelmscdissertation
