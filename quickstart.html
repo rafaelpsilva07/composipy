@@ -346,7 +346,7 @@ document.write(`
 <h1>Composipy<a class="headerlink" href="#composipy" title="Link to this heading">#</a></h1>
 <section id="what-it-is">
 <h2>What it is<a class="headerlink" href="#what-it-is" title="Link to this heading">#</a></h2>
-<p><strong>composipy</strong> is a python library to calculate composite plates using the classical laminate theory. This library is designed to be simple, userfriendly and helpfull.</p>
+<p>Composipy is a Python-based library designed to address the challenges of composite plate analysis and optimization in the aerospace industry, where weight reduction is crucial for efficient and profitable aircraft design. The library offers tools for plate buckling analysis and lamination parameter optimization, empowering engineers to streamline the design process and enhance structural performance. Utilizing object-oriented programming and native Python structures, Composipy ensures a seamless workflow and easy integration into existing engineering practices. Through continuous integration and delivery practices, Composipy maintains reliability and efficiency.</p>
 <p>Composipy is able to perform buckling calculation considering different boundary conditions and in-plane load applications. See <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/notebooks/Examples_BCs.html">Examples</a>.</p>
 <p><span class="raw-html-m2r"><img src="https://github.com/rafaelpsilva07/composipy/blob/main/doc/images/load_bcs_examples.PNG" width="700"></span></p>
 </section>
@@ -368,79 +368,80 @@ document.write(`
 <section id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference external" href="https://rafaelpsilva07.github.io/composipy/#contents">Composipy documentation</a></p></li>
 <li><p><a class="reference external" href="https://rafaelpsilva07.github.io/composipy/notebooks/index.html">Examples</a></p></li>
 <li><p><a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/index.html">Code References</a></p></li>
+<li><p><a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/optimization_functions.html">Optitmization functions</a></p></li>
 </ul>
 </section>
 <section id="quick-start">
 <h2>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
 <section id="create-the-material-properties">
 <h3>Create the Material Properties.<a class="headerlink" href="#create-the-material-properties" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">E1</span> <span class="o">=</span> <span class="mi">60800</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">E2</span> <span class="o">=</span> <span class="mi">58250</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v12</span> <span class="o">=</span> <span class="mf">0.07</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G12</span> <span class="o">=</span> <span class="mi">4550</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="mf">0.21</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mat_1</span> <span class="o">=</span> <span class="n">OrthotropicMaterial</span><span class="p">(</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span>
+
+<span class="n">E1</span> <span class="o">=</span> <span class="mi">60800</span>
+<span class="n">E2</span> <span class="o">=</span> <span class="mi">58250</span>
+<span class="n">v12</span> <span class="o">=</span> <span class="mf">0.07</span>
+<span class="n">G12</span> <span class="o">=</span> <span class="mi">4550</span>
+<span class="n">t</span> <span class="o">=</span> <span class="mf">0.21</span>
+
+<span class="n">mat_1</span> <span class="o">=</span> <span class="n">OrthotropicMaterial</span><span class="p">(</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>See <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/classes.html">OrthotropicMaterial</a> for reference.</p>
 </section>
 <section id="define-the-laminate">
 <h3>Define the Laminate.<a class="headerlink" href="#define-the-laminate" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">LaminateProperty</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stacking</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate1</span> <span class="o">=</span> <span class="n">LaminateProperty</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">mat_1</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">LaminateProperty</span>
+<span class="n">stacking</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">]</span>
+<span class="n">laminate1</span> <span class="o">=</span> <span class="n">LaminateProperty</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">mat_1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>See <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/classes.html#laminateproperty">LaminateProperty</a> for reference.</p>
 </section>
 <section id="calculate-stiffnnes-matrix-and-lamination-parameters">
 <h3>Calculate Stiffnnes Matrix and Lamination Parameters<a class="headerlink" href="#calculate-stiffnnes-matrix-and-lamination-parameters" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">ABD</span><span class="p">)</span> <span class="c1"># prints the ABD matrix as a np.ndarray</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">xiA</span><span class="p">)</span> <span class="c1"># prints lamination parameters of extension as a np.ndarray</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">xiD</span><span class="p">)</span> <span class="c1"># prints lamination parameters of bending as a np.ndarray</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">ABD</span><span class="p">)</span> <span class="c1"># prints the ABD matrix as a np.ndarray</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">xiA</span><span class="p">)</span> <span class="c1"># prints lamination parameters of extension as a np.ndarray</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">xiD</span><span class="p">)</span> <span class="c1"># prints lamination parameters of bending as a np.ndarray</span>
 </pre></div>
 </div>
 </section>
 <section id="create-a-plate-structure">
 <h3>Create a Plate Structure.<a class="headerlink" href="#create-a-plate-structure" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">PlateStructure</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
-<span class="go">---     &#39;x0&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;],</span>
-<span class="go">---     &#39;xa&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;],</span>
-<span class="go">---     &#39;y0&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;],</span>
-<span class="go">---     &#39;yb&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
-<span class="go">--- }</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">panel</span> <span class="o">=</span> <span class="n">PlateStructure</span><span class="p">(</span><span class="n">laminate1</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">Nxx</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">constraints</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">PlateStructure</span>
+
+<span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s1">&#39;x0&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">,</span> <span class="s1">&#39;RX&#39;</span><span class="p">,</span> <span class="s1">&#39;RY&#39;</span><span class="p">,</span> <span class="s1">&#39;RZ&#39;</span><span class="p">],</span>
+     <span class="s1">&#39;xa&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">,</span> <span class="s1">&#39;RX&#39;</span><span class="p">,</span> <span class="s1">&#39;RY&#39;</span><span class="p">,</span> <span class="s1">&#39;RZ&#39;</span><span class="p">],</span>
+     <span class="s1">&#39;y0&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">,</span> <span class="s1">&#39;RX&#39;</span><span class="p">,</span> <span class="s1">&#39;RY&#39;</span><span class="p">,</span> <span class="s1">&#39;RZ&#39;</span><span class="p">],</span>
+     <span class="s1">&#39;yb&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">,</span> <span class="s1">&#39;RX&#39;</span><span class="p">,</span> <span class="s1">&#39;RY&#39;</span><span class="p">,</span> <span class="s1">&#39;RZ&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">panel</span> <span class="o">=</span> <span class="n">PlateStructure</span><span class="p">(</span><span class="n">laminate1</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">Nxx</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">constraints</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>See <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/classes.html#platestructure">PlateStructure</a> for reference.</p>
 </section>
 <section id="calculate-buckling">
 <h3>Calculate Buckling<a class="headerlink" href="#calculate-buckling" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">buckling_analysis</span><span class="p">())</span> <span class="c1"># solve the eigenvalue problem.</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">buckling_analysis</span><span class="p">())</span> <span class="c1"># solve the eigenvalue problem.</span>
 </pre></div>
 </div>
 </section>
 <section id="plot-buckling-shape-mode">
 <h3>Plot Buckling shape mode<a class="headerlink" href="#plot-buckling-shape-mode" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">plot_eigenvalue</span><span class="p">())</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">plot_eigenvalue</span><span class="p">())</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="theoretical-references">
 <h2>Theoretical References<a class="headerlink" href="#theoretical-references" title="Link to this heading">#</a></h2>
-<p>The implementation of composipy is based on the following references</p>
+<p>The implementation of composipy is based on the following reference:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://www.routledge.com/Mechanics-Of-Composite-Materials/Jones/p/book/9781560327127">Mechanics Of Composite Materials by Robert M. Jones</a></p></li>
-<li><p><a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/S026382231631008X">Castro S.G.P., Donadon M.V. Assembly of semi-analytical models to address linear buckling and vibration of stiffened composite panels with debonding defect. Compos. Struct., 160 (2017), pp. 232-247,</a></p></li>
+<li><p>SILVA, Rafael Pereira da. Composite Plate optimization combining semi-analytical model, Lamination Parameters and a Gradient-Based Optimizer. 2023. 82f. Dissertation of Master of Science – Instituto Tecnológico de Aeronáutica, São José dos Campos.</p></li>
+<li><p>rafaelpsilva07. (2024). rafaelpsilva07/rafaelmscdissertation: v1.0.0 (1.0.0). Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.10546621">https://doi.org/10.5281/zenodo.10546621</a></p></li>
+<li><p>Application repository: <a class="github reference external" href="https://github.com/rafaelpsilva07/rafaelmscdissertation">rafaelpsilva07/rafaelmscdissertation</a></p></li>
 </ul>
 </section>
 </section>

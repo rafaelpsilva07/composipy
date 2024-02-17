@@ -353,9 +353,9 @@ document.write(`
 <p>The buckling_analysis() core method solves a eigenvalue problem like</p>
 <div class="math notranslate nohighlight">
 \[([K]-λ[K_G ]){c}={0}\]</div>
-<p>where <span class="math notranslate nohighlight">\([K]\)</span> is the stiffeness matrix of the panel, <span class="math notranslate nohighlight">\([K_G]\)</span> is the geometrical stiffness matrix that depends on internal loads, <span class="math notranslate nohighlight">\({c}\)</span> is the vector of Ritz constants that determines the buckled shape and <span class="math notranslate nohighlight">\(λ\)</span> is the eigenvalue, that determines the critical buckling load. More details about this formulation are found at [1] and [2].</p>
+<p>where <span class="math notranslate nohighlight">\([K]\)</span> is the stiffeness matrix of the panel, <span class="math notranslate nohighlight">\([K_G]\)</span> is the geometrical stiffness matrix that depends on internal loads, <span class="math notranslate nohighlight">\({c}\)</span> is the vector of Ritz constants that determines the buckled shape and <span class="math notranslate nohighlight">\(λ\)</span> is the eigenvalue, that determines the critical buckling load. More details about this formulation are found at [1].</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
@@ -437,9 +437,9 @@ Critical eigenvalue is  26.6 N/mm
 \[W_3 =&gt; cos(4\theta)\]</div>
 <div class="math notranslate nohighlight">
 \[W_4 =&gt; sin(4\theta)\]</div>
-<p>where <span class="math notranslate nohighlight">\(θ_l\)</span> is the angle of the laminate in continuous dominium and <span class="math notranslate nohighlight">\(h\)</span> is the laminate thickness. For practical reasons, only Lamination Parameters <span class="math notranslate nohighlight">\(W_1\)</span> and <span class="math notranslate nohighlight">\(W_3\)</span> are used as project variables, while <span class="math notranslate nohighlight">\(W_2\)</span> and <span class="math notranslate nohighlight">\(W_4\)</span> are considered equal zero, therefore a symmetric and balanced laminated is considered. For more details on how to interpret them and convert them into a feasible stacking sequence, check the references [1], [3] and [4].</p>
+<p>where <span class="math notranslate nohighlight">\(θ_l\)</span> is the angle of the laminate in continuous dominium and <span class="math notranslate nohighlight">\(h\)</span> is the laminate thickness. For practical reasons, only Lamination Parameters <span class="math notranslate nohighlight">\(W_1\)</span> and <span class="math notranslate nohighlight">\(W_3\)</span> are used as project variables, while <span class="math notranslate nohighlight">\(W_2\)</span> and <span class="math notranslate nohighlight">\(W_4\)</span> are considered equal zero, therefore a symmetric and balanced laminated is considered. For more details on how to interpret them and convert them into a feasible stacking sequence, check the references [1], [2] and [3].</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy.optimize import maximize_buckling_load
@@ -447,10 +447,26 @@ Critical eigenvalue is  26.6 N/mm
 total_thickness = 20*0.21 #4.2 mm
 res = maximize_buckling_load(a=a, b=b, T=total_thickness, E1=E1, E2=E2,
                             v12=v12, G12=G12, Nxx=Nxx, Nyy=Nyy,
-                            Nxy=Nxy, m=m, n=n, panel_constraint=constraints)
+                            Nxy=Nxy, m=m, n=n, panel_constraint=constraints,
+                            plot=True) #remove plot=True to gain performance
 
 print(f&#39;W1={res.x[0]: .3f} and W3={res.x[1]: .3f}&#39;)
 </pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+generating plot...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Code_snipets_3_1.png" src="../_images/notebooks_Code_snipets_3_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -479,7 +495,7 @@ W1= 0.487 and W3=-0.026
 \[-1≤W_1, W_3≤1\]</div>
 <p>that minimizes the volume of the plate submitted to the constraints <span class="math notranslate nohighlight">\(g_1\)</span>, <span class="math notranslate nohighlight">\(g_2\)</span> and <span class="math notranslate nohighlight">\(g_3\)</span>. Where <span class="math notranslate nohighlight">\(T\)</span>, the total thickness of the plate, is used as design variable.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy.optimize import minimize_panel_weight
@@ -505,9 +521,8 @@ T= 4.190 W1= 0.487 and W3=-0.026
 <h2>References<a class="headerlink" href="#References" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>[1] SILVA, Rafael Pereira da. Composite Plate optimization combining semi-analytical model, Lamination Parameters and a Gradient-Based Optimizer. 2023. 82f. Dissertation of Master of Science – Instituto Tecnológico de Aeronáutica, São José dos Campos.</p></li>
-<li><p>[2] Castro, Saullo; Donadon, Mauricio. (2016). Assembly of Semi-Analytical models to Address Linear Buckling and Vibration of Stiffened Composite Panels with Debonding Defect. Composite Structures. 160. 10.1016/j.compstruct.2016.10.026.</p></li>
-<li><p>[3] Miki, M. Sugiyama, Y. (1993). Optimum Design of Laminated Composite Plates Using Lamination Parameters. Aiaa Journal - AIAA J. 31. 921-922. 10.2514/3.49033.</p></li>
-<li><p>[4] Gurdal, Z.; Haftka, R. T. Elements of Structural Optimization. Third revised and expanded edition. Springer-Science Business Media, B. V. 1991.</p></li>
+<li><p>[2] Miki, M. Sugiyama, Y. (1993). Optimum Design of Laminated Composite Plates Using Lamination Parameters. Aiaa Journal - AIAA J. 31. 921-922. 10.2514/3.49033.</p></li>
+<li><p>[3] Gurdal, Z.; Haftka, R. T. Elements of Structural Optimization. Third revised and expanded edition. Springer-Science Business Media, B. V. 1991.</p></li>
 </ul>
 </section>
 </section>
