@@ -138,7 +138,8 @@ def plot_optimization(a, b, T, m, n, E1, E2, v12,
             g1_xi3 = -2*g1_xi1 - 1
             g2_xi3 = 2*g2_xi1 - 1
         else:
-            g1_xi3 = -2*g1_xi1**2 - 1
+            print('penalty False')
+            g1_xi3 = 2*g1_xi1**2 - 1
             g2_xi3 = 2*g2_xi1**2 - 1
 
 
