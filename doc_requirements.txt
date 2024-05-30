@@ -9,3 +9,4 @@ ipynb
 numpy
 scipy
 matplotlib
+lxml_html_clean
