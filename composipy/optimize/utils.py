@@ -1,7 +1,8 @@
 '''Utilities functions to be used in optimization'''
 
-from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
+import warnings
 
+from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
 
 
 def Ncr_from_lp(a, b, T, m, n, xi1, xi3, E1, E2, v12, G12, Nxx, Nyy, Nxy, constraints):
@@ -35,13 +36,34 @@ def normalize_critical_load(Nxx, Nyy, Nxy):
 
 def penalty_g1(y0):
     '''Defines the boundary conditions g1 that delimits the triangle.'''
-    xi1, xi3 = y0
+
+    if len(y0) == 2: #unpacking for maximize_buckling
+        xi1, xi3 = y0
+    elif len(y0) == 3: #unpacking for minimize_panel_weight
+        T, xi1, xi3 = y0
+
     g1 = xi3 + 2*xi1 + 1
     return g1
 
 
 def penalty_g2(y0):
     '''Defines the boundary conditions g2 that delimits the triangle.'''
-    xi1, xi3 = y0
+    if len(y0) == 2: #unpacking for maximize_buckling
+        xi1, xi3 = y0
+    elif len(y0) == 3: #unpacking for minimize_panel_weight
+        T, xi1, xi3 = y0
+
     g2 = xi3 - 2*xi1 + 1
     return g2
+
+
+def check_loads(Nxx, Nyy, Nxy):
+    '''Given the load inputs, check if the function may present a problem'''
+
+    # Positive loads warning   
+    if Nxx >= 0 and Nyy >= 0 and Nxy == 0:
+        warnings.warn(f'Buckling analysis is supposed to take at least a negative normal load or shear. (Nxx = {Nxx}, Nyy = {Nyy}, Nxy = {Nxy})')
+
+    #Non normalized loads warning
+    if abs(Nxx) > 1 or abs(Nyy) > 1 or abs(Nxy) > 1:
+        warnings.warn(f'Loads will be normalized, prefer to use loads between -1 and 1 (Nxx = {Nxx}, Nyy = {Nyy}, Nxy = {Nxy})')

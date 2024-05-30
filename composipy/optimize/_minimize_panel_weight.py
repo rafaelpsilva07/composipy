@@ -1,4 +1,3 @@
-import warnings
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -7,7 +6,7 @@ from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
 from scipy.optimize import NonlinearConstraint, Bounds, minimize, LinearConstraint
 from scipy.sparse.linalg import ArpackError
 
-from .utils import Ncr_from_lp, normalize_critical_load, penalty_g1, penalty_g2
+from .utils import Ncr_from_lp, normalize_critical_load, penalty_g1, penalty_g2, check_loads
 
 __all__ = ['minimize_panel_weight']
 
@@ -69,9 +68,7 @@ def minimize_panel_weight(a, b,
     res : scipy minimize result
     '''
 
-    # Positive loads warning   
-    if Nxx >= 0 and Nyy >= 0 and Nxy == 0:
-        warnings.warn(f'Buckling analysis is supposed to take at least a negative normal load or shear. (Nxx = {Nxx}, Nyy = {Nyy}, Nxy = {Nxy})')
+    check_loads(Nxx, Nyy, Nxy)
 
     # Normalizing loads
     Nxx_norm, Nyy_norm, Nxy_norm, max_load = normalize_critical_load(Nxx, Nyy, Nxy)
