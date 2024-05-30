@@ -1,44 +1,47 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Sample Code Snippets &#8212; composipy 1.2.3 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sample Code Snippets &#8212; composipy 1.3 documentation</title>
   
   
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
-    <script src="../_static/documentation_options.js?v=590429e0"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -55,27 +58,23 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -97,12 +96,17 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
@@ -118,7 +122,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.2.3 documentation</p>
+    <p class="title logo__title">composipy 1.3 documentation</p>
   
 </a></div>
     
@@ -132,26 +136,26 @@
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../quickstart.html">
-                        Quick Start
-                      </a>
-                    </li>
-                
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../quickstart.html">
+    Quick Start
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        Code References
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="index.html">
-                        Examples
-                      </a>
-                    </li>
-                
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../reference/index.html">
+    Code References
+  </a>
+</li>
+
+
+<li class="nav-item pst-header-nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Examples
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -207,9 +211,9 @@ document.write(`
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+    <button class="sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
-    </label>
+    </button>
   
 </div>
 
@@ -230,32 +234,35 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
+          
+          
+            <div class="navbar-item">
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../quickstart.html">
-                        Quick Start
-                      </a>
-                    </li>
-                
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../quickstart.html">
+    Quick Start
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        Code References
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="index.html">
-                        Examples
-                      </a>
-                    </li>
-                
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../reference/index.html">
+    Code References
+  </a>
+</li>
+
+
+<li class="nav-item pst-header-nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Examples
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -302,13 +309,13 @@ document.write(`
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
@@ -317,7 +324,7 @@ document.write(`
 
 
 
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -345,17 +352,17 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="Sample-Code-Snippets">
-<h1>Sample Code Snippets<a class="headerlink" href="#Sample-Code-Snippets" title="Link to this heading">#</a></h1>
+  <div class="section" id="Sample-Code-Snippets">
+<h1>Sample Code Snippets<a class="headerlink" href="#Sample-Code-Snippets" title="Permalink to this heading">#</a></h1>
 <p>The code snipets are supposed to present the major functionalities of composipy. They are supposed to be published within SoftwareX Elselvier Journal.</p>
-<section id="Plate-buckling-analysis">
-<h2>Plate buckling analysis<a class="headerlink" href="#Plate-buckling-analysis" title="Link to this heading">#</a></h2>
+<div class="section" id="Plate-buckling-analysis">
+<h2>Plate buckling analysis<a class="headerlink" href="#Plate-buckling-analysis" title="Permalink to this heading">#</a></h2>
 <p>The buckling_analysis() core method solves a eigenvalue problem like</p>
 <div class="math notranslate nohighlight">
 \[([K]-λ[K_G ]){c}={0}\]</div>
 <p>where <span class="math notranslate nohighlight">\([K]\)</span> is the stiffeness matrix of the panel, <span class="math notranslate nohighlight">\([K_G]\)</span> is the geometrical stiffness matrix that depends on internal loads, <span class="math notranslate nohighlight">\({c}\)</span> is the vector of Ritz constants that determines the buckled shape and <span class="math notranslate nohighlight">\(λ\)</span> is the eigenvalue, that determines the critical buckling load. More details about this formulation are found at [1].</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
@@ -416,9 +423,9 @@ Critical eigenvalue is  26.6 N/mm
 <img alt="../_images/notebooks_Code_snipets_1_1.png" src="../_images/notebooks_Code_snipets_1_1.png" />
 </div>
 </div>
-</section>
-<section id="Maximize-Critical-Buckling-Load">
-<h2>Maximize Critical Buckling Load<a class="headerlink" href="#Maximize-Critical-Buckling-Load" title="Link to this heading">#</a></h2>
+</div>
+<div class="section" id="Maximize-Critical-Buckling-Load">
+<h2>Maximize Critical Buckling Load<a class="headerlink" href="#Maximize-Critical-Buckling-Load" title="Permalink to this heading">#</a></h2>
 <p>The maximize_buckling_load() function solves a optimization problem like</p>
 <div class="math notranslate nohighlight">
 \[max⁡λ( W_1, W_3 )\]</div>
@@ -438,8 +445,10 @@ Critical eigenvalue is  26.6 N/mm
 <div class="math notranslate nohighlight">
 \[W_4 =&gt; sin(4\theta)\]</div>
 <p>where <span class="math notranslate nohighlight">\(θ_l\)</span> is the angle of the laminate in continuous dominium and <span class="math notranslate nohighlight">\(h\)</span> is the laminate thickness. For practical reasons, only Lamination Parameters <span class="math notranslate nohighlight">\(W_1\)</span> and <span class="math notranslate nohighlight">\(W_3\)</span> are used as project variables, while <span class="math notranslate nohighlight">\(W_2\)</span> and <span class="math notranslate nohighlight">\(W_4\)</span> are considered equal zero, therefore a symmetric and balanced laminated is considered. For more details on how to interpret them and convert them into a feasible stacking sequence, check the references [1], [2] and [3].</p>
+<div class="section" id="Objective-function-with-boundary-g1-and-g2">
+<h3>Objective function with boundary g1 and g2<a class="headerlink" href="#Objective-function-with-boundary-g1-and-g2" title="Permalink to this heading">#</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy.optimize import maximize_buckling_load
@@ -448,7 +457,7 @@ total_thickness = 20*0.21 #4.2 mm
 res = maximize_buckling_load(a=a, b=b, T=total_thickness, E1=E1, E2=E2,
                             v12=v12, G12=G12, Nxx=Nxx, Nyy=Nyy,
                             Nxy=Nxy, m=m, n=n, panel_constraint=constraints,
-                            plot=True) #remove plot=True to gain performance
+                            plot=True, penalty=True) #remove plot=True to gain performance
 
 print(f&#39;W1={res.x[0]: .3f} and W3={res.x[1]: .3f}&#39;)
 </pre></div>
@@ -466,7 +475,7 @@ generating plot...
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Code_snipets_3_1.png" src="../_images/notebooks_Code_snipets_3_1.png" />
+<img alt="../_images/notebooks_Code_snipets_4_1.png" src="../_images/notebooks_Code_snipets_4_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -477,9 +486,51 @@ generating plot...
 W1= 0.487 and W3=-0.026
 </pre></div></div>
 </div>
-</section>
-<section id="Minimize-Panel-Weight">
-<h2>Minimize Panel Weight<a class="headerlink" href="#Minimize-Panel-Weight" title="Link to this heading">#</a></h2>
+</div>
+<div class="section" id="Objective-function-without-boundary-g1-and-g2">
+<h3>Objective function without boundary g1 and g2<a class="headerlink" href="#Objective-function-without-boundary-g1-and-g2" title="Permalink to this heading">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>total_thickness = 20*0.21 #4.2 mm
+res = maximize_buckling_load(a=a, b=b, T=total_thickness, E1=E1, E2=E2,
+                            v12=v12, G12=G12, Nxx=Nxx, Nyy=Nyy,
+                            Nxy=Nxy, m=m, n=n, panel_constraint=constraints,
+                            plot=True, penalty=False) #remove plot=True to gain performance
+
+print(f&#39;W1={res.x[0]: .3f} and W3={res.x[1]: .3f}&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+generating plot...
+penalty False
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Code_snipets_6_1.png" src="../_images/notebooks_Code_snipets_6_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+W1= 0.677 and W3=-0.083
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Minimize-Panel-Weight">
+<h2>Minimize Panel Weight<a class="headerlink" href="#Minimize-Panel-Weight" title="Permalink to this heading">#</a></h2>
 <p>The minimize_panel_weight() function solves a optimization problem like</p>
 <div class="math notranslate nohighlight">
 \[min⁡V(T, W_1, W_3 )=T^3\]</div>
@@ -516,16 +567,16 @@ print(f&#39;T={res.x[0]: .3f} W1={res.x[1]: .3f} and W3={res.x[2]: .3f}&#39;)
 T= 4.190 W1= 0.487 and W3=-0.026
 </pre></div></div>
 </div>
-</section>
-<section id="References">
-<h2>References<a class="headerlink" href="#References" title="Link to this heading">#</a></h2>
+</div>
+<div class="section" id="References">
+<h2>References<a class="headerlink" href="#References" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>[1] SILVA, Rafael Pereira da. Composite Plate optimization combining semi-analytical model, Lamination Parameters and a Gradient-Based Optimizer. 2023. 82f. Dissertation of Master of Science – Instituto Tecnológico de Aeronáutica, São José dos Campos.</p></li>
 <li><p>[2] Miki, M. Sugiyama, Y. (1993). Optimum Design of Laminated Composite Plates Using Lamination Parameters. Aiaa Journal - AIAA J. 31. 921-922. 10.2514/3.49033.</p></li>
 <li><p>[3] Gurdal, Z.; Haftka, R. T. Elements of Structural Optimization. Third revised and expanded edition. Springer-Science Business Media, B. V. 1991.</p></li>
 </ul>
-</section>
-</section>
+</div>
+</div>
 
 
                 </article>
@@ -534,7 +585,7 @@ T= 4.190 W1= 0.487 and W3=-0.026
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -565,7 +616,11 @@ T= 4.190 W1= 0.487 and W3=-0.026
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Plate-buckling-analysis">Plate buckling analysis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Maximize-Critical-Buckling-Load">Maximize Critical Buckling Load</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Maximize-Critical-Buckling-Load">Maximize Critical Buckling Load</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Objective-function-with-boundary-g1-and-g2">Objective function with boundary g1 and g2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Objective-function-without-boundary-g1-and-g2">Objective function without boundary g1 and g2</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Minimize-Panel-Weight">Minimize Panel Weight</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#References">References</a></li>
 </ul>
@@ -593,8 +648,8 @@ T= 4.190 W1= 0.487 and W3=-0.026
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -614,7 +669,7 @@ T= 4.190 W1= 0.487 and W3=-0.026
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     <br/>
   </p>
 </div>
@@ -627,7 +682,7 @@ T= 4.190 W1= 0.487 and W3=-0.026
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.3.
 </p></div>
       
     </div>

@@ -1,43 +1,46 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="./" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Composipy &#8212; composipy 1.2.3 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Composipy &#8212; composipy 1.3 documentation</title>
   
   
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
-    <script src="_static/documentation_options.js?v=590429e0"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'quickstart';</script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -53,27 +56,23 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -95,12 +94,17 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
@@ -116,7 +120,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.2.3 documentation</p>
+    <p class="title logo__title">composipy 1.3 documentation</p>
   
 </a></div>
     
@@ -130,26 +134,26 @@
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
-                        Quick Start
-                      </a>
-                    </li>
-                
+<li class="nav-item pst-header-nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Quick Start
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="reference/index.html">
-                        Code References
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="notebooks/index.html">
-                        Examples
-                      </a>
-                    </li>
-                
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="reference/index.html">
+    Code References
+  </a>
+</li>
+
+
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="notebooks/index.html">
+    Examples
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -205,9 +209,9 @@ document.write(`
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+    <button class="sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
-    </label>
+    </button>
   
 </div>
 
@@ -228,32 +232,35 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
+          
+          
+            <div class="navbar-item">
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
-                        Quick Start
-                      </a>
-                    </li>
-                
+<li class="nav-item pst-header-nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Quick Start
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="reference/index.html">
-                        Code References
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="notebooks/index.html">
-                        Examples
-                      </a>
-                    </li>
-                
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="reference/index.html">
+    Code References
+  </a>
+</li>
+
+
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="notebooks/index.html">
+    Examples
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -295,13 +302,13 @@ document.write(`
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
@@ -310,7 +317,7 @@ document.write(`
 
 
 
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -342,41 +349,41 @@ document.write(`
 <a class="reference external image-reference" href="https://www.linkedin.com/in/rafael-pereira-da-silva07/"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat&amp;logo=linkedin&amp;logoColor=white" /></a>
 <a class="reference external image-reference" href="https://www.youtube.com/watch?v=W4foqYR8IL0&amp;t=622s&amp;ab_channel=EngenhariaRefinada"><img alt="Youtube" src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&amp;logo=youtube&amp;logoColor=white" /></a>
 <a class="reference external image-reference" href="https://zenodo.org/badge/latestdoi/332543985"><img alt="DOI" src="https://zenodo.org/badge/332543985.svg" /></a>
-<section id="composipy">
-<h1>Composipy<a class="headerlink" href="#composipy" title="Link to this heading">#</a></h1>
-<section id="what-it-is">
-<h2>What it is<a class="headerlink" href="#what-it-is" title="Link to this heading">#</a></h2>
+<div class="section" id="composipy">
+<h1>Composipy<a class="headerlink" href="#composipy" title="Permalink to this heading">#</a></h1>
+<div class="section" id="what-it-is">
+<h2>What it is<a class="headerlink" href="#what-it-is" title="Permalink to this heading">#</a></h2>
 <p>Composipy is a Python-based library designed to address the challenges of composite plate analysis and optimization in the aerospace industry, where weight reduction is crucial for efficient and profitable aircraft design. The library offers tools for plate buckling analysis and lamination parameter optimization, empowering engineers to streamline the design process and enhance structural performance. Utilizing object-oriented programming and native Python structures, Composipy ensures a seamless workflow and easy integration into existing engineering practices. Through continuous integration and delivery practices, Composipy maintains reliability and efficiency.</p>
 <p>Composipy is able to perform buckling calculation considering different boundary conditions and in-plane load applications. See <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/notebooks/Examples_BCs.html">Examples</a>.</p>
 <p><span class="raw-html-m2r"><img src="https://github.com/rafaelpsilva07/composipy/blob/main/doc/images/load_bcs_examples.PNG" width="700"></span></p>
-</section>
-<section id="how-to-install">
-<h2>How to install<a class="headerlink" href="#how-to-install" title="Link to this heading">#</a></h2>
-<section id="directly-from-pypi">
-<h3>Directly From PYPI<a class="headerlink" href="#directly-from-pypi" title="Link to this heading">#</a></h3>
+</div>
+<div class="section" id="how-to-install">
+<h2>How to install<a class="headerlink" href="#how-to-install" title="Permalink to this heading">#</a></h2>
+<div class="section" id="directly-from-pypi">
+<h3>Directly From PYPI<a class="headerlink" href="#directly-from-pypi" title="Permalink to this heading">#</a></h3>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>composipy
 </pre></div>
 </div>
-</section>
-<section id="built-from-source">
-<h3>Built from source<a class="headerlink" href="#built-from-source" title="Link to this heading">#</a></h3>
+</div>
+<div class="section" id="built-from-source">
+<h3>Built from source<a class="headerlink" href="#built-from-source" title="Permalink to this heading">#</a></h3>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>setup.py<span class="w"> </span>install
 </pre></div>
 </div>
-</section>
-</section>
-<section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h2>
+</div>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://rafaelpsilva07.github.io/composipy/notebooks/index.html">Examples</a></p></li>
 <li><p><a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/index.html">Code References</a></p></li>
 <li><p><a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/optimization_functions.html">Optitmization functions</a></p></li>
 </ul>
-</section>
-<section id="quick-start">
-<h2>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
-<section id="create-the-material-properties">
-<h3>Create the Material Properties.<a class="headerlink" href="#create-the-material-properties" title="Link to this heading">#</a></h3>
+</div>
+<div class="section" id="quick-start">
+<h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this heading">#</a></h2>
+<div class="section" id="create-the-material-properties">
+<h3>Create the Material Properties.<a class="headerlink" href="#create-the-material-properties" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span>
 
 <span class="n">E1</span> <span class="o">=</span> <span class="mi">60800</span>
@@ -389,26 +396,26 @@ document.write(`
 </pre></div>
 </div>
 <p>See <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/classes.html">OrthotropicMaterial</a> for reference.</p>
-</section>
-<section id="define-the-laminate">
-<h3>Define the Laminate.<a class="headerlink" href="#define-the-laminate" title="Link to this heading">#</a></h3>
+</div>
+<div class="section" id="define-the-laminate">
+<h3>Define the Laminate.<a class="headerlink" href="#define-the-laminate" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">LaminateProperty</span>
 <span class="n">stacking</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">]</span>
 <span class="n">laminate1</span> <span class="o">=</span> <span class="n">LaminateProperty</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">mat_1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>See <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/classes.html#laminateproperty">LaminateProperty</a> for reference.</p>
-</section>
-<section id="calculate-stiffnnes-matrix-and-lamination-parameters">
-<h3>Calculate Stiffnnes Matrix and Lamination Parameters<a class="headerlink" href="#calculate-stiffnnes-matrix-and-lamination-parameters" title="Link to this heading">#</a></h3>
+</div>
+<div class="section" id="calculate-stiffnnes-matrix-and-lamination-parameters">
+<h3>Calculate Stiffnnes Matrix and Lamination Parameters<a class="headerlink" href="#calculate-stiffnnes-matrix-and-lamination-parameters" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">ABD</span><span class="p">)</span> <span class="c1"># prints the ABD matrix as a np.ndarray</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">xiA</span><span class="p">)</span> <span class="c1"># prints lamination parameters of extension as a np.ndarray</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">laminate1</span><span class="o">.</span><span class="n">xiD</span><span class="p">)</span> <span class="c1"># prints lamination parameters of bending as a np.ndarray</span>
 </pre></div>
 </div>
-</section>
-<section id="create-a-plate-structure">
-<h3>Create a Plate Structure.<a class="headerlink" href="#create-a-plate-structure" title="Link to this heading">#</a></h3>
+</div>
+<div class="section" id="create-a-plate-structure">
+<h3>Create a Plate Structure.<a class="headerlink" href="#create-a-plate-structure" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">PlateStructure</span>
 
 <span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
@@ -421,30 +428,30 @@ document.write(`
 </pre></div>
 </div>
 <p>See <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/classes.html#platestructure">PlateStructure</a> for reference.</p>
-</section>
-<section id="calculate-buckling">
-<h3>Calculate Buckling<a class="headerlink" href="#calculate-buckling" title="Link to this heading">#</a></h3>
+</div>
+<div class="section" id="calculate-buckling">
+<h3>Calculate Buckling<a class="headerlink" href="#calculate-buckling" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">buckling_analysis</span><span class="p">())</span> <span class="c1"># solve the eigenvalue problem.</span>
 </pre></div>
 </div>
-</section>
-<section id="plot-buckling-shape-mode">
-<h3>Plot Buckling shape mode<a class="headerlink" href="#plot-buckling-shape-mode" title="Link to this heading">#</a></h3>
+</div>
+<div class="section" id="plot-buckling-shape-mode">
+<h3>Plot Buckling shape mode<a class="headerlink" href="#plot-buckling-shape-mode" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">plot_eigenvalue</span><span class="p">())</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="theoretical-references">
-<h2>Theoretical References<a class="headerlink" href="#theoretical-references" title="Link to this heading">#</a></h2>
+</div>
+</div>
+<div class="section" id="theoretical-references">
+<h2>Theoretical References<a class="headerlink" href="#theoretical-references" title="Permalink to this heading">#</a></h2>
 <p>The implementation of composipy is based on the following reference:</p>
 <ul class="simple">
 <li><p>SILVA, Rafael Pereira da. Composite Plate optimization combining semi-analytical model, Lamination Parameters and a Gradient-Based Optimizer. 2023. 82f. Dissertation of Master of Science – Instituto Tecnológico de Aeronáutica, São José dos Campos.</p></li>
 <li><p>rafaelpsilva07. (2024). rafaelpsilva07/rafaelmscdissertation: v1.0.0 (1.0.0). Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.10546621">https://doi.org/10.5281/zenodo.10546621</a></p></li>
 <li><p>Application repository: <a class="github reference external" href="https://github.com/rafaelpsilva07/rafaelmscdissertation">rafaelpsilva07/rafaelmscdissertation</a></p></li>
 </ul>
-</section>
-</section>
+</div>
+</div>
 
 
                 </article>
@@ -453,7 +460,7 @@ document.write(`
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -534,8 +541,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script src="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -555,7 +562,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     <br/>
   </p>
 </div>
@@ -568,7 +575,7 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.3.
 </p></div>
       
     </div>
