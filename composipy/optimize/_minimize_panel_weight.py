@@ -1,12 +1,11 @@
 import numpy as np
-import matplotlib.pyplot as plt
-
 
 from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
 from scipy.optimize import NonlinearConstraint, Bounds, minimize, LinearConstraint
 from scipy.sparse.linalg import ArpackError
 
 from .utils import Ncr_from_lp, normalize_critical_load, penalty_g1, penalty_g2, check_loads
+
 
 __all__ = ['minimize_panel_weight']
 
