@@ -10,3 +10,4 @@ numpy
 scipy
 matplotlib
 lxml_html_clean
+docutils==0.16
