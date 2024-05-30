@@ -27,7 +27,7 @@ def panel_definition():
              'm': 7,
              'n': 7,
              'panel_constraint' : 'PINNED',
-             'plot': False
+             #'plot': False # removed from this function
     }
  
     return panel
