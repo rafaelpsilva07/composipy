@@ -132,10 +132,15 @@ def plot_optimization(a, b, T, m, n, E1, E2, v12,
                     xi3_arr.append(xi3_)
 
         g1_xi1 = np.linspace(-1, 0, points_to_plot)
-        g1_xi3 = -2*g1_xi1 - 1
-
         g2_xi1 = np.linspace(0, 1, points_to_plot)
-        g2_xi3 = 2*g2_xi1 - 1
+
+        if penalty:
+            g1_xi3 = -2*g1_xi1 - 1
+            g2_xi3 = 2*g2_xi1 - 1
+        else:
+            g1_xi3 = -2*g1_xi1**2 - 1
+            g2_xi3 = 2*g2_xi1**2 - 1
+
 
         n_valid_points = int(np.sqrt(len(Nx_arr)))
         Nx_arr = np.array(Nx_arr)
