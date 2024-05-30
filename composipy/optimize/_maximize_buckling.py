@@ -2,53 +2,13 @@ import warnings
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
 from scipy.optimize import NonlinearConstraint, Bounds, minimize, LinearConstraint
 from scipy.sparse.linalg import ArpackError
 
+from .utils import Ncr_from_lp, normalize_critical_load, penalty_g1, penalty_g2
+
 
 __all__ = ['maximize_buckling_load']
-
-
-def _Ncr(a, b, T, m, n, xi1, xi3, E1, E2, v12, G12, Nxx, Nyy, Nxy, constraints):
-    '''
-    Calculates critical buckling load based in lamination parameters   
-    '''
-    
-    stacking = {
-    'xiD': [xi1, 0.0, xi3, 0.0],
-     'T': T}
-
-    mat1 = OrthotropicMaterial(E1, E2, v12, G12, thickness=0.1)
-    laminate1 = LaminateProperty(stacking, mat1)
-    plate1 = PlateStructure(dproperty=laminate1, a=a, b=b, constraints=constraints, Nxx=Nxx, Nyy=Nyy, Nxy=Nxy, m=m, n=n)
-
-    return plate1.buckling_analysis()[0][0]
-
-
-def _penalty_g1(y0):
-    xi1, xi3 = y0
-    g1 = xi3 + 2*xi1 + 1
-    return g1
-
-
-def _penalty_g2(y0):
-    xi1, xi3 = y0
-    g2 = xi3 - 2*xi1 + 1
-    return g2
-
-
-def _define_critical_load(Nxx, Nyy, Nxy):
-    max_abs_load = [abs(Nxx), abs(Nyy), abs(Nxy)]
-    max_abs_load.sort()
-    max_abs_load = max_abs_load[-1]
-
-    Nxx_norm = Nxx / max_abs_load
-    Nyy_norm = Nyy / max_abs_load
-    Nxy_norm = Nxy / max_abs_load
-
-    return Nxx_norm, Nyy_norm, Nxy_norm, max_abs_load
 
 
 def maximize_buckling_load(a, b, T,
@@ -59,7 +19,8 @@ def maximize_buckling_load(a, b, T,
                    options=None,
                    tol=None,
                    plot=False,
-                   points_to_plot=30
+                   points_to_plot=30,
+                   penalty=True
                    ):
     '''
     Parameters
@@ -109,20 +70,21 @@ def maximize_buckling_load(a, b, T,
         warnings.warn(f'Loads will be normalized, prefer to use loads between -1 and 1 (Nxx = {Nxx}, Nyy = {Nyy}, Nxy = {Nxy})')
 
     # Normalizing loads
-    Nxx_norm, Nyy_norm, Nxy_norm, max_load = _define_critical_load(Nxx, Nyy, Nxy)
+    Nxx_norm, Nyy_norm, Nxy_norm, max_load = normalize_critical_load(Nxx, Nyy, Nxy)
 
     # Critical load error handling
     def critical_load(y0):
         xi1, xi3 = y0
         try:
-            eig = _Ncr(a, b, T, m, n, xi1, xi3, E1, E2, v12, G12, Nxx_norm, Nyy_norm, Nxy_norm, constraints=panel_constraint)
+            eig = Ncr_from_lp(a, b, T, m, n, xi1, xi3, E1, E2, v12, G12, Nxx_norm, Nyy_norm, Nxy_norm, constraints=panel_constraint)
         except ArpackError: #cause if xi1 and xi3 chosen by optimizer is out of the bounds, it may crash
             eig = -1
         return (-1) * eig #negative so the solver can maximize instead of minimize
     
-    # Constraints and boundaries
-    c2 = NonlinearConstraint(_penalty_g1, -0.0001, 10000)
-    c3 = NonlinearConstraint(_penalty_g2, -0.0001, 10000)
+    # Constraints and boundaries   
+    if penalty:
+        c2 = NonlinearConstraint(penalty_g1, -0.0001, 10000)
+        c3 = NonlinearConstraint(penalty_g2, -0.0001, 10000)
     b1 = ([-1.0, 1.0], [-1.0, 1.0])
 
     x0 = [0.0, 0.0]
@@ -158,7 +120,7 @@ def maximize_buckling_load(a, b, T,
             for xi3_ in x:
                 g_curr = constraint(xi1_, xi3_, silent=True)
                 if g_curr:
-                    critc_N = _Ncr(a, b, T, m, n, xi1_, xi3_, E1, E2, v12, G12, Nxx, Nyy, Nxy, panel_constraint)
+                    critc_N = Ncr_from_lp(a, b, T, m, n, xi1_, xi3_, E1, E2, v12, G12, Nxx, Nyy, Nxy, panel_constraint)
                     Nx_arr.append(critc_N)
                     xi1_arr.append(xi1_)
                     xi3_arr.append(xi3_)

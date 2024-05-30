@@ -7,53 +7,14 @@ from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
 from scipy.optimize import NonlinearConstraint, Bounds, minimize, LinearConstraint
 from scipy.sparse.linalg import ArpackError
 
+from .utils import Ncr_from_lp, normalize_critical_load, penalty_g1, penalty_g2
 
 __all__ = ['minimize_panel_weight']
 
 
-def _obj(y0):
-    T, xi1, xi3 = y0
+def _objective_function(y0):
+    T, *_ = y0 #(T, xi1, xi3)
     return T**3
-
-
-def _Ncr(a, b, T, m, n, xi1, xi3, E1, E2, v12, G12, Nxx, Nyy, Nxy, constraints):
-    '''
-    Calculates critical buckling load based in lamination parameters   
-    '''
-    
-    stacking = {
-    'xiD': [xi1, 0.0, xi3, 0.0],
-     'T': T}
-
-    mat1 = OrthotropicMaterial(E1, E2, v12, G12, thickness=0.1)
-    laminate1 = LaminateProperty(stacking, mat1)
-    plate1 = PlateStructure(dproperty=laminate1, a=a, b=b, constraints=constraints, Nxx=Nxx, Nyy=Nyy, Nxy=Nxy, m=m, n=n)
-
-    return plate1.buckling_analysis()[0][0]
-
-
-def _penalty_g1(y0):
-    T, xi1, xi3 = y0
-    g1 = xi3 + 2*xi1 + 1
-    return g1
-
-
-def _penalty_g2(y0):
-    T, xi1, xi3 = y0
-    g2 = xi3 - 2*xi1 + 1
-    return g2
-
-
-def _define_critical_load(Nxx, Nyy, Nxy):
-    max_abs_load = [abs(Nxx), abs(Nyy), abs(Nxy)]
-    max_abs_load.sort()
-    max_abs_load = max_abs_load[-1]
-
-    Nxx_norm = Nxx / max_abs_load
-    Nyy_norm = Nyy / max_abs_load
-    Nxy_norm = Nxy / max_abs_load
-
-    return Nxx_norm, Nyy_norm, Nxy_norm, max_abs_load
 
 
 def minimize_panel_weight(a, b,
@@ -113,24 +74,25 @@ def minimize_panel_weight(a, b,
         warnings.warn(f'Buckling analysis is supposed to take at least a negative normal load or shear. (Nxx = {Nxx}, Nyy = {Nyy}, Nxy = {Nxy})')
 
     # Normalizing loads
-    Nxx_norm, Nyy_norm, Nxy_norm, max_load = _define_critical_load(Nxx, Nyy, Nxy)
+    Nxx_norm, Nyy_norm, Nxy_norm, max_load = normalize_critical_load(Nxx, Nyy, Nxy)
 
     # Critical load error handling
     def critical_load(y0):
         T, xi1, xi3 = y0
         try:
-            eig = _Ncr(a, b, T, m, n, xi1, xi3, E1, E2, v12, G12, Nxx_norm, Nyy_norm, Nxy_norm, constraints=panel_constraint)
+            eig = Ncr_from_lp(a, b, T, m, n, xi1, xi3, E1, E2, v12, G12, Nxx_norm, Nyy_norm, Nxy_norm, constraints=panel_constraint)
         except ArpackError: #cause if xi1 and xi3 chosen by optimizer is out of the bounds, it may crash
             eig = -1
         return eig
     
     # Constraints and boundaries
     c1 = NonlinearConstraint(critical_load, max_load, np.inf)
-    c2 = NonlinearConstraint(_penalty_g1, -0.0001, 10000)
-    c3 = NonlinearConstraint(_penalty_g2, -0.0001, 10000)
+    c2 = NonlinearConstraint(penalty_g1, -0.0001, 10000)
+    c3 = NonlinearConstraint(penalty_g2, -0.0001, 10000)
     b1 = ([0.001, 1000000], [-1.0, 1.0], [-1.0, 1.0])
    
-    res = minimize(_obj, x0, method='SLSQP', constraints=[c1, c2, c3], bounds=b1, options=options, tol=tol)
+    res = minimize(_objective_function, x0, method='SLSQP',
+                   constraints=[c1, c2, c3], bounds=b1, options=options, tol=tol)
 
     if plot:
         print('generating plot...')
