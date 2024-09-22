@@ -1,6 +1,9 @@
 import numpy as np
 
 
+__all__ = ['OrthotropicMaterial', 'IsotropicMaterial']
+
+
 class LaminateStrength():
     '''
     Creates a LaminateStrength object to evaluate strength.
@@ -53,7 +56,7 @@ class LaminateStrength():
 
         ABD = self.dproperty.ABD
         abd = np.linalg.inv(ABD) #equivalent relations on pg 153 of Daniel
-        N = np.array([Nx, Ny, Nxy, Mx, My, Mxy])
+        N = np.array([self.Nx, self.Ny, self.Nxy, self.Mx, self.My, self.Mxy])
         return abd @ N
 
 
@@ -73,12 +76,12 @@ class LaminateStrength():
         zmid = [(z[i]+z[i+1]) / 2
                for i in range(nplies)]           
         epsilon0 = self.epsilon0()
-        epsilon = np.array([self.epsilon0[0],
-                            self.epsilon0[1],
-                            self.epsilon0[2],])
-        kappa = np.array([self.epsilon0[3],
-                          self.epsilon0[4],
-                          self.epsilon0[5],])        
+        epsilon = np.array([epsilon0[0],
+                            epsilon0[1],
+                            epsilon0[2],])
+        kappa = np.array([epsilon0[3],
+                          epsilon0[4],
+                          epsilon0[5],])        
         epsilonk = []
         for h in zmid:
             epsilonk.append(
@@ -106,12 +109,30 @@ class LaminateStrength():
             stressk.append(
                 Q @ epsilon
             )
-        return strtessk
+        return stressk
 
     def epsilonk_123(self):
         ## TODO: compute strains in principal lamina directions
         ## See equation 3.58 to perform the transformation
-        pass
+
+        stacking = self.dproperty.stacking
+        epsilonk = self.epsilonk()
+        
+        epsilonk_123 = []
+        for theta, epsilon in zip(stacking, epsilonk):
+            c = np.cos(theta*np.pi/180)
+            s = np.sin(theta*np.pi/180)
+
+            T = np.array([
+                [c**2, s**2, 2*c*s],
+                [s**2, c**2, -2*c*s],
+                [-c*s, c*s, c**2-s**2]
+                ])
+
+            epsilonk_123.append(
+                T @ epsilon
+            )
+        return epsilonk_123
 
 
     def strength(self):
@@ -119,3 +140,4 @@ class LaminateStrength():
         ## Study and apply criteria
 
         ## page 34 of Daniel provides material properties
+        pass
