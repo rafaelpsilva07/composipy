@@ -72,7 +72,7 @@ class LaminateStrength():
         z = self.dproperty.z_position
         zmid = [(z[i]+z[i+1]) / 2
                for i in range(nplies)]           
-        epsilon0 = self.epsilon0
+        epsilon0 = self.epsilon0()
         epsilon = np.array([self.epsilon0[0],
                             self.epsilon0[1],
                             self.epsilon0[2],])
@@ -85,5 +85,37 @@ class LaminateStrength():
                 epsilon + h * kappa
             )
         return epsilonk
-        
 
+
+    def stressk(self):
+        '''
+        Calculates the strains for each lamina
+        Returns
+        -------
+        epsilonk: list
+            [epsilon1, epsilon2, ..., epsilonk], with epsilon as np.ndarray()
+            For each epsilon we have
+            epsilonk = np.ndarray([epsilonx, epsilony, gammas])k, coordinate directions
+            For reference refer to page 145 of Daniel equation 5.8
+        '''
+        Qk = self.dproperty.Q_layup
+        epsilonk = self.epsilonk()
+        
+        stressk = []
+        for Q, epsilon in zip(Qk, epsilonk):
+            stressk.append(
+                Q @ epsilon
+            )
+        return strtessk
+
+    def epsilonk_123(self):
+        ## TODO: compute strains in principal lamina directions
+        ## See equation 3.58 to perform the transformation
+        pass
+
+
+    def strength(self):
+        ## TODO: chose a criteria
+        ## Study and apply criteria
+
+        ## page 34 of Daniel provides material properties
