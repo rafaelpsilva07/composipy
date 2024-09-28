@@ -1,6 +1,10 @@
 import numpy as np
 import pandas as pd
 
+#TODO:
+# tests
+# improve documentation
+# strength criteria
 
 __all__ = ['OrthotropicMaterial', 'IsotropicMaterial']
 
@@ -115,8 +119,6 @@ class LaminateStrength():
         return stressk
 
     def epsilonk_123(self):
-        ## TODO: compute strains in principal lamina directions
-        ## See equation 3.58 to perform the transformation
 
         stacking = self.dproperty.stacking
         epsilonk = self._epsilonk()
