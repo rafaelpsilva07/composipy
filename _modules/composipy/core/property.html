@@ -1,0 +1,696 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>composipy.core.property &#8212; composipy 1.4.3 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/composipy/core/property';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">composipy 1.4.3 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../quickstart.html">
+    Quick Start
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../reference/index.html">
+    Code References
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../notebooks/index.html">
+    Examples
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../quickstart.html">
+    Quick Start
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../reference/index.html">
+    Code References
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../notebooks/index.html">
+    Examples
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">composipy.co...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for composipy.core.property</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numbers</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
+
+<span class="kn">from</span> <span class="nn">composipy.utils</span> <span class="kn">import</span> <span class="n">ComposipyValidator</span>
+<span class="kn">from</span> <span class="nn">composipy.core.material</span> <span class="kn">import</span> <span class="n">Material</span><span class="p">,</span> <span class="n">OrthotropicMaterial</span><span class="p">,</span> <span class="n">IsotropicMaterial</span>
+
+
+<span class="k">class</span> <span class="nc">Property</span><span class="p">(</span><span class="n">ComposipyValidator</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="LaminateProperty"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateProperty">[docs]</a><span class="k">class</span> <span class="nc">LaminateProperty</span><span class="p">(</span><span class="n">Property</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This class creates laminate object. It needs Material objects (to define plies) and the angle information.</span>
+<span class="sd">    Some formulation characteristics are:</span>
+<span class="sd">    Laminate formulations ares used (see References)</span>
+<span class="sd">    Main reference is the chapter 4 of reference 2.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stacking : list or dict</span>
+<span class="sd">        To define a angle stacking sequence</span>
+<span class="sd">            An iterable containing the angles (in degrees) of layup.</span>
+<span class="sd">        To define a stack based on lamination parameters.</span>
+<span class="sd">            {xiA: [xiA1, xiA2, xiA3, xiA4],</span>
+<span class="sd">            xiB: [xiB1, xiB2, xiB3, xiB4],</span>
+<span class="sd">            xiD: [xiD1, xiD2, xiD3, xiD4],</span>
+<span class="sd">            T: thickness}</span>
+<span class="sd">    plies : Material or list</span>
+<span class="sd">        A single Material or a list of OrthotropicMaterial object</span>
+
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; from composipy import OrthotropicMaterial, LaminateProperty</span>
+<span class="sd">    &gt;&gt;&gt; ply_1 = OrthotropicMaterial(129500, 9370, 0.38, 5240, 0.2)</span>
+<span class="sd">    &gt;&gt;&gt; stacking = [90, 0, 90]</span>
+<span class="sd">    &gt;&gt;&gt; laminate_1 = Laminate(stacking, ply_1)</span>
+<span class="sd">    &gt;&gt;&gt; laminate_1.ABD # retunrs an array containing bending stiffness matrix [D] of the laminate</span>
+<span class="sd">    &gt;&gt;&gt; laminate_1.xiA # lamination parameters of extension</span>
+<span class="sd">    &gt;&gt;&gt; laminate_1.xiA # lamination parameters of bending</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; stacking = {&#39;xiD&#39;: [0., 0., -1., 0.], &#39;T&#39;: 1.0} #using lamination parameters to define D</span>
+<span class="sd">    &gt;&gt;&gt; laminate_2 = Laminate(stacking, ply_1)</span>
+<span class="sd">    &gt;&gt;&gt; laminate_2.ABD # retunrs an array containing bending stiffness matrix [D] of the laminate</span>
+<span class="sd">    &gt;&gt;&gt; laminate_2.xiA # lamination parameters of extension</span>
+<span class="sd">    &gt;&gt;&gt; laminate_2.xiA # lamination parameters of bending</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stacking</span><span class="p">,</span> <span class="n">plies</span><span class="p">):</span>
+        <span class="c1"># Checking layup</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span> <span class="c1"># implements angle stacking sequence</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">plies</span><span class="p">,</span> <span class="n">Material</span><span class="p">):</span>
+                <span class="n">n_plies</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stacking</span><span class="p">)</span>
+                <span class="n">plies</span> <span class="o">=</span> <span class="p">[</span><span class="n">plies</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_plies</span><span class="p">)]</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">plies</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stacking</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Number of plies and number of stacking must match&#39;</span><span class="p">)</span>
+            <span class="n">xiA</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">xiB</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">xiD</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">total_thickness</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">layup</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">plies</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">xiA</span> <span class="o">=</span> <span class="n">stacking</span><span class="p">[</span><span class="s1">&#39;xiA&#39;</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">xiA</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>             
+                <span class="n">xiB</span> <span class="o">=</span> <span class="n">stacking</span><span class="p">[</span><span class="s1">&#39;xiB&#39;</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">xiB</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span> 
+                <span class="n">xiD</span> <span class="o">=</span> <span class="n">stacking</span><span class="p">[</span><span class="s1">&#39;xiD&#39;</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;xiD must be a key&#39;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">total_thickness</span> <span class="o">=</span> <span class="n">stacking</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;T must be a key&#39;</span><span class="p">)</span>
+            <span class="n">layup</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">stacking</span> <span class="o">=</span> <span class="n">stacking</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plies</span> <span class="o">=</span> <span class="n">plies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layup</span> <span class="o">=</span> <span class="n">layup</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_z_position</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Q_layup</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_T_layup</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_A</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_B</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_D</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ABD</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ABD_p</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xiA</span> <span class="o">=</span> <span class="n">xiA</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xiB</span> <span class="o">=</span> <span class="n">xiB</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xiD</span> <span class="o">=</span> <span class="n">xiD</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_total_thickness</span> <span class="o">=</span> <span class="n">total_thickness</span>
+
+<span class="c1">#Properties</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">z_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    
+        <span class="n">total_thickness</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layup</span><span class="p">:</span>
+            <span class="n">total_thickness</span> <span class="o">+=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">thickness</span>
+        
+        <span class="n">current_z</span> <span class="o">=</span> <span class="o">-</span><span class="n">total_thickness</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">ply_position</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_z</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layup</span><span class="p">:</span>
+            <span class="n">current_z</span> <span class="o">+=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">thickness</span>
+            <span class="n">ply_position</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_z</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">ply_position</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Q_layup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>    
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q_layup</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Q_layup</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">theta</span><span class="p">,</span> <span class="n">ply</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layup</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>
+
+                <span class="n">T_real</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                    <span class="p">[</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="p">])</span>
+                <span class="n">T_engineering</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                    <span class="p">[</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="p">])</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_Q_layup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">T_real</span><span class="p">))</span>
+                    <span class="o">@</span> <span class="n">ply</span><span class="o">.</span><span class="n">Q_0</span> 
+                    <span class="o">@</span> <span class="n">T_engineering</span>
+                    <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q_layup</span>
+     
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">T_layup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_T_layup</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">_T_layup</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layup</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>
+
+                <span class="n">T_real</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                    <span class="p">[</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="p">])</span>
+
+                <span class="n">T_engineering</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                    <span class="p">[</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">],</span>
+                    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="p">])</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_T_layup</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">T_real</span><span class="p">,</span><span class="n">T_engineering</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_T_layup</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;[A] Matrix as numpy.ndarray &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xiA</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_A</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_layup</span><span class="p">):</span>
+                <span class="n">zk1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">zk0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_A</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">-</span><span class="n">zk0</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_A</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">B</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;[B] Matrix as numpy.ndarray &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xiB</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_B</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_layup</span><span class="p">):</span>
+                <span class="n">zk1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">zk0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_B</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">zk1</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">zk0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_B</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">D</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;[D] Matrix as numpy.ndarray &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xiD</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="n">U1</span><span class="p">,</span> <span class="n">U2</span><span class="p">,</span> <span class="n">U3</span><span class="p">,</span> <span class="n">U4</span><span class="p">,</span> <span class="n">U5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plies</span><span class="o">.</span><span class="n">Invariants</span><span class="p">()</span>
+            <span class="n">xi1</span><span class="p">,</span> <span class="n">xi2</span><span class="p">,</span> <span class="n">xi3</span><span class="p">,</span> <span class="n">xi4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xiD</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_thickness</span>
+
+            <span class="n">D11</span> <span class="o">=</span> <span class="n">T</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">U1</span> <span class="o">+</span> <span class="n">U2</span><span class="o">*</span><span class="n">xi1</span> <span class="o">+</span> <span class="n">U3</span><span class="o">*</span><span class="n">xi3</span><span class="p">)</span><span class="o">/</span><span class="mi">12</span>
+            <span class="n">D12</span> <span class="o">=</span> <span class="n">T</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">U3</span><span class="o">*</span><span class="n">xi3</span> <span class="o">+</span> <span class="n">U4</span><span class="p">)</span><span class="o">/</span><span class="mi">12</span>
+            <span class="n">D13</span> <span class="o">=</span> <span class="n">T</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">U2</span><span class="o">*</span><span class="n">xi2</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">U3</span><span class="o">*</span><span class="n">xi4</span><span class="p">)</span><span class="o">/</span><span class="mi">12</span>
+            <span class="n">D21</span> <span class="o">=</span> <span class="n">T</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">U3</span><span class="o">*</span><span class="n">xi3</span> <span class="o">+</span> <span class="n">U4</span><span class="p">)</span><span class="o">/</span><span class="mi">12</span>
+            <span class="n">D22</span> <span class="o">=</span> <span class="n">T</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">U1</span> <span class="o">-</span> <span class="n">U2</span><span class="o">*</span><span class="n">xi1</span> <span class="o">+</span> <span class="n">U3</span><span class="o">*</span><span class="n">xi3</span><span class="p">)</span><span class="o">/</span><span class="mi">12</span>
+            <span class="n">D23</span> <span class="o">=</span> <span class="n">T</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">U2</span><span class="o">*</span><span class="n">xi2</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="n">U3</span><span class="o">*</span><span class="n">xi4</span><span class="p">)</span><span class="o">/</span><span class="mi">12</span>
+            <span class="n">D31</span> <span class="o">=</span> <span class="n">T</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">U2</span><span class="o">*</span><span class="n">xi2</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">U3</span><span class="o">*</span><span class="n">xi4</span><span class="p">)</span><span class="o">/</span><span class="mi">12</span>
+            <span class="n">D32</span> <span class="o">=</span> <span class="n">T</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">U2</span><span class="o">*</span><span class="n">xi2</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="n">U3</span><span class="o">*</span><span class="n">xi4</span><span class="p">)</span><span class="o">/</span><span class="mi">12</span>
+            <span class="n">D33</span> <span class="o">=</span> <span class="n">T</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">U3</span><span class="o">*</span><span class="n">xi3</span> <span class="o">+</span> <span class="n">U5</span><span class="p">)</span><span class="o">/</span><span class="mi">12</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">D11</span><span class="p">,</span> <span class="n">D12</span><span class="p">,</span> <span class="n">D13</span><span class="p">],</span>
+                                <span class="p">[</span><span class="n">D21</span><span class="p">,</span> <span class="n">D22</span><span class="p">,</span> <span class="n">D23</span><span class="p">],</span>
+                                <span class="p">[</span><span class="n">D31</span><span class="p">,</span> <span class="n">D32</span><span class="p">,</span> <span class="n">D33</span><span class="p">]])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_D</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_layup</span><span class="p">):</span>
+                <span class="n">zk1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">zk0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_D</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">zk1</span><span class="o">**</span><span class="mi">3</span><span class="o">-</span><span class="n">zk0</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_D</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ABD</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;[ABD] Matrices as numpy.ndarray&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ABD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
+              <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">]),</span>
+              <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">])</span>
+            <span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ABD</span>
+   
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">xiA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Lamination parameter xiA&#39;&#39;&#39;</span>
+        <span class="n">xiA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">ply</span><span class="o">.</span><span class="n">thickness</span> <span class="k">for</span> <span class="n">ply</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plies</span><span class="p">])</span>        
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">angle</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stacking</span><span class="p">):</span>
+            <span class="n">angle</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
+            <span class="n">zk1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">zk0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="n">xiA</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">-</span><span class="n">zk0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">xiA</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">-</span><span class="n">zk0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">xiA</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">-</span><span class="n">zk0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">xiA</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">-</span><span class="n">zk0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>                        
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xiA</span> <span class="o">=</span> <span class="n">xiA</span> <span class="o">/</span> <span class="n">T</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xiA</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">xiD</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Lamination parameter xiD&#39;&#39;&#39;</span>
+        <span class="n">xiD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">ply</span><span class="o">.</span><span class="n">thickness</span> <span class="k">for</span> <span class="n">ply</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plies</span><span class="p">])</span>        
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">angle</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stacking</span><span class="p">):</span>
+            <span class="n">angle</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
+            <span class="n">zk1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">zk0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_position</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="n">xiD</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">**</span><span class="mi">3</span><span class="o">-</span><span class="n">zk0</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">xiD</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">**</span><span class="mi">3</span><span class="o">-</span><span class="n">zk0</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">xiD</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">**</span><span class="mi">3</span><span class="o">-</span><span class="n">zk0</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">xiD</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">zk1</span><span class="o">**</span><span class="mi">3</span><span class="o">-</span><span class="n">zk0</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>                        
+        <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">xiD</span> <span class="o">/</span> <span class="n">T</span><span class="o">**</span><span class="mi">3</span>
+
+       <span class="c1">#Representation</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                    
+        <span class="n">representation</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;composipy.LaminateProperty</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;stacking = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">stacking</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="n">representation</span>
+
+<span class="c1">#Comparisons</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">LaminateProperty</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layup</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">layup</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023, Rafael Pereira da Silva.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

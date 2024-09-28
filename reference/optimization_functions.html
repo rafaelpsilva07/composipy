@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Composipy Optimization Functions &#8212; composipy 1.4.2 documentation</title>
+    <title>Composipy Optimization Functions &#8212; composipy 1.4.3 documentation</title>
   
   
   
@@ -122,7 +122,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.4.2 documentation</p>
+    <p class="title logo__title">composipy 1.4.3 documentation</p>
   
 </a></div>
     
@@ -361,9 +361,79 @@ Optimization algorithms are gradient based and they use Scipy and optimization e
 Then, Lamination Parameters are supposed to be convereted into stacking sequences somehow by the user.</p>
 <div class="section" id="maximize-buckling-load">
 <h2>Maximize Buckling Load<a class="headerlink" href="#maximize-buckling-load" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="composipy.optimize.maximize_buckling_load">
+<span class="sig-prename descclassname"><span class="pre">composipy.optimize.</span></span><span class="sig-name descname"><span class="pre">maximize_buckling_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nxx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nyy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nxy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">panel_constraint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PINNED'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points_to_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/optimize/_maximize_buckling.html#maximize_buckling_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.optimize.maximize_buckling_load" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>float</em>) – Plate dimension a</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Plate dimension b</p></li>
+<li><p><strong>E1</strong> (<em>float</em>) – Young Modulus direction 1</p></li>
+<li><p><strong>E2</strong> (<em>float</em>) – Young Modulus direction 2</p></li>
+<li><p><strong>v12</strong> (<em>float</em>) – Poisson ratio</p></li>
+<li><p><strong>G12</strong> (<em>float</em>) – Shear Modulus</p></li>
+<li><p><strong>Nxx</strong> (<em>float</em><em>, </em><em>default 0</em>) – Normal load in x direction</p></li>
+<li><p><strong>Nyy</strong> (<em>float</em><em>, </em><em>default 0</em>) – Normal load in y direction</p></li>
+<li><p><strong>Nxy</strong> (<em>float</em><em>, </em><em>default 0</em>) – Normal load in xy direction</p></li>
+<li><p><strong>m</strong> (<em>float</em><em>, </em><em>dafault 7</em>) – Size of shape function along x axis</p></li>
+<li><p><strong>n</strong> (<em>float</em><em>, </em><em>default 0</em>) – Size of shape function along y axis</p></li>
+<li><p><strong>panel_constraint</strong> (<em>composipy constraints format</em>) – Plate boundary constraints</p></li>
+<li><p><strong>options</strong> (<em>scipyminimize optiions</em>) – </p></li>
+<li><p><strong>tol</strong> (<em>scipy minimize tol</em>) – </p></li>
+<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>default False</em>) – Plot optimization function</p></li>
+<li><p><strong>points_to_plot</strong> (<em>float</em><em>, </em><em>default 30</em>) – Number of points to plot</p></li>
+<li><p><strong>penalty</strong> (<em>bool</em><em>, </em><em>default True</em>) – Applies boundary conditions into the feasible region.
+If penalty is True, the boundary condition is the triangle the delimits 0, 45, 90°
+If penalty is False, the boundary conditions is the parabola that defines the natural constraints.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>res</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>scipy minimize result</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="minimize-panel-weight">
 <h2>Minimize panel weight<a class="headerlink" href="#minimize-panel-weight" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="composipy.optimize.minimize_panel_weight">
+<span class="sig-prename descclassname"><span class="pre">composipy.optimize.</span></span><span class="sig-name descname"><span class="pre">minimize_panel_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nxx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nyy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nxy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.1,</span> <span class="pre">0.0,</span> <span class="pre">0.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">panel_constraint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PINNED'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/optimize/_minimize_panel_weight.html#minimize_panel_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.optimize.minimize_panel_weight" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>float</em>) – Plate dimension a</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Plate dimension b</p></li>
+<li><p><strong>E1</strong> (<em>float</em>) – Young Modulus direction 1</p></li>
+<li><p><strong>E2</strong> (<em>float</em>) – Young Modulus direction 2</p></li>
+<li><p><strong>v12</strong> (<em>float</em>) – Poisson ratio</p></li>
+<li><p><strong>G12</strong> (<em>float</em>) – Shear Modulus</p></li>
+<li><p><strong>Nxx</strong> (<em>float</em><em>, </em><em>default 0</em>) – Normal load in x direction</p></li>
+<li><p><strong>Nyy</strong> (<em>float</em><em>, </em><em>default 0</em>) – Normal load in y direction</p></li>
+<li><p><strong>Nxy</strong> (<em>float</em><em>, </em><em>default 0</em>) – Normal load in xy direction</p></li>
+<li><p><strong>m</strong> (<em>float</em><em>, </em><em>dafault 7</em>) – Size of shape function along x axis</p></li>
+<li><p><strong>n</strong> (<em>float</em><em>, </em><em>default 0</em>) – Size of shape function along y axis</p></li>
+<li><p><strong>x0</strong> (<em>list</em><em>, </em><em>default</em><em> [</em><em>0.1</em><em>, </em><em>0.0</em><em>, </em><em>0.0</em><em>]</em>) – Initial value</p></li>
+<li><p><strong>panel_constraint</strong> (<em>composipy constraints format</em>) – Plate boundary constraints</p></li>
+<li><p><strong>options</strong> (<em>scipyminimize optiions</em>) – </p></li>
+<li><p><strong>tol</strong> (<em>scipy minimize tol</em>) – </p></li>
+<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>default False</em>) – Plot optimization function</p></li>
+<li><p><strong>points_to_plot</strong> (<em>float</em><em>, </em><em>default 30</em>) – Number of points to plot</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>res</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>scipy minimize result</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </div>
 
@@ -413,8 +483,14 @@ Then, Lamination Parameters are supposed to be convereted into stacking sequence
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximize-buckling-load">Maximize Buckling Load</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-panel-weight">Minimize panel weight</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximize-buckling-load">Maximize Buckling Load</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.optimize.maximize_buckling_load"><code class="docutils literal notranslate"><span class="pre">maximize_buckling_load()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-panel-weight">Minimize panel weight</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.optimize.minimize_panel_weight"><code class="docutils literal notranslate"><span class="pre">minimize_panel_weight()</span></code></a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

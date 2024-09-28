@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Composipy Classes &#8212; composipy 1.4.2 documentation</title>
+    <title>Composipy Classes &#8212; composipy 1.4.3 documentation</title>
   
   
   
@@ -122,7 +122,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.4.2 documentation</p>
+    <p class="title logo__title">composipy 1.4.3 documentation</p>
   
 </a></div>
     
@@ -358,12 +358,244 @@ document.write(`
 <p>This page contains Composipy classes, used to build the main instances of the package.</p>
 <div class="section" id="orthotropicmaterial">
 <h2>OrthotropicMaterial<a class="headerlink" href="#orthotropicmaterial" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="composipy.OrthotropicMaterial">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composipy.</span></span><span class="sig-name descname"><span class="pre">OrthotropicMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/material.html#OrthotropicMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.OrthotropicMaterial" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an OrthotropicMaterial object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e1</strong> (<em>float</em><em>, </em><em>int</em>) – Young modulus in the 1st direction</p></li>
+<li><p><strong>e2</strong> (<em>float</em><em>, </em><em>int</em>) – Young modulus in the 2nd direction</p></li>
+<li><p><strong>v12</strong> (<em>float</em>) – poisson modulus 12</p></li>
+<li><p><strong>g12</strong> (<em>float</em><em>, </em><em>int</em>) – Shear modulus</p></li>
+<li><p><strong>thickness</strong> (<em>float</em><em>, </em><em>int</em>) – thickness of the ply</p></li>
+<li><p><strong>t1</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default None</em>) – tension allowable in direction 1.</p></li>
+<li><p><strong>c1</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default None</em>) – compression allowable in direction 1.</p></li>
+<li><p><strong>t2</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default None</em>) – tension allowable in direction 2.</p></li>
+<li><p><strong>c2</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default None</em>) – compression allowable in direction 2.</p></li>
+<li><p><strong>s</strong> (<em>float</em><em>, </em><em>optional</em><em>, </em><em>default None</em>) – shear allowable.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default None</em>) – Name of the ply</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ply_1</span> <span class="o">=</span> <span class="n">OrthotropicMaterial</span><span class="p">(</span><span class="mi">129500</span><span class="p">,</span> <span class="mi">9370</span><span class="p">,</span> <span class="mf">0.38</span><span class="p">,</span> <span class="mi">5240</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ply_1</span><span class="o">.</span><span class="n">Q_0</span> <span class="c1"># get the compliance matrix of the lamina</span>
+<span class="go">Out:</span>
+<span class="go">array([[130867.31382151,   3598.19426713,      0.     ],</span>
+<span class="go">    [  3598.19426713,   9468.93228191,      0.        ],</span>
+<span class="go">    [     0.        ,      0.        ,   5240.        ]])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="composipy.OrthotropicMaterial.Invariants">
+<span class="sig-name descname"><span class="pre">Invariants</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/material.html#OrthotropicMaterial.Invariants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.OrthotropicMaterial.Invariants" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the material invariants</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>Invariants</strong> – array([U1, U2, U3, U4, U5])</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="composipy.OrthotropicMaterial.Q_0">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Q_0</span></span><a class="headerlink" href="#composipy.OrthotropicMaterial.Q_0" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the compliance matrix of the material.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>self.Q_0</strong> – Compliance matrix (3x3) of the Material</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="laminateproperty">
 <h2>LaminateProperty<a class="headerlink" href="#laminateproperty" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="composipy.LaminateProperty">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composipy.</span></span><span class="sig-name descname"><span class="pre">LaminateProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stacking</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plies</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/property.html#LaminateProperty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.LaminateProperty" title="Permalink to this definition">#</a></dt>
+<dd><p>This class creates laminate object. It needs Material objects (to define plies) and the angle information.
+Some formulation characteristics are:
+Laminate formulations ares used (see References)
+Main reference is the chapter 4 of reference 2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stacking</strong> (<em>list</em><em> or </em><em>dict</em>) – <dl class="simple">
+<dt>To define a angle stacking sequence</dt><dd><p>An iterable containing the angles (in degrees) of layup.</p>
+</dd>
+<dt>To define a stack based on lamination parameters.</dt><dd><p>{xiA: [xiA1, xiA2, xiA3, xiA4],
+xiB: [xiB1, xiB2, xiB3, xiB4],
+xiD: [xiD1, xiD2, xiD3, xiD4],
+T: thickness}</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>plies</strong> (<em>Material</em><em> or </em><em>list</em>) – A single Material or a list of OrthotropicMaterial object</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span><span class="p">,</span> <span class="n">LaminateProperty</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ply_1</span> <span class="o">=</span> <span class="n">OrthotropicMaterial</span><span class="p">(</span><span class="mi">129500</span><span class="p">,</span> <span class="mi">9370</span><span class="p">,</span> <span class="mf">0.38</span><span class="p">,</span> <span class="mi">5240</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stacking</span> <span class="o">=</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_1</span> <span class="o">=</span> <span class="n">Laminate</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">ply_1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_1</span><span class="o">.</span><span class="n">ABD</span> <span class="c1"># retunrs an array containing bending stiffness matrix [D] of the laminate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_1</span><span class="o">.</span><span class="n">xiA</span> <span class="c1"># lamination parameters of extension</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_1</span><span class="o">.</span><span class="n">xiA</span> <span class="c1"># lamination parameters of bending</span>
+</pre></div>
+</div>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stacking</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;xiD&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span> <span class="c1">#using lamination parameters to define D</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_2</span> <span class="o">=</span> <span class="n">Laminate</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">ply_1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_2</span><span class="o">.</span><span class="n">ABD</span> <span class="c1"># retunrs an array containing bending stiffness matrix [D] of the laminate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_2</span><span class="o">.</span><span class="n">xiA</span> <span class="c1"># lamination parameters of extension</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_2</span><span class="o">.</span><span class="n">xiA</span> <span class="c1"># lamination parameters of bending</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="composipy.LaminateProperty.A">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">A</span></span><a class="headerlink" href="#composipy.LaminateProperty.A" title="Permalink to this definition">#</a></dt>
+<dd><p>[A] Matrix as numpy.ndarray</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="composipy.LaminateProperty.ABD">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ABD</span></span><a class="headerlink" href="#composipy.LaminateProperty.ABD" title="Permalink to this definition">#</a></dt>
+<dd><p>[ABD] Matrices as numpy.ndarray</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="composipy.LaminateProperty.B">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">B</span></span><a class="headerlink" href="#composipy.LaminateProperty.B" title="Permalink to this definition">#</a></dt>
+<dd><p>[B] Matrix as numpy.ndarray</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="composipy.LaminateProperty.D">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">D</span></span><a class="headerlink" href="#composipy.LaminateProperty.D" title="Permalink to this definition">#</a></dt>
+<dd><p>[D] Matrix as numpy.ndarray</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="composipy.LaminateProperty.xiA">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xiA</span></span><a class="headerlink" href="#composipy.LaminateProperty.xiA" title="Permalink to this definition">#</a></dt>
+<dd><p>Lamination parameter xiA</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="composipy.LaminateProperty.xiD">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xiD</span></span><a class="headerlink" href="#composipy.LaminateProperty.xiD" title="Permalink to this definition">#</a></dt>
+<dd><p>Lamination parameter xiD</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="platestructure">
 <h2>PlateStructure<a class="headerlink" href="#platestructure" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="composipy.PlateStructure">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composipy.</span></span><span class="sig-name descname"><span class="pre">PlateStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dproperty</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constraints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'x0':</span> <span class="pre">['TX',</span> <span class="pre">'TY',</span> <span class="pre">'TZ'],</span> <span class="pre">'xa':</span> <span class="pre">['TX',</span> <span class="pre">'TY',</span> <span class="pre">'TZ'],</span> <span class="pre">'y0':</span> <span class="pre">['TX',</span> <span class="pre">'TY',</span> <span class="pre">'TZ'],</span> <span class="pre">'yb':</span> <span class="pre">['TX',</span> <span class="pre">'TY',</span> <span class="pre">'TZ']}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nxx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nyy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nxy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/structure.html#PlateStructure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.PlateStructure" title="Permalink to this definition">#</a></dt>
+<dd><p>This class defines a PlateStructure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dproperty</strong> (<em>composipy.Property</em>) – Property of the plate.</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – Size of the plate parallel to the x axis.</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Size of the plate parallel to the y axis.</p></li>
+<li><p><strong>constraints</strong> (<em>str</em><em> or </em><em>dict. Default: &quot;PINNED&quot;</em>) – Plate boundary conditions.</p></li>
+<li><p><strong>Nxx</strong> (<em>float</em><em>, </em><em>default 0</em>) – Linear force parallel x axis</p></li>
+<li><p><strong>Nyy</strong> (<em>float</em><em>, </em><em>default 0</em>) – Linear force parallel y axis</p></li>
+<li><p><strong>Nxy</strong> (<em>float</em><em>, </em><em>default 0</em>) – Linear shear force</p></li>
+<li><p><strong>m</strong> (<em>int</em><em>, </em><em>default 10</em>) – Size of shape function along x axis</p></li>
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>default 10</em>) – Size of shape function along y axis</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span><span class="p">,</span> <span class="n">LaminateProperty</span><span class="p">,</span> <span class="n">PlateStructure</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ply_1</span> <span class="o">=</span> <span class="n">OrthotropicMaterial</span><span class="p">(</span><span class="mi">129500</span><span class="p">,</span> <span class="mi">9370</span><span class="p">,</span> <span class="mf">0.38</span><span class="p">,</span> <span class="mi">5240</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stacking</span> <span class="o">=</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laminate</span> <span class="o">=</span> <span class="n">Laminate</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">ply_1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">constraints</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">constraint</span></code> argument can be a str type ‘PINNED’ or ‘CLAMPED’.
+Or a dictionary like described below:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
+<span class="go">---     x0 = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
+<span class="go">---     xa = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
+<span class="go">---     y0 = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
+<span class="go">---     yb = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
+<span class="go">--- }</span>
+</pre></div>
+</div>
+<p>Attention, the rotations aren’t considered around the axis. They are related to the shape function.
+That means, for example, the <code class="docutils literal notranslate"><span class="pre">RZ</span></code> turns around the x axis and moves the plate in z direction.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="composipy.PlateStructure.buckling_analysis">
+<span class="sig-name descname"><span class="pre">buckling_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_eigvalues</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/structure.html#PlateStructure.buckling_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.PlateStructure.buckling_analysis" title="Permalink to this definition">#</a></dt>
+<dd><p>Linear Buckling Analysis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>silent</strong> (<em>bool</em><em>, </em><em>optional</em>) – Prints time to compute calculation</p></li>
+<li><p><strong>num_eigvalues</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of calculated eigenvalues.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>eigvals, eigvecs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="composipy.PlateStructure.calc_K_KG_ABD">
+<span class="sig-name descname"><span class="pre">calc_K_KG_ABD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/structure.html#PlateStructure.calc_K_KG_ABD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.PlateStructure.calc_K_KG_ABD" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the stiffness and geometrical stifness matrices.
+Considers full ABD matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>K_KG</strong> – A tuple of array containing (K, KG)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="composipy.PlateStructure.calc_K_KG_D">
+<span class="sig-name descname"><span class="pre">calc_K_KG_D</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/structure.html#PlateStructure.calc_K_KG_D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.PlateStructure.calc_K_KG_D" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the stiffness and geometrical stifness matrices.
+Considers only the bending stiffness D matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>K_KG</strong> – A tuple of array containing (K, KG)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
@@ -413,9 +645,35 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthotropicmaterial">OrthotropicMaterial</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#laminateproperty">LaminateProperty</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#platestructure">PlateStructure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthotropicmaterial">OrthotropicMaterial</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.OrthotropicMaterial"><code class="docutils literal notranslate"><span class="pre">OrthotropicMaterial</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.OrthotropicMaterial.Invariants"><code class="docutils literal notranslate"><span class="pre">OrthotropicMaterial.Invariants()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.OrthotropicMaterial.Q_0"><code class="docutils literal notranslate"><span class="pre">OrthotropicMaterial.Q_0</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#laminateproperty">LaminateProperty</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateProperty"><code class="docutils literal notranslate"><span class="pre">LaminateProperty</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateProperty.A"><code class="docutils literal notranslate"><span class="pre">LaminateProperty.A</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateProperty.ABD"><code class="docutils literal notranslate"><span class="pre">LaminateProperty.ABD</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateProperty.B"><code class="docutils literal notranslate"><span class="pre">LaminateProperty.B</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateProperty.D"><code class="docutils literal notranslate"><span class="pre">LaminateProperty.D</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateProperty.xiA"><code class="docutils literal notranslate"><span class="pre">LaminateProperty.xiA</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateProperty.xiD"><code class="docutils literal notranslate"><span class="pre">LaminateProperty.xiD</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#platestructure">PlateStructure</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.PlateStructure"><code class="docutils literal notranslate"><span class="pre">PlateStructure</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.PlateStructure.buckling_analysis"><code class="docutils literal notranslate"><span class="pre">PlateStructure.buckling_analysis()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.PlateStructure.calc_K_KG_ABD"><code class="docutils literal notranslate"><span class="pre">PlateStructure.calc_K_KG_ABD()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.PlateStructure.calc_K_KG_D"><code class="docutils literal notranslate"><span class="pre">PlateStructure.calc_K_KG_D()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
