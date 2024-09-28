@@ -127,7 +127,7 @@ class LaminateStrength():
             c = np.cos(theta*np.pi/180)
             s = np.sin(theta*np.pi/180)
             epsilontop[2] /= 2 # tensorial shear strain (see nasa pg 50)
-            epsilonbot[2 /= 2]
+            epsilonbot[2] /= 2
 
             T = np.array([
                 [c**2, s**2, 2*c*s],
@@ -142,6 +142,36 @@ class LaminateStrength():
             epsilonk_123.append((cur_epsilontop, cur_epsilonbot)) # engineering shear strain (see nasa pg 50)
         
         return epsilonk_123
+
+
+    def stressk_123(self):
+        ## TODO: compute strains in principal lamina directions
+        ## See equation 3.58 to perform the transformation
+
+        stacking = self.dproperty.stacking
+        stressk = self.stressk()
+        
+        stressk_123 = []
+        for theta, stress in zip(stacking, stressk):
+            stresstop, stressbot = stress   
+            c = np.cos(theta*np.pi/180)
+            s = np.sin(theta*np.pi/180)
+            #stresstop[2] /= 2 # tensorial shear strain (see nasa pg 50)
+            #stressbot[2] /=
+
+            T = np.array([
+                [c**2, s**2, 2*c*s],
+                [s**2, c**2, -2*c*s],
+                [-c*s, c*s, c**2-s**2]
+                ])
+
+            cur_stresstop = T @ stresstop
+            cur_stressbot = T @ stressbot
+            #cur_stresstop[2] *= 2
+            #cur_stressbot[2] *= 2
+            stressk_123.append((cur_stresstop, cur_stressbot)) 
+        
+        return stressk_123
 
 
     def strength(self):
