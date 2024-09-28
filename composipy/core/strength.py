@@ -183,12 +183,13 @@ class LaminateStrength():
         '''
         epsilonk = self._epsilonk()
         epsilonk_123 = self.epsilonk_123()
+        stacking = self.dproperty.stacking
 
         cur_ply = 1
         data = {}
         data['ply'] = []
         data['position'] = []
-        data['position'] = []
+        data['angle'] = []       
         data['epsilonx'] = []
         data['epsilonx'] = []
         data['epsilony'] = []
@@ -201,7 +202,7 @@ class LaminateStrength():
         data['epsilon2'] = []
         data['gamma12'] = []
         data['gamma12'] = []
-        for epsilon, epsilon123 in zip(epsilonk, epsilonk_123):
+        for epsilon, epsilon123, theta in zip(epsilonk, epsilonk_123, stacking):
             epsilontop, epsilonbot = epsilon
             epsilon123top, epsilon123bot = epsilon123
 
@@ -209,6 +210,8 @@ class LaminateStrength():
             data['ply'].append(cur_ply)
             data['position'].append('top')
             data['position'].append('bot')
+            data['angle'] = theta
+            data['angle'] = theta            
             data['epsilonx'].append(epsilontop[0]) #plate direction
             data['epsilonx'].append(epsilonbot[0])
             data['epsilony'].append(epsilontop[1])
@@ -236,12 +239,13 @@ class LaminateStrength():
 
         stressk = self._stressk()
         stressk_123 = self._stressk_123()
+        stacking = self.dproperty.stacking
 
         cur_ply = 1
         data = {}
         data['ply'] = []
         data['position'] = []
-        data['position'] = []
+        data['angle'] = []
         data['sigmax'] = []
         data['sigmax'] = []
         data['sigmay'] = []
@@ -254,7 +258,7 @@ class LaminateStrength():
         data['sigma2'] = []
         data['tau12'] = []
         data['tau12'] = []
-        for sigma, sigma123 in zip(stressk, stressk_123):
+        for sigma, sigma123, theta in zip(stressk, stressk_123, stacking):
             sigmatop, sigmabot = sigma
             sigma123top, sigma123bot = sigma123
 
@@ -262,6 +266,8 @@ class LaminateStrength():
             data['ply'].append(cur_ply)
             data['position'].append('top')
             data['position'].append('bot')
+            data['angle'] = theta
+            data['angle'] = theta
             data['sigmax'].append(sigmatop[0]) #plate direction
             data['sigmax'].append(sigmabot[0])
             data['sigmay'].append(sigmatop[1])
