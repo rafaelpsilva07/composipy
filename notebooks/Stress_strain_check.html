@@ -355,18 +355,18 @@ document.write(`
                 <article class="bd-article">
                   
   <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
 from composipy import OrthotropicMaterial, LaminateProperty
 
-from strength import LaminateStrength
+from composipy import LaminateStrength
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Example 3 of https://ntrs.nasa.gov/api/citations/19950009349/downloads/19950009349.pdf
@@ -381,7 +381,7 @@ t = 0.005 #in
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mat_1 = OrthotropicMaterial(E1, E2, v12, G12, t)
@@ -392,7 +392,7 @@ lamstrength = LaminateStrength(dproperty=laminate1, Mx=5)
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.epsilon0()
@@ -400,7 +400,7 @@ lamstrength = LaminateStrength(dproperty=laminate1, Mx=5)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -410,103 +410,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.epsilonk()
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[(array([ 0.00416373, -0.0016444 , -0.00097681]),
-  array([ 0.00208187, -0.0008222 , -0.00048841])),
- (array([ 0.00208187, -0.0008222 , -0.00048841]),
-  array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21])),
- (array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21]),
-  array([-0.00208187,  0.0008222 ,  0.00048841])),
- (array([-0.00208187,  0.0008222 ,  0.00048841]),
-  array([-0.00416373,  0.0016444 ,  0.00097681]))]
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.epsilonk_123()
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[(array([ 0.00416373, -0.0016444 , -0.00097681]),
-  array([ 0.00208187, -0.0008222 , -0.00048841])),
- (array([ 0.00038563,  0.00087404, -0.00290407]),
-  array([ 5.87245566e-21, -3.64432889e-21,  1.00414727e-20])),
- (array([ 5.87245566e-21, -3.64432889e-21,  1.00414727e-20]),
-  array([-0.00038563, -0.00087404,  0.00290407])),
- (array([-0.00208187,  0.0008222 ,  0.00048841]),
-  array([-0.00416373,  0.0016444 ,  0.00097681]))]
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.stressk()
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[(array([83535.88154529,  -517.27668554,  -977.78986869]),
-  array([41767.94077265,  -258.63834277,  -488.89493434])),
- (array([7624.41459148, 1810.46839938, 3422.26454041]),
-  array([4.73653227e-14, 6.74683511e-14, 5.98804407e-14])),
- (array([4.73653227e-14, 6.74683511e-14, 5.98804407e-14]),
-  array([-7624.41459148, -1810.46839938, -3422.26454041])),
- (array([-41767.94077265,    258.63834277,    488.89493434]),
-  array([-83535.88154529,    517.27668554,    977.78986869]))]
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.stressk_123()
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[(array([83535.88154529,  -517.27668554,  -977.78986869]),
-  array([41767.94077265,  -258.63834277,  -488.89493434])),
- (array([ 8139.70603583,  1295.17695502, -2906.97309605]),
-  array([ 1.17297278e-13, -2.46360386e-15,  1.00515142e-14])),
- (array([ 1.17297278e-13, -2.46360386e-15,  1.00515142e-14]),
-  array([-8139.70603583, -1295.17695502,  2906.97309605])),
- (array([-41767.94077265,    258.63834277,    488.89493434]),
-  array([-83535.88154529,    517.27668554,    977.78986869]))]
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.calculate_strain()
@@ -514,7 +418,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -640,7 +544,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.calculate_stress()
@@ -648,7 +552,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -772,6 +676,22 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
   </tbody>
 </table>
 </div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 </div>
 
 

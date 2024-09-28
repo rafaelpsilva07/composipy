@@ -2,19 +2,19 @@
  "cells": [
   {
    "cell_type": "code",
-   "execution_count": 1,
+   "execution_count": 2,
    "metadata": {},
    "outputs": [],
    "source": [
     "import numpy as np\n",
     "from composipy import OrthotropicMaterial, LaminateProperty\n",
     "\n",
-    "from strength import LaminateStrength"
+    "from composipy import LaminateStrength"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 2,
+   "execution_count": 3,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -30,7 +30,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": 4,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -42,7 +42,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 4,
+   "execution_count": 5,
    "metadata": {},
    "outputs": [
     {
@@ -52,7 +52,7 @@
        "       -1.64440350e-01, -9.76813056e-02])"
       ]
      },
-     "execution_count": 4,
+     "execution_count": 5,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -63,115 +63,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 5,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "[(array([ 0.00416373, -0.0016444 , -0.00097681]),\n",
-       "  array([ 0.00208187, -0.0008222 , -0.00048841])),\n",
-       " (array([ 0.00208187, -0.0008222 , -0.00048841]),\n",
-       "  array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21])),\n",
-       " (array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21]),\n",
-       "  array([-0.00208187,  0.0008222 ,  0.00048841])),\n",
-       " (array([-0.00208187,  0.0008222 ,  0.00048841]),\n",
-       "  array([-0.00416373,  0.0016444 ,  0.00097681]))]"
-      ]
-     },
-     "execution_count": 5,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "lamstrength.epsilonk()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 6,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "[(array([ 0.00416373, -0.0016444 , -0.00097681]),\n",
-       "  array([ 0.00208187, -0.0008222 , -0.00048841])),\n",
-       " (array([ 0.00038563,  0.00087404, -0.00290407]),\n",
-       "  array([ 5.87245566e-21, -3.64432889e-21,  1.00414727e-20])),\n",
-       " (array([ 5.87245566e-21, -3.64432889e-21,  1.00414727e-20]),\n",
-       "  array([-0.00038563, -0.00087404,  0.00290407])),\n",
-       " (array([-0.00208187,  0.0008222 ,  0.00048841]),\n",
-       "  array([-0.00416373,  0.0016444 ,  0.00097681]))]"
-      ]
-     },
-     "execution_count": 6,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "lamstrength.epsilonk_123()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 7,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "[(array([83535.88154529,  -517.27668554,  -977.78986869]),\n",
-       "  array([41767.94077265,  -258.63834277,  -488.89493434])),\n",
-       " (array([7624.41459148, 1810.46839938, 3422.26454041]),\n",
-       "  array([4.73653227e-14, 6.74683511e-14, 5.98804407e-14])),\n",
-       " (array([4.73653227e-14, 6.74683511e-14, 5.98804407e-14]),\n",
-       "  array([-7624.41459148, -1810.46839938, -3422.26454041])),\n",
-       " (array([-41767.94077265,    258.63834277,    488.89493434]),\n",
-       "  array([-83535.88154529,    517.27668554,    977.78986869]))]"
-      ]
-     },
-     "execution_count": 7,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "lamstrength.stressk()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 8,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "[(array([83535.88154529,  -517.27668554,  -977.78986869]),\n",
-       "  array([41767.94077265,  -258.63834277,  -488.89493434])),\n",
-       " (array([ 8139.70603583,  1295.17695502, -2906.97309605]),\n",
-       "  array([ 1.17297278e-13, -2.46360386e-15,  1.00515142e-14])),\n",
-       " (array([ 1.17297278e-13, -2.46360386e-15,  1.00515142e-14]),\n",
-       "  array([-8139.70603583, -1295.17695502,  2906.97309605])),\n",
-       " (array([-41767.94077265,    258.63834277,    488.89493434]),\n",
-       "  array([-83535.88154529,    517.27668554,    977.78986869]))]"
-      ]
-     },
-     "execution_count": 8,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "lamstrength.stressk_123()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 9,
+   "execution_count": 10,
    "metadata": {},
    "outputs": [
     {
@@ -310,7 +202,7 @@
        "7    4      bot -4.16e-03  1.64e-03  9.77e-04 -4.16e-03  1.64e-03  9.77e-04"
       ]
      },
-     "execution_count": 9,
+     "execution_count": 10,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -321,7 +213,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 10,
+   "execution_count": 11,
    "metadata": {},
    "outputs": [
     {
@@ -460,7 +352,7 @@
        "7    4      bot -8.35e+04  5.17e+02  9.78e+02 -8.35e+04  5.17e+02  9.78e+02"
       ]
      },
-     "execution_count": 10,
+     "execution_count": 11,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -468,6 +360,20 @@
    "source": [
     "lamstrength.calculate_stress()"
    ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
   }
  ],
  "metadata": {
