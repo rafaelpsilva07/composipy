@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 __all__ = ['OrthotropicMaterial', 'IsotropicMaterial']
@@ -25,7 +26,6 @@ class LaminateStrength():
     Mxy : float, int, optional, default 0
         Moment in xy direction.
     '''
-
 
     def __init__(
             self, 
@@ -60,7 +60,7 @@ class LaminateStrength():
         return abd @ N
 
 
-    def epsilonk(self): #ok
+    def _epsilonk(self): #ok
         '''
         Calculates the strains for each lamina
         Returns
@@ -91,7 +91,7 @@ class LaminateStrength():
         return epsilonk
 
 
-    def stressk(self):
+    def _stressk(self):
         '''
         Calculates the strains for each lamina
         Returns
@@ -103,7 +103,7 @@ class LaminateStrength():
             For reference refer to page 145 of Daniel equation 5.8
         '''
         Qk = self.dproperty.Q_layup
-        epsilonk = self.epsilonk()
+        epsilonk = self._epsilonk()
         
         stressk = []
         for Q, epsilon in zip(Qk, epsilonk):
@@ -119,7 +119,7 @@ class LaminateStrength():
         ## See equation 3.58 to perform the transformation
 
         stacking = self.dproperty.stacking
-        epsilonk = self.epsilonk()
+        epsilonk = self._epsilonk()
         
         epsilonk_123 = []
         for theta, epsilon in zip(stacking, epsilonk):
@@ -144,12 +144,10 @@ class LaminateStrength():
         return epsilonk_123
 
 
-    def stressk_123(self):
-        ## TODO: compute strains in principal lamina directions
-        ## See equation 3.58 to perform the transformation
+    def _stressk_123(self):
 
         stacking = self.dproperty.stacking
-        stressk = self.stressk()
+        stressk = self._stressk()
         
         stressk_123 = []
         for theta, stress in zip(stacking, stressk):
@@ -174,9 +172,106 @@ class LaminateStrength():
         return stressk_123
 
 
-    def strength(self):
-        ## TODO: chose a criteria
-        ## Study and apply criteria
+    def calculate_strain(self):
+        '''
+        Returns
+        -------
+        strains : pd.Dataframe
+            ply by ply strains in plate direction and material direction       
+        '''
+        epsilonk = self._epsilonk()
+        epsilonk_123 = self.epsilonk_123()
 
-        ## page 34 of Daniel provides material properties
-        pass
+        cur_ply = 1
+        data = {}
+        data['ply'] = []
+        data['position'] = []
+        data['position'] = []
+        data['epsilonx'] = []
+        data['epsilonx'] = []
+        data['epsilony'] = []
+        data['epsilony'] = []
+        data['gammaxy'] = []
+        data['gammaxy'] = []
+        data['epsilon1'] = []
+        data['epsilon1'] = []
+        data['epsilon2'] = []
+        data['epsilon2'] = []
+        data['gamma12'] = []
+        data['gamma12'] = []
+        for epsilon, epsilon123 in zip(epsilonk, epsilonk_123):
+            epsilontop, epsilonbot = epsilon
+            epsilon123top, epsilon123bot = epsilon123
+
+            data['ply'].append(cur_ply)
+            data['ply'].append(cur_ply)
+            data['position'].append('top')
+            data['position'].append('bot')
+            data['epsilonx'].append(epsilontop[0]) #plate direction
+            data['epsilonx'].append(epsilonbot[0])
+            data['epsilony'].append(epsilontop[1])
+            data['epsilony'].append(epsilonbot[1])
+            data['gammaxy'].append(epsilontop[2])
+            data['gammaxy'].append(epsilonbot[2])
+            data['epsilon1'].append(epsilon123top[0]) #material direction
+            data['epsilon1'].append(epsilon123bot[0])
+            data['epsilon2'].append(epsilon123top[1])
+            data['epsilon2'].append(epsilon123bot[1])
+            data['gamma12'].append(epsilon123top[2])
+            data['gamma12'].append(epsilon123bot[2])
+            cur_ply += 1
+        pd.set_option('display.precision', 2)
+        return pd.DataFrame(data)
+
+
+    def calculate_stress(self):
+        '''
+        Returns
+        -------
+        stress : pd.Dataframe
+            ply by ply stress in plate direction and material direction       
+        '''
+
+        stressk = self._stressk()
+        stressk_123 = self._stressk_123()
+
+        cur_ply = 1
+        data = {}
+        data['ply'] = []
+        data['position'] = []
+        data['position'] = []
+        data['sigmax'] = []
+        data['sigmax'] = []
+        data['sigmay'] = []
+        data['sigmay'] = []
+        data['tauxy'] = []
+        data['tauxy'] = []
+        data['sigma1'] = []
+        data['sigma1'] = []
+        data['sigma2'] = []
+        data['sigma2'] = []
+        data['tau12'] = []
+        data['tau12'] = []
+        for sigma, sigma123 in zip(stressk, stressk_123):
+            sigmatop, sigmabot = sigma
+            sigma123top, sigma123bot = sigma123
+
+            data['ply'].append(cur_ply)
+            data['ply'].append(cur_ply)
+            data['position'].append('top')
+            data['position'].append('bot')
+            data['sigmax'].append(sigmatop[0]) #plate direction
+            data['sigmax'].append(sigmabot[0])
+            data['sigmay'].append(sigmatop[1])
+            data['sigmay'].append(sigmabot[1])
+            data['tauxy'].append(sigmatop[2])
+            data['tauxy'].append(sigmabot[2])
+            data['sigma1'].append(sigma123top[0]) #material direction
+            data['sigma1'].append(sigma123bot[0])
+            data['sigma2'].append(sigma123top[1])
+            data['sigma2'].append(sigma123bot[1])
+            data['tau12'].append(sigma123top[2])
+            data['tau12'].append(sigma123bot[2])
+            cur_ply += 1
+        pd.set_option('display.precision', 2)
+        return pd.DataFrame(data)
