@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "code",
-   "execution_count": 2,
+   "execution_count": 1,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -14,7 +14,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": 2,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -30,7 +30,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 4,
+   "execution_count": 3,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -42,7 +42,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 5,
+   "execution_count": 4,
    "metadata": {},
    "outputs": [
     {
@@ -52,7 +52,7 @@
        "       -1.64440350e-01, -9.76813056e-02])"
       ]
      },
-     "execution_count": 5,
+     "execution_count": 4,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -63,7 +63,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 10,
+   "execution_count": 5,
    "metadata": {},
    "outputs": [
     {
@@ -89,6 +89,7 @@
        "      <th></th>\n",
        "      <th>ply</th>\n",
        "      <th>position</th>\n",
+       "      <th>angle</th>\n",
        "      <th>epsilonx</th>\n",
        "      <th>epsilony</th>\n",
        "      <th>gammaxy</th>\n",
@@ -102,6 +103,7 @@
        "      <th>0</th>\n",
        "      <td>1</td>\n",
        "      <td>top</td>\n",
+       "      <td>0</td>\n",
        "      <td>4.16e-03</td>\n",
        "      <td>-1.64e-03</td>\n",
        "      <td>-9.77e-04</td>\n",
@@ -113,6 +115,7 @@
        "      <th>1</th>\n",
        "      <td>1</td>\n",
        "      <td>bot</td>\n",
+       "      <td>0</td>\n",
        "      <td>2.08e-03</td>\n",
        "      <td>-8.22e-04</td>\n",
        "      <td>-4.88e-04</td>\n",
@@ -124,6 +127,7 @@
        "      <th>2</th>\n",
        "      <td>2</td>\n",
        "      <td>top</td>\n",
+       "      <td>45</td>\n",
        "      <td>2.08e-03</td>\n",
        "      <td>-8.22e-04</td>\n",
        "      <td>-4.88e-04</td>\n",
@@ -135,6 +139,7 @@
        "      <th>3</th>\n",
        "      <td>2</td>\n",
        "      <td>bot</td>\n",
+       "      <td>45</td>\n",
        "      <td>-3.91e-21</td>\n",
        "      <td>6.13e-21</td>\n",
        "      <td>9.52e-21</td>\n",
@@ -146,6 +151,7 @@
        "      <th>4</th>\n",
        "      <td>3</td>\n",
        "      <td>top</td>\n",
+       "      <td>45</td>\n",
        "      <td>-3.91e-21</td>\n",
        "      <td>6.13e-21</td>\n",
        "      <td>9.52e-21</td>\n",
@@ -157,6 +163,7 @@
        "      <th>5</th>\n",
        "      <td>3</td>\n",
        "      <td>bot</td>\n",
+       "      <td>45</td>\n",
        "      <td>-2.08e-03</td>\n",
        "      <td>8.22e-04</td>\n",
        "      <td>4.88e-04</td>\n",
@@ -168,6 +175,7 @@
        "      <th>6</th>\n",
        "      <td>4</td>\n",
        "      <td>top</td>\n",
+       "      <td>0</td>\n",
        "      <td>-2.08e-03</td>\n",
        "      <td>8.22e-04</td>\n",
        "      <td>4.88e-04</td>\n",
@@ -179,6 +187,7 @@
        "      <th>7</th>\n",
        "      <td>4</td>\n",
        "      <td>bot</td>\n",
+       "      <td>0</td>\n",
        "      <td>-4.16e-03</td>\n",
        "      <td>1.64e-03</td>\n",
        "      <td>9.77e-04</td>\n",
@@ -191,18 +200,28 @@
        "</div>"
       ],
       "text/plain": [
-       "   ply position  epsilonx  epsilony   gammaxy  epsilon1  epsilon2   gamma12\n",
-       "0    1      top  4.16e-03 -1.64e-03 -9.77e-04  4.16e-03 -1.64e-03 -9.77e-04\n",
-       "1    1      bot  2.08e-03 -8.22e-04 -4.88e-04  2.08e-03 -8.22e-04 -4.88e-04\n",
-       "2    2      top  2.08e-03 -8.22e-04 -4.88e-04  3.86e-04  8.74e-04 -2.90e-03\n",
-       "3    2      bot -3.91e-21  6.13e-21  9.52e-21  5.87e-21 -3.64e-21  1.00e-20\n",
-       "4    3      top -3.91e-21  6.13e-21  9.52e-21  5.87e-21 -3.64e-21  1.00e-20\n",
-       "5    3      bot -2.08e-03  8.22e-04  4.88e-04 -3.86e-04 -8.74e-04  2.90e-03\n",
-       "6    4      top -2.08e-03  8.22e-04  4.88e-04 -2.08e-03  8.22e-04  4.88e-04\n",
-       "7    4      bot -4.16e-03  1.64e-03  9.77e-04 -4.16e-03  1.64e-03  9.77e-04"
+       "   ply position  angle  epsilonx  epsilony   gammaxy  epsilon1  epsilon2  \\\n",
+       "0    1      top      0  4.16e-03 -1.64e-03 -9.77e-04  4.16e-03 -1.64e-03   \n",
+       "1    1      bot      0  2.08e-03 -8.22e-04 -4.88e-04  2.08e-03 -8.22e-04   \n",
+       "2    2      top     45  2.08e-03 -8.22e-04 -4.88e-04  3.86e-04  8.74e-04   \n",
+       "3    2      bot     45 -3.91e-21  6.13e-21  9.52e-21  5.87e-21 -3.64e-21   \n",
+       "4    3      top     45 -3.91e-21  6.13e-21  9.52e-21  5.87e-21 -3.64e-21   \n",
+       "5    3      bot     45 -2.08e-03  8.22e-04  4.88e-04 -3.86e-04 -8.74e-04   \n",
+       "6    4      top      0 -2.08e-03  8.22e-04  4.88e-04 -2.08e-03  8.22e-04   \n",
+       "7    4      bot      0 -4.16e-03  1.64e-03  9.77e-04 -4.16e-03  1.64e-03   \n",
+       "\n",
+       "    gamma12  \n",
+       "0 -9.77e-04  \n",
+       "1 -4.88e-04  \n",
+       "2 -2.90e-03  \n",
+       "3  1.00e-20  \n",
+       "4  1.00e-20  \n",
+       "5  2.90e-03  \n",
+       "6  4.88e-04  \n",
+       "7  9.77e-04  "
       ]
      },
-     "execution_count": 10,
+     "execution_count": 5,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -213,7 +232,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 11,
+   "execution_count": 6,
    "metadata": {},
    "outputs": [
     {
@@ -239,6 +258,7 @@
        "      <th></th>\n",
        "      <th>ply</th>\n",
        "      <th>position</th>\n",
+       "      <th>angle</th>\n",
        "      <th>sigmax</th>\n",
        "      <th>sigmay</th>\n",
        "      <th>tauxy</th>\n",
@@ -252,6 +272,7 @@
        "      <th>0</th>\n",
        "      <td>1</td>\n",
        "      <td>top</td>\n",
+       "      <td>0</td>\n",
        "      <td>8.35e+04</td>\n",
        "      <td>-5.17e+02</td>\n",
        "      <td>-9.78e+02</td>\n",
@@ -263,6 +284,7 @@
        "      <th>1</th>\n",
        "      <td>1</td>\n",
        "      <td>bot</td>\n",
+       "      <td>0</td>\n",
        "      <td>4.18e+04</td>\n",
        "      <td>-2.59e+02</td>\n",
        "      <td>-4.89e+02</td>\n",
@@ -274,6 +296,7 @@
        "      <th>2</th>\n",
        "      <td>2</td>\n",
        "      <td>top</td>\n",
+       "      <td>45</td>\n",
        "      <td>7.62e+03</td>\n",
        "      <td>1.81e+03</td>\n",
        "      <td>3.42e+03</td>\n",
@@ -285,6 +308,7 @@
        "      <th>3</th>\n",
        "      <td>2</td>\n",
        "      <td>bot</td>\n",
+       "      <td>45</td>\n",
        "      <td>4.74e-14</td>\n",
        "      <td>6.75e-14</td>\n",
        "      <td>5.99e-14</td>\n",
@@ -296,6 +320,7 @@
        "      <th>4</th>\n",
        "      <td>3</td>\n",
        "      <td>top</td>\n",
+       "      <td>45</td>\n",
        "      <td>4.74e-14</td>\n",
        "      <td>6.75e-14</td>\n",
        "      <td>5.99e-14</td>\n",
@@ -307,6 +332,7 @@
        "      <th>5</th>\n",
        "      <td>3</td>\n",
        "      <td>bot</td>\n",
+       "      <td>45</td>\n",
        "      <td>-7.62e+03</td>\n",
        "      <td>-1.81e+03</td>\n",
        "      <td>-3.42e+03</td>\n",
@@ -318,6 +344,7 @@
        "      <th>6</th>\n",
        "      <td>4</td>\n",
        "      <td>top</td>\n",
+       "      <td>0</td>\n",
        "      <td>-4.18e+04</td>\n",
        "      <td>2.59e+02</td>\n",
        "      <td>4.89e+02</td>\n",
@@ -329,6 +356,7 @@
        "      <th>7</th>\n",
        "      <td>4</td>\n",
        "      <td>bot</td>\n",
+       "      <td>0</td>\n",
        "      <td>-8.35e+04</td>\n",
        "      <td>5.17e+02</td>\n",
        "      <td>9.78e+02</td>\n",
@@ -341,18 +369,28 @@
        "</div>"
       ],
       "text/plain": [
-       "   ply position    sigmax    sigmay     tauxy    sigma1    sigma2     tau12\n",
-       "0    1      top  8.35e+04 -5.17e+02 -9.78e+02  8.35e+04 -5.17e+02 -9.78e+02\n",
-       "1    1      bot  4.18e+04 -2.59e+02 -4.89e+02  4.18e+04 -2.59e+02 -4.89e+02\n",
-       "2    2      top  7.62e+03  1.81e+03  3.42e+03  8.14e+03  1.30e+03 -2.91e+03\n",
-       "3    2      bot  4.74e-14  6.75e-14  5.99e-14  1.17e-13 -2.46e-15  1.01e-14\n",
-       "4    3      top  4.74e-14  6.75e-14  5.99e-14  1.17e-13 -2.46e-15  1.01e-14\n",
-       "5    3      bot -7.62e+03 -1.81e+03 -3.42e+03 -8.14e+03 -1.30e+03  2.91e+03\n",
-       "6    4      top -4.18e+04  2.59e+02  4.89e+02 -4.18e+04  2.59e+02  4.89e+02\n",
-       "7    4      bot -8.35e+04  5.17e+02  9.78e+02 -8.35e+04  5.17e+02  9.78e+02"
+       "   ply position  angle    sigmax    sigmay     tauxy    sigma1    sigma2  \\\n",
+       "0    1      top      0  8.35e+04 -5.17e+02 -9.78e+02  8.35e+04 -5.17e+02   \n",
+       "1    1      bot      0  4.18e+04 -2.59e+02 -4.89e+02  4.18e+04 -2.59e+02   \n",
+       "2    2      top     45  7.62e+03  1.81e+03  3.42e+03  8.14e+03  1.30e+03   \n",
+       "3    2      bot     45  4.74e-14  6.75e-14  5.99e-14  1.17e-13 -2.46e-15   \n",
+       "4    3      top     45  4.74e-14  6.75e-14  5.99e-14  1.17e-13 -2.46e-15   \n",
+       "5    3      bot     45 -7.62e+03 -1.81e+03 -3.42e+03 -8.14e+03 -1.30e+03   \n",
+       "6    4      top      0 -4.18e+04  2.59e+02  4.89e+02 -4.18e+04  2.59e+02   \n",
+       "7    4      bot      0 -8.35e+04  5.17e+02  9.78e+02 -8.35e+04  5.17e+02   \n",
+       "\n",
+       "      tau12  \n",
+       "0 -9.78e+02  \n",
+       "1 -4.89e+02  \n",
+       "2 -2.91e+03  \n",
+       "3  1.01e-14  \n",
+       "4  1.01e-14  \n",
+       "5  2.91e+03  \n",
+       "6  4.89e+02  \n",
+       "7  9.78e+02  "
       ]
      },
-     "execution_count": 11,
+     "execution_count": 6,
      "metadata": {},
      "output_type": "execute_result"
     }

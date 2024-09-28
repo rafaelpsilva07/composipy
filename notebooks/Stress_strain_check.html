@@ -355,7 +355,7 @@ document.write(`
                 <article class="bd-article">
                   
   <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
@@ -366,7 +366,7 @@ from composipy import LaminateStrength
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Example 3 of https://ntrs.nasa.gov/api/citations/19950009349/downloads/19950009349.pdf
@@ -381,7 +381,7 @@ t = 0.005 #in
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mat_1 = OrthotropicMaterial(E1, E2, v12, G12, t)
@@ -392,7 +392,7 @@ lamstrength = LaminateStrength(dproperty=laminate1, Mx=5)
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.epsilon0()
@@ -400,7 +400,7 @@ lamstrength = LaminateStrength(dproperty=laminate1, Mx=5)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -410,7 +410,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.calculate_strain()
@@ -418,7 +418,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -442,6 +442,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th></th>
       <th>ply</th>
       <th>position</th>
+      <th>angle</th>
       <th>epsilonx</th>
       <th>epsilony</th>
       <th>gammaxy</th>
@@ -455,6 +456,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>0</th>
       <td>1</td>
       <td>top</td>
+      <td>0</td>
       <td>4.16e-03</td>
       <td>-1.64e-03</td>
       <td>-9.77e-04</td>
@@ -466,6 +468,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>1</th>
       <td>1</td>
       <td>bot</td>
+      <td>0</td>
       <td>2.08e-03</td>
       <td>-8.22e-04</td>
       <td>-4.88e-04</td>
@@ -477,6 +480,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>2</th>
       <td>2</td>
       <td>top</td>
+      <td>45</td>
       <td>2.08e-03</td>
       <td>-8.22e-04</td>
       <td>-4.88e-04</td>
@@ -488,6 +492,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>3</th>
       <td>2</td>
       <td>bot</td>
+      <td>45</td>
       <td>-3.91e-21</td>
       <td>6.13e-21</td>
       <td>9.52e-21</td>
@@ -499,6 +504,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>4</th>
       <td>3</td>
       <td>top</td>
+      <td>45</td>
       <td>-3.91e-21</td>
       <td>6.13e-21</td>
       <td>9.52e-21</td>
@@ -510,6 +516,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>5</th>
       <td>3</td>
       <td>bot</td>
+      <td>45</td>
       <td>-2.08e-03</td>
       <td>8.22e-04</td>
       <td>4.88e-04</td>
@@ -521,6 +528,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>6</th>
       <td>4</td>
       <td>top</td>
+      <td>0</td>
       <td>-2.08e-03</td>
       <td>8.22e-04</td>
       <td>4.88e-04</td>
@@ -532,6 +540,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>7</th>
       <td>4</td>
       <td>bot</td>
+      <td>0</td>
       <td>-4.16e-03</td>
       <td>1.64e-03</td>
       <td>9.77e-04</td>
@@ -544,7 +553,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.calculate_stress()
@@ -552,7 +561,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -576,6 +585,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th></th>
       <th>ply</th>
       <th>position</th>
+      <th>angle</th>
       <th>sigmax</th>
       <th>sigmay</th>
       <th>tauxy</th>
@@ -589,6 +599,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>0</th>
       <td>1</td>
       <td>top</td>
+      <td>0</td>
       <td>8.35e+04</td>
       <td>-5.17e+02</td>
       <td>-9.78e+02</td>
@@ -600,6 +611,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>1</th>
       <td>1</td>
       <td>bot</td>
+      <td>0</td>
       <td>4.18e+04</td>
       <td>-2.59e+02</td>
       <td>-4.89e+02</td>
@@ -611,6 +623,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>2</th>
       <td>2</td>
       <td>top</td>
+      <td>45</td>
       <td>7.62e+03</td>
       <td>1.81e+03</td>
       <td>3.42e+03</td>
@@ -622,6 +635,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>3</th>
       <td>2</td>
       <td>bot</td>
+      <td>45</td>
       <td>4.74e-14</td>
       <td>6.75e-14</td>
       <td>5.99e-14</td>
@@ -633,6 +647,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>4</th>
       <td>3</td>
       <td>top</td>
+      <td>45</td>
       <td>4.74e-14</td>
       <td>6.75e-14</td>
       <td>5.99e-14</td>
@@ -644,6 +659,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>5</th>
       <td>3</td>
       <td>bot</td>
+      <td>45</td>
       <td>-7.62e+03</td>
       <td>-1.81e+03</td>
       <td>-3.42e+03</td>
@@ -655,6 +671,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>6</th>
       <td>4</td>
       <td>top</td>
+      <td>0</td>
       <td>-4.18e+04</td>
       <td>2.59e+02</td>
       <td>4.89e+02</td>
@@ -666,6 +683,7 @@ array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
       <th>7</th>
       <td>4</td>
       <td>bot</td>
+      <td>0</td>
       <td>-8.35e+04</td>
       <td>5.17e+02</td>
       <td>9.78e+02</td>
