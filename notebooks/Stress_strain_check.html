@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sample Code Snippets &#8212; composipy 1.4.0 documentation</title>
+    <title>&lt;no title&gt; &#8212; composipy 1.4.0 documentation</title>
   
   
   
@@ -45,11 +45,10 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Code_snipets';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Stress_strain_check';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="Stress_strain_check.html" />
-    <link rel="prev" title="Critical Buckling Examples" href="Ritz_verification.html" />
+    <link rel="prev" title="Sample Code Snippets" href="Code_snipets.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -295,9 +294,9 @@ document.write(`
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Ritz_verification.html">Critical Buckling Examples</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Sample Code Snippets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Code_snipets.html">Sample Code Snippets</a></li>
 </ul>
 </div>
 </nav></div>
@@ -338,7 +337,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Composipy Notebooks</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Sample Code Snippets</li>
+    <li class="breadcrumb-item active" aria-current="page">&lt;no title&gt;</li>
   </ul>
 </nav>
 </div>
@@ -355,230 +354,424 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="section" id="Sample-Code-Snippets">
-<h1>Sample Code Snippets<a class="headerlink" href="#Sample-Code-Snippets" title="Permalink to this heading">#</a></h1>
-<p>The code snipets are supposed to present the major functionalities of composipy. They are supposed to be published within SoftwareX Elselvier Journal.</p>
-<div class="section" id="Plate-buckling-analysis">
-<h2>Plate buckling analysis<a class="headerlink" href="#Plate-buckling-analysis" title="Permalink to this heading">#</a></h2>
-<p>The buckling_analysis() core method solves a eigenvalue problem like</p>
-<div class="math notranslate nohighlight">
-\[([K]-λ[K_G ]){c}={0}\]</div>
-<p>where <span class="math notranslate nohighlight">\([K]\)</span> is the stiffeness matrix of the panel, <span class="math notranslate nohighlight">\([K_G]\)</span> is the geometrical stiffness matrix that depends on internal loads, <span class="math notranslate nohighlight">\({c}\)</span> is the vector of Ritz constants that determines the buckled shape and <span class="math notranslate nohighlight">\(λ\)</span> is the eigenvalue, that determines the critical buckling load. More details about this formulation are found at [1].</p>
-<div class="nbinput docutils container">
+  <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
+from composipy import OrthotropicMaterial, LaminateProperty
 
-#Ply Material Properties
-E1 = 60800 #MPa
-E2 = 58250 #MPa
-v12 = 0.07
-G12 = 4550 #MPa
-t = 0.21 #mm
-
-# Plate geometry
-a = 360. #mm
-b = 360. #mm
-m = 7 # discretization in x direction
-n = 7 # discretization in y direction
-
-# Stacking sequence
-stacking = [45,-45,0,90,45,-45,0,90,45,-45] #angles in degrees
-stacking += stacking[::-1] # symmetry
-
-material = OrthotropicMaterial(E1, E2, v12, G12, t)
-laminate = LaminateProperty(stacking, material)
-
-# Plate boundary conditions
-constraints={
-                &#39;x0&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-                &#39;xa&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-                &#39;y0&#39;: [],
-                &#39;yb&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-            }
-
-#Plate loads
-Nxx = -1
-Nyy = -0.5
-Nxy = 0.5
-
-panel = PlateStructure(dproperty=laminate, a=a, b=b, m=m, n=n, Nxx=Nxx,
-                       Nyy=Nyy, Nxy=Nxy, constraints=constraints)
-eigenvalue, eigenvector = panel.buckling_analysis()
-print(f&#39;Critical eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
-panel.plot_eigenvalue()
+from strength import LaminateStrength
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Critical eigenvalue is  26.6 N/mm
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_Code_snipets_1_1.png" src="../_images/notebooks_Code_snipets_1_1.png" />
-</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Example 3 of https://ntrs.nasa.gov/api/citations/19950009349/downloads/19950009349.pdf
+# Example 6 page 56
+
+E1 = 2.01e7 #lb/in2
+E2 = 1.301e6 #lb/in2
+v12 = 0.3
+G12 = 1.001e6 #lb/in2
+t = 0.005 #in
+</pre></div>
 </div>
 </div>
-<div class="section" id="Maximize-Critical-Buckling-Load">
-<h2>Maximize Critical Buckling Load<a class="headerlink" href="#Maximize-Critical-Buckling-Load" title="Permalink to this heading">#</a></h2>
-<p>The maximize_buckling_load() function solves a optimization problem like</p>
-<div class="math notranslate nohighlight">
-\[max⁡λ( W_1, W_3 )\]</div>
-<div class="math notranslate nohighlight">
-\[g_1=W_3+2W_1-1≥0\]</div>
-<div class="math notranslate nohighlight">
-\[g_2=W_3-2W_1+1≥0\]</div>
-<div class="math notranslate nohighlight">
-\[-1≤W_1, W_3≤1\]</div>
-<p>that finds the pair of lamination parameters <span class="math notranslate nohighlight">\(( W_1, W_3 )\)</span> that maximizes buckling load, given the constraints <span class="math notranslate nohighlight">\(g_1\)</span> and <span class="math notranslate nohighlight">\(g_2\)</span>. The flexural Lamination Parameters, established by [14], are</p>
-<div class="math notranslate nohighlight">
-\[W_1 =&gt; cos(2\theta)\]</div>
-<div class="math notranslate nohighlight">
-\[W_2 =&gt; sin(2\theta)\]</div>
-<div class="math notranslate nohighlight">
-\[W_3 =&gt; cos(4\theta)\]</div>
-<div class="math notranslate nohighlight">
-\[W_4 =&gt; sin(4\theta)\]</div>
-<p>where <span class="math notranslate nohighlight">\(θ_l\)</span> is the angle of the laminate in continuous dominium and <span class="math notranslate nohighlight">\(h\)</span> is the laminate thickness. For practical reasons, only Lamination Parameters <span class="math notranslate nohighlight">\(W_1\)</span> and <span class="math notranslate nohighlight">\(W_3\)</span> are used as project variables, while <span class="math notranslate nohighlight">\(W_2\)</span> and <span class="math notranslate nohighlight">\(W_4\)</span> are considered equal zero, therefore a symmetric and balanced laminated is considered. For more details on how to interpret them and convert them into a feasible stacking sequence, check the references [1], [2] and [3].</p>
-<div class="section" id="Objective-function-with-boundary-g1-and-g2">
-<h3>Objective function with boundary g1 and g2<a class="headerlink" href="#Objective-function-with-boundary-g1-and-g2" title="Permalink to this heading">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mat_1 = OrthotropicMaterial(E1, E2, v12, G12, t)
+stacking = [0, 45, 45, 0]
+laminate1 = LaminateProperty(stacking, mat_1)
+lamstrength = LaminateStrength(dproperty=laminate1, Mx=5)
+</pre></div>
+</div>
+</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy.optimize import maximize_buckling_load
-
-total_thickness = 20*0.21 #4.2 mm
-res = maximize_buckling_load(a=a, b=b, T=total_thickness, E1=E1, E2=E2,
-                            v12=v12, G12=G12, Nxx=Nxx, Nyy=Nyy,
-                            Nxy=Nxy, m=m, n=n, panel_constraint=constraints,
-                            plot=True, penalty=True) #remove plot=True to gain performance
-
-print(f&#39;W1={res.x[0]: .3f} and W3={res.x[1]: .3f}&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.epsilon0()
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-generating plot...
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_Code_snipets_4_1.png" src="../_images/notebooks_Code_snipets_4_1.png" />
-</div>
-</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-W1= 0.487 and W3=-0.026
+array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21,  4.16373455e-01,
+       -1.64440350e-01, -9.76813056e-02])
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Objective-function-without-boundary-g1-and-g2">
-<h3>Objective function without boundary g1 and g2<a class="headerlink" href="#Objective-function-without-boundary-g1-and-g2" title="Permalink to this heading">#</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>total_thickness = 20*0.21 #4.2 mm
-res = maximize_buckling_load(a=a, b=b, T=total_thickness, E1=E1, E2=E2,
-                            v12=v12, G12=G12, Nxx=Nxx, Nyy=Nyy,
-                            Nxy=Nxy, m=m, n=n, panel_constraint=constraints,
-                            plot=True, penalty=False) #remove plot=True to gain performance
-
-print(f&#39;W1={res.x[0]: .3f} and W3={res.x[1]: .3f}&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.epsilonk()
 </pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-generating plot...
-penalty False
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_Code_snipets_6_1.png" src="../_images/notebooks_Code_snipets_6_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-W1= 0.677 and W3=-0.083
+[(array([ 0.00416373, -0.0016444 , -0.00097681]),
+  array([ 0.00208187, -0.0008222 , -0.00048841])),
+ (array([ 0.00208187, -0.0008222 , -0.00048841]),
+  array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21])),
+ (array([-3.90667296e-21,  6.13479973e-21,  9.51678455e-21]),
+  array([-0.00208187,  0.0008222 ,  0.00048841])),
+ (array([-0.00208187,  0.0008222 ,  0.00048841]),
+  array([-0.00416373,  0.0016444 ,  0.00097681]))]
 </pre></div></div>
 </div>
-</div>
-</div>
-<div class="section" id="Minimize-Panel-Weight">
-<h2>Minimize Panel Weight<a class="headerlink" href="#Minimize-Panel-Weight" title="Permalink to this heading">#</a></h2>
-<p>The minimize_panel_weight() function solves a optimization problem like</p>
-<div class="math notranslate nohighlight">
-\[min⁡V(T, W_1, W_3 )=T^3\]</div>
-<div class="math notranslate nohighlight">
-\[g_1=λ(T, W_1, W_3 )-1≥0\]</div>
-<div class="math notranslate nohighlight">
-\[g_2=W_3+2W_1-1≥0\]</div>
-<div class="math notranslate nohighlight">
-\[g_3=W_3-2W_1+1≥0\]</div>
-<div class="math notranslate nohighlight">
-\[T&gt;0\]</div>
-<div class="math notranslate nohighlight">
-\[-1≤W_1, W_3≤1\]</div>
-<p>that minimizes the volume of the plate submitted to the constraints <span class="math notranslate nohighlight">\(g_1\)</span>, <span class="math notranslate nohighlight">\(g_2\)</span> and <span class="math notranslate nohighlight">\(g_3\)</span>. Where <span class="math notranslate nohighlight">\(T\)</span>, the total thickness of the plate, is used as design variable.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy.optimize import minimize_panel_weight
-
-res = minimize_panel_weight(a=a, b=b, E1=E1, E2=E2,
-                            v12=v12, G12=G12, Nxx=26.6*Nxx, Nyy=26.6*Nyy,
-                            Nxy=26.6*Nxy, m=m, n=n, panel_constraint=constraints)
-
-print(f&#39;T={res.x[0]: .3f} W1={res.x[1]: .3f} and W3={res.x[2]: .3f}&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.epsilonk_123()
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-T= 4.190 W1= 0.487 and W3=-0.026
+[(array([ 0.00416373, -0.0016444 , -0.00097681]),
+  array([ 0.00208187, -0.0008222 , -0.00048841])),
+ (array([ 0.00038563,  0.00087404, -0.00290407]),
+  array([ 5.87245566e-21, -3.64432889e-21,  1.00414727e-20])),
+ (array([ 5.87245566e-21, -3.64432889e-21,  1.00414727e-20]),
+  array([-0.00038563, -0.00087404,  0.00290407])),
+ (array([-0.00208187,  0.0008222 ,  0.00048841]),
+  array([-0.00416373,  0.0016444 ,  0.00097681]))]
 </pre></div></div>
 </div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
 </div>
-<div class="section" id="References">
-<h2>References<a class="headerlink" href="#References" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p>[1] SILVA, Rafael Pereira da. Composite Plate optimization combining semi-analytical model, Lamination Parameters and a Gradient-Based Optimizer. 2023. 82f. Dissertation of Master of Science – Instituto Tecnológico de Aeronáutica, São José dos Campos.</p></li>
-<li><p>[2] Miki, M. Sugiyama, Y. (1993). Optimum Design of Laminated Composite Plates Using Lamination Parameters. Aiaa Journal - AIAA J. 31. 921-922. 10.2514/3.49033.</p></li>
-<li><p>[3] Gurdal, Z.; Haftka, R. T. Elements of Structural Optimization. Third revised and expanded edition. Springer-Science Business Media, B. V. 1991.</p></li>
-</ul>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.stressk()
+</pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(array([83535.88154529,  -517.27668554,  -977.78986869]),
+  array([41767.94077265,  -258.63834277,  -488.89493434])),
+ (array([7624.41459148, 1810.46839938, 3422.26454041]),
+  array([4.73653227e-14, 6.74683511e-14, 5.98804407e-14])),
+ (array([4.73653227e-14, 6.74683511e-14, 5.98804407e-14]),
+  array([-7624.41459148, -1810.46839938, -3422.26454041])),
+ (array([-41767.94077265,    258.63834277,    488.89493434]),
+  array([-83535.88154529,    517.27668554,    977.78986869]))]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.stressk_123()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(array([83535.88154529,  -517.27668554,  -977.78986869]),
+  array([41767.94077265,  -258.63834277,  -488.89493434])),
+ (array([ 8139.70603583,  1295.17695502, -2906.97309605]),
+  array([ 1.17297278e-13, -2.46360386e-15,  1.00515142e-14])),
+ (array([ 1.17297278e-13, -2.46360386e-15,  1.00515142e-14]),
+  array([-8139.70603583, -1295.17695502,  2906.97309605])),
+ (array([-41767.94077265,    258.63834277,    488.89493434]),
+  array([-83535.88154529,    517.27668554,    977.78986869]))]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.calculate_strain()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ply</th>
+      <th>position</th>
+      <th>epsilonx</th>
+      <th>epsilony</th>
+      <th>gammaxy</th>
+      <th>epsilon1</th>
+      <th>epsilon2</th>
+      <th>gamma12</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>top</td>
+      <td>4.16e-03</td>
+      <td>-1.64e-03</td>
+      <td>-9.77e-04</td>
+      <td>4.16e-03</td>
+      <td>-1.64e-03</td>
+      <td>-9.77e-04</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>bot</td>
+      <td>2.08e-03</td>
+      <td>-8.22e-04</td>
+      <td>-4.88e-04</td>
+      <td>2.08e-03</td>
+      <td>-8.22e-04</td>
+      <td>-4.88e-04</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>top</td>
+      <td>2.08e-03</td>
+      <td>-8.22e-04</td>
+      <td>-4.88e-04</td>
+      <td>3.86e-04</td>
+      <td>8.74e-04</td>
+      <td>-2.90e-03</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2</td>
+      <td>bot</td>
+      <td>-3.91e-21</td>
+      <td>6.13e-21</td>
+      <td>9.52e-21</td>
+      <td>5.87e-21</td>
+      <td>-3.64e-21</td>
+      <td>1.00e-20</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>top</td>
+      <td>-3.91e-21</td>
+      <td>6.13e-21</td>
+      <td>9.52e-21</td>
+      <td>5.87e-21</td>
+      <td>-3.64e-21</td>
+      <td>1.00e-20</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>3</td>
+      <td>bot</td>
+      <td>-2.08e-03</td>
+      <td>8.22e-04</td>
+      <td>4.88e-04</td>
+      <td>-3.86e-04</td>
+      <td>-8.74e-04</td>
+      <td>2.90e-03</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>4</td>
+      <td>top</td>
+      <td>-2.08e-03</td>
+      <td>8.22e-04</td>
+      <td>4.88e-04</td>
+      <td>-2.08e-03</td>
+      <td>8.22e-04</td>
+      <td>4.88e-04</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>4</td>
+      <td>bot</td>
+      <td>-4.16e-03</td>
+      <td>1.64e-03</td>
+      <td>9.77e-04</td>
+      <td>-4.16e-03</td>
+      <td>1.64e-03</td>
+      <td>9.77e-04</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lamstrength.calculate_stress()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ply</th>
+      <th>position</th>
+      <th>sigmax</th>
+      <th>sigmay</th>
+      <th>tauxy</th>
+      <th>sigma1</th>
+      <th>sigma2</th>
+      <th>tau12</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>top</td>
+      <td>8.35e+04</td>
+      <td>-5.17e+02</td>
+      <td>-9.78e+02</td>
+      <td>8.35e+04</td>
+      <td>-5.17e+02</td>
+      <td>-9.78e+02</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>bot</td>
+      <td>4.18e+04</td>
+      <td>-2.59e+02</td>
+      <td>-4.89e+02</td>
+      <td>4.18e+04</td>
+      <td>-2.59e+02</td>
+      <td>-4.89e+02</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>top</td>
+      <td>7.62e+03</td>
+      <td>1.81e+03</td>
+      <td>3.42e+03</td>
+      <td>8.14e+03</td>
+      <td>1.30e+03</td>
+      <td>-2.91e+03</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2</td>
+      <td>bot</td>
+      <td>4.74e-14</td>
+      <td>6.75e-14</td>
+      <td>5.99e-14</td>
+      <td>1.17e-13</td>
+      <td>-2.46e-15</td>
+      <td>1.01e-14</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>top</td>
+      <td>4.74e-14</td>
+      <td>6.75e-14</td>
+      <td>5.99e-14</td>
+      <td>1.17e-13</td>
+      <td>-2.46e-15</td>
+      <td>1.01e-14</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>3</td>
+      <td>bot</td>
+      <td>-7.62e+03</td>
+      <td>-1.81e+03</td>
+      <td>-3.42e+03</td>
+      <td>-8.14e+03</td>
+      <td>-1.30e+03</td>
+      <td>2.91e+03</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>4</td>
+      <td>top</td>
+      <td>-4.18e+04</td>
+      <td>2.59e+02</td>
+      <td>4.89e+02</td>
+      <td>-4.18e+04</td>
+      <td>2.59e+02</td>
+      <td>4.89e+02</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>4</td>
+      <td>bot</td>
+      <td>-8.35e+04</td>
+      <td>5.17e+02</td>
+      <td>9.78e+02</td>
+      <td>-8.35e+04</td>
+      <td>5.17e+02</td>
+      <td>9.78e+02</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
 </div>
 
 
@@ -592,22 +785,13 @@ T= 4.190 W1= 0.487 and W3=-0.026
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="Ritz_verification.html"
+       href="Code_snipets.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Critical Buckling Examples</p>
+        <p class="prev-next-title">Sample Code Snippets</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="Stress_strain_check.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">&lt;no title&gt;</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -626,22 +810,15 @@ T= 4.190 W1= 0.487 and W3=-0.026
     <i class="fa-solid fa-list"></i> On this page
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Plate-buckling-analysis">Plate buckling analysis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Maximize-Critical-Buckling-Load">Maximize Critical Buckling Load</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Objective-function-with-boundary-g1-and-g2">Objective function with boundary g1 and g2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Objective-function-without-boundary-g1-and-g2">Objective function without boundary g1 and g2</a></li>
+    <ul class="simple visible nav section-nav flex-column">
 </ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Minimize-Panel-Weight">Minimize Panel Weight</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#References">References</a></li>
-</ul>
+
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/notebooks/Code_snipets.ipynb.txt">
+    <a href="../_sources/notebooks/Stress_strain_check.ipynb.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
