@@ -12,3 +12,4 @@ Check out some jupyter notebooks.
    
    Critical Buckling Examples <Ritz_verification.ipynb>
    Sample Code Snippets <Code_snipets.ipynb>
+   Stress Strain verification <Stress_strain_check.ipynb>
