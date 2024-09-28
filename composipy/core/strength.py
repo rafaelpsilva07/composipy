@@ -210,8 +210,8 @@ class LaminateStrength():
             data['ply'].append(cur_ply)
             data['position'].append('top')
             data['position'].append('bot')
-            data['angle'] = theta
-            data['angle'] = theta            
+            data['angle'].append(theta)
+            data['angle'].append(theta)            
             data['epsilonx'].append(epsilontop[0]) #plate direction
             data['epsilonx'].append(epsilonbot[0])
             data['epsilony'].append(epsilontop[1])
@@ -266,8 +266,8 @@ class LaminateStrength():
             data['ply'].append(cur_ply)
             data['position'].append('top')
             data['position'].append('bot')
-            data['angle'] = theta
-            data['angle'] = theta
+            data['angle'].append(theta)
+            data['angle'].append(theta)
             data['sigmax'].append(sigmatop[0]) #plate direction
             data['sigmax'].append(sigmabot[0])
             data['sigmay'].append(sigmatop[1])
