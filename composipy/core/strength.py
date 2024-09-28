@@ -45,7 +45,7 @@ class LaminateStrength():
         self.Mxy = Mxy
 
 
-    def epsilon0(self):
+    def epsilon0(self): #ok
         '''
         Calculates the strains of the laminate
         Returns
@@ -60,7 +60,7 @@ class LaminateStrength():
         return abd @ N
 
 
-    def epsilonk(self):
+    def epsilonk(self): #ok
         '''
         Calculates the strains for each lamina
         Returns
@@ -70,11 +70,11 @@ class LaminateStrength():
             For each epsilon we have
             epsilonk = np.ndarray([epsilonx, epsilony, gammas])k, coordinate directions
             For reference refer to page 145 of Daniel equation 5.8
-        '''       
+        '''
         nplies = len(self.dproperty.stacking)
-        z = self.dproperty.z_position
-        zmid = [(z[i]+z[i+1]) / 2
-               for i in range(nplies)]           
+        z = self.dproperty.z_position[::-1] #so bot is negative and top is positive
+        zmid = [(z[i], z[i+1]) #tuple with top and bot
+               for i in range(nplies)]
         epsilon0 = self.epsilon0()
         epsilon = np.array([epsilon0[0],
                             epsilon0[1],
@@ -83,9 +83,10 @@ class LaminateStrength():
                           epsilon0[4],
                           epsilon0[5],])        
         epsilonk = []
-        for h in zmid:
+        for htop, hbot in zmid:
             epsilonk.append(
-                epsilon + h * kappa
+                (epsilon + htop * kappa,
+                 epsilon + hbot * kappa)
             )
         return epsilonk
 
@@ -106,8 +107,10 @@ class LaminateStrength():
         
         stressk = []
         for Q, epsilon in zip(Qk, epsilonk):
+            epsilontop, epsilonbot = epsilon
             stressk.append(
-                Q @ epsilon
+                (Q @ epsilontop,
+                Q @ epsilonbot)
             )
         return stressk
 
@@ -120,8 +123,11 @@ class LaminateStrength():
         
         epsilonk_123 = []
         for theta, epsilon in zip(stacking, epsilonk):
+            epsilontop, epsilonbot = epsilon           
             c = np.cos(theta*np.pi/180)
             s = np.sin(theta*np.pi/180)
+            epsilontop[2] /= 2 # tensorial shear strain (see nasa pg 50)
+            epsilonbot[2 /= 2]
 
             T = np.array([
                 [c**2, s**2, 2*c*s],
@@ -129,9 +135,12 @@ class LaminateStrength():
                 [-c*s, c*s, c**2-s**2]
                 ])
 
-            epsilonk_123.append(
-                T @ epsilon
-            )
+            cur_epsilontop = T @ epsilontop
+            cur_epsilonbot = T @ epsilonbot
+            cur_epsilontop[2] *= 2
+            cur_epsilonbot[2] *= 2
+            epsilonk_123.append((cur_epsilontop, cur_epsilonbot)) # engineering shear strain (see nasa pg 50)
+        
         return epsilonk_123
 
 
