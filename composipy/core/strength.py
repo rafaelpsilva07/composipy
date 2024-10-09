@@ -17,15 +17,15 @@ class LaminateStrength():
     ----------
     dproperty : LaminateProperty
         A laminate property object
-    Nx : float, int, optional, default 0
+    Nxx : float, int, optional, default 0
         Membrane load in x direction.
-    Ny : float, int, optional, default 0
+    Nyy : float, int, optional, default 0
         Membrane load in y direction.    
     Nxy : float, int, optional, default 0
         Membrane load in xy direction.
-    Mx : float, int, optional, default 0
+    Mxx : float, int, optional, default 0
         Moment in x direction.
-    My : float, int, optional, default 0
+    Myy : float, int, optional, default 0
         Moment in y direction.
     Mxy : float, int, optional, default 0
         Moment in xy direction.
@@ -34,18 +34,18 @@ class LaminateStrength():
     def __init__(
             self, 
             dproperty, 
-            Nx=0,
-            Ny=0,
+            Nxx=0,
+            Nyy=0,
             Nxy=0,
-            Mx=0,
-            My=0,
+            Mxx=0,
+            Myy=0,
             Mxy=0):
         self.dproperty = dproperty
-        self.Nx = Nx
-        self.Ny = Ny
+        self.Nxx = Nxx
+        self.Nyy = Nyy
         self.Nxy = Nxy
-        self.Mx = Mx
-        self.My = My
+        self.Mxx = Mxx
+        self.Myy = Myy
         self.Mxy = Mxy
 
 
@@ -60,7 +60,7 @@ class LaminateStrength():
 
         ABD = self.dproperty.ABD
         abd = np.linalg.inv(ABD) #equivalent relations on pg 153 of Daniel
-        N = np.array([self.Nx, self.Ny, self.Nxy, self.Mx, self.My, self.Mxy])
+        N = np.array([self.Nxx, self.Nyy, self.Nxy, self.Mxx, self.Myy, self.Mxy])
         return abd @ N
 
 
