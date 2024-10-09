@@ -597,6 +597,62 @@ Considers only the bending stiffness D matrix.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="laminatestrength">
+<h2>LaminateStrength<a class="headerlink" href="#laminatestrength" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="composipy.LaminateStrength">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composipy.</span></span><span class="sig-name descname"><span class="pre">LaminateStrength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dproperty</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nxy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">My</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mxy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/strength.html#LaminateStrength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.LaminateStrength" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a LaminateStrength object to evaluate strength.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dproperty</strong> (<a class="reference internal" href="#composipy.LaminateProperty" title="composipy.LaminateProperty"><em>LaminateProperty</em></a>) – A laminate property object</p></li>
+<li><p><strong>Nx</strong> (<em>float</em><em>, </em><em>int</em><em>, </em><em>optional</em><em>, </em><em>default 0</em>) – Membrane load in x direction.</p></li>
+<li><p><strong>Ny</strong> (<em>float</em><em>, </em><em>int</em><em>, </em><em>optional</em><em>, </em><em>default 0</em>) – Membrane load in y direction.</p></li>
+<li><p><strong>Nxy</strong> (<em>float</em><em>, </em><em>int</em><em>, </em><em>optional</em><em>, </em><em>default 0</em>) – Membrane load in xy direction.</p></li>
+<li><p><strong>Mx</strong> (<em>float</em><em>, </em><em>int</em><em>, </em><em>optional</em><em>, </em><em>default 0</em>) – Moment in x direction.</p></li>
+<li><p><strong>My</strong> (<em>float</em><em>, </em><em>int</em><em>, </em><em>optional</em><em>, </em><em>default 0</em>) – Moment in y direction.</p></li>
+<li><p><strong>Mxy</strong> (<em>float</em><em>, </em><em>int</em><em>, </em><em>optional</em><em>, </em><em>default 0</em>) – Moment in xy direction.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="composipy.LaminateStrength.calculate_strain">
+<span class="sig-name descname"><span class="pre">calculate_strain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/strength.html#LaminateStrength.calculate_strain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.LaminateStrength.calculate_strain" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>strains</strong> – ply by ply strains in plate direction and material direction</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pd.Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="composipy.LaminateStrength.calculate_stress">
+<span class="sig-name descname"><span class="pre">calculate_stress</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/strength.html#LaminateStrength.calculate_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.LaminateStrength.calculate_stress" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>stress</strong> – ply by ply stress in plate direction and material direction</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pd.Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="composipy.LaminateStrength.epsilon0">
+<span class="sig-name descname"><span class="pre">epsilon0</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/strength.html#LaminateStrength.epsilon0"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.LaminateStrength.epsilon0" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the strains of the laminate
+:returns: <strong>epsilon0</strong> – [epsilonx0, epsilony0, epsilonxy0, kappax0, kappay0, kappaxy0]
+:rtype: numpy ndarray</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -670,6 +726,15 @@ Considers only the bending stiffness D matrix.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.PlateStructure.buckling_analysis"><code class="docutils literal notranslate"><span class="pre">PlateStructure.buckling_analysis()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.PlateStructure.calc_K_KG_ABD"><code class="docutils literal notranslate"><span class="pre">PlateStructure.calc_K_KG_ABD()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.PlateStructure.calc_K_KG_D"><code class="docutils literal notranslate"><span class="pre">PlateStructure.calc_K_KG_D()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#laminatestrength">LaminateStrength</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateStrength"><code class="docutils literal notranslate"><span class="pre">LaminateStrength</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateStrength.calculate_strain"><code class="docutils literal notranslate"><span class="pre">LaminateStrength.calculate_strain()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateStrength.calculate_stress"><code class="docutils literal notranslate"><span class="pre">LaminateStrength.calculate_stress()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateStrength.epsilon0"><code class="docutils literal notranslate"><span class="pre">LaminateStrength.epsilon0()</span></code></a></li>
 </ul>
 </li>
 </ul>

@@ -20,3 +20,8 @@ PlateStructure
 .. autoclass:: composipy.PlateStructure
   :members:
 
+
+LaminateStrength
+----------------
+.. autoclass:: composipy.LaminateStrength
+  :members:
