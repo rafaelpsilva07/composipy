@@ -52,6 +52,7 @@ class LaminateStrength():
     def epsilon0(self): #ok
         '''
         Calculates the strains of the laminate
+        
         Returns
         -------
         epsilon0: numpy ndarray
