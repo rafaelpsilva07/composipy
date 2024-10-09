@@ -42,6 +42,15 @@ def example_3_setup(laminateconfig):
     return LaminateStrength(dproperty=laminateconfig, Nxx=Nxx)
 
 
+@pytest.fixture
+def example_6_setup(laminateconfig):
+    '''
+    Example 6 setup in page 56
+    '''
+    Mxx = 5 #lb/in
+    return LaminateStrength(dproperty=laminateconfig, Mxx=Mxx)
+
+
 def test_example_3_midplane(example_3_setup):
     '''This test check the stains at the midplane'''
     calculated_strains = example_3_setup.epsilon0()
@@ -69,3 +78,43 @@ def test_example_3_stress_45(example_3_setup):
     assert np.isclose(sigma1, 4146, rtol=1e-3, atol=100)
     assert np.isclose(sigma2, 1812, rtol=1e-3, atol=100)
     assert np.isclose(tau12, -2913, rtol=1e-3, atol=100)
+
+
+def test_example_6_midplane(example_6_setup):
+    '''This test check the stains at the midplane eq E6.1'''
+    calculated_strains = example_6_setup.epsilon0()
+    reference_result = np.array([0, 0, 0, 0.418, -0.165, -0.0975])
+    np.testing.assert_allclose(calculated_strains, reference_result, rtol=1e-2, atol=1e-4)
+
+
+def test_example_6_strain_top_ply1(example_6_setup):
+    '''This test check the stains at the top of ply 1 in laminate direction'''
+    df_strains = example_6_setup.calculate_strain()
+    epsilonx = df_strains.iloc[0]['epsilonx']
+    epsilony = df_strains.iloc[0]['epsilony']
+    gammaxy = df_strains.iloc[0]['gammaxy']
+    assert np.isclose(epsilonx, 0.00418, rtol=1e-3, atol=1e-4)
+    assert np.isclose(epsilony, -0.00165, rtol=1e-3, atol=1e-4)
+    assert np.isclose(gammaxy, -0.000975, rtol=1e-3, atol=1e-4)
+
+
+def test_example_6_strain_top_ply2(example_6_setup):
+    '''This test check the stains at the top of ply 1 in material direction'''
+    df_strains = example_6_setup.calculate_strain()
+    epsilon1 = df_strains.iloc[2]['epsilon1']
+    epsilon2 = df_strains.iloc[2]['epsilon2']
+    gamma12 = df_strains.iloc[2]['gamma12']
+    assert np.isclose(epsilon1, 0.00039, rtol=1e-3, atol=1e-4)
+    assert np.isclose(epsilon2, 0.00088, rtol=1e-3, atol=1e-4)
+    assert np.isclose(gamma12, -0.00292, rtol=1e-3, atol=1e-4)
+
+
+def test_example_6_stress_bot_ply3(example_6_setup):
+    '''This test check the stresses for the ply 3 in material direction E6.12'''
+    df_stresses = example_6_setup.calculate_stress()
+    sigma1 = df_stresses.iloc[5]['sigma1']
+    sigma2 = df_stresses.iloc[5]['sigma2']
+    tau12 = df_stresses.iloc[5]['tau12']
+    assert np.isclose(sigma1, -8094, rtol=1e-3, atol=100)
+    assert np.isclose(sigma2, -1296, rtol=1e-3, atol=100)
+    assert np.isclose(tau12, 2923, rtol=1e-3, atol=100)
