@@ -2,16 +2,16 @@ import numpy as np
 import pandas as pd
 
 #TODO:
-# tests
-# improve documentation
 # strength criteria
 
-__all__ = ['OrthotropicMaterial', 'IsotropicMaterial']
+__all__ = ['LaminateStrength']
 
 
 class LaminateStrength():
     '''
     Creates a LaminateStrength object to evaluate strength.
+    The class is capable of calculating strain and stress at the midplane, as well
+    as ply-by-ply at the top and bottom, both in the laminate and material directions.
 
     Parameters
     ----------
@@ -118,7 +118,7 @@ class LaminateStrength():
             )
         return stressk
 
-    def epsilonk_123(self):
+    def _epsilonk_123(self):
 
         stacking = self.dproperty.stacking
         epsilonk = self._epsilonk()
@@ -176,13 +176,15 @@ class LaminateStrength():
 
     def calculate_strain(self):
         '''
+        Calculates strain ply by at laminate direction and material direction.
+
         Returns
         -------
         strains : pd.Dataframe
             ply by ply strains in plate direction and material direction       
         '''
         epsilonk = self._epsilonk()
-        epsilonk_123 = self.epsilonk_123()
+        epsilonk_123 = self._epsilonk_123()
         stacking = self.dproperty.stacking
 
         cur_ply = 1
@@ -231,6 +233,8 @@ class LaminateStrength():
 
     def calculate_stress(self):
         '''
+        Calculates stress ply by at laminate direction and material direction.
+
         Returns
         -------
         stress : pd.Dataframe
