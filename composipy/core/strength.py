@@ -55,7 +55,7 @@ class LaminateStrength():
         
         Returns
         -------
-        epsilon0: numpy ndarray
+        epsilon0 : numpy ndarray
             [epsilonx0, epsilony0, epsilonxy0, kappax0, kappay0, kappaxy0]
         '''
 
