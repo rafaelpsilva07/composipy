@@ -15,6 +15,10 @@ Composipy is a Python-based library designed to address the challenges of compos
 
 The library is built using the most powerful Python numerical libraries, so users can think of using Composipy in the same way as Pandas, NumPy, and SciPy. In fact, Composipy is built using their objects and structures.
 
+
+<img src="https://github.com/rafaelpsilva07/composipy/blob/main/doc/images/composipy_features.PNG" width="700">
+
+
 It is especially useful for leveraging the data-driven culture in companies and can be used to build response surfaces, generate samples, and much more. Refer to the [Composipy Examples](https://rafaelpsilva07.github.io/composipy/notebooks/index.html)
 
 
