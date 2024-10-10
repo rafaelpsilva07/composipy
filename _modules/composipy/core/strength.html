@@ -339,30 +339,30 @@ document.write(`
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="c1">#TODO:</span>
-<span class="c1"># tests</span>
-<span class="c1"># improve documentation</span>
 <span class="c1"># strength criteria</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;OrthotropicMaterial&#39;</span><span class="p">,</span> <span class="s1">&#39;IsotropicMaterial&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;LaminateStrength&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="LaminateStrength"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength">[docs]</a><span class="k">class</span> <span class="nc">LaminateStrength</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Creates a LaminateStrength object to evaluate strength.</span>
+<span class="sd">    The class is capable of calculating strain and stress at the midplane, as well</span>
+<span class="sd">    as ply-by-ply at the top and bottom, both in the laminate and material directions.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    dproperty : LaminateProperty</span>
 <span class="sd">        A laminate property object</span>
-<span class="sd">    Nx : float, int, optional, default 0</span>
+<span class="sd">    Nxx : float, int, optional, default 0</span>
 <span class="sd">        Membrane load in x direction.</span>
-<span class="sd">    Ny : float, int, optional, default 0</span>
+<span class="sd">    Nyy : float, int, optional, default 0</span>
 <span class="sd">        Membrane load in y direction.    </span>
 <span class="sd">    Nxy : float, int, optional, default 0</span>
 <span class="sd">        Membrane load in xy direction.</span>
-<span class="sd">    Mx : float, int, optional, default 0</span>
+<span class="sd">    Mxx : float, int, optional, default 0</span>
 <span class="sd">        Moment in x direction.</span>
-<span class="sd">    My : float, int, optional, default 0</span>
+<span class="sd">    Myy : float, int, optional, default 0</span>
 <span class="sd">        Moment in y direction.</span>
 <span class="sd">    Mxy : float, int, optional, default 0</span>
 <span class="sd">        Moment in xy direction.</span>
@@ -371,33 +371,35 @@ document.write(`
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
             <span class="n">dproperty</span><span class="p">,</span> 
-            <span class="n">Nx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">Ny</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">Nxx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">Nyy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">Nxy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">Mx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">My</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">Mxx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">Myy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">Mxy</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span> <span class="o">=</span> <span class="n">dproperty</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Nx</span> <span class="o">=</span> <span class="n">Nx</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Ny</span> <span class="o">=</span> <span class="n">Ny</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Nxx</span> <span class="o">=</span> <span class="n">Nxx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Nyy</span> <span class="o">=</span> <span class="n">Nyy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Nxy</span> <span class="o">=</span> <span class="n">Nxy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Mx</span> <span class="o">=</span> <span class="n">Mx</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">My</span> <span class="o">=</span> <span class="n">My</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Mxx</span> <span class="o">=</span> <span class="n">Mxx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Myy</span> <span class="o">=</span> <span class="n">Myy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Mxy</span> <span class="o">=</span> <span class="n">Mxy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_positions</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1">#used for plotting.</span>
 
 
 <div class="viewcode-block" id="LaminateStrength.epsilon0"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.epsilon0">[docs]</a>    <span class="k">def</span> <span class="nf">epsilon0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#ok</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Calculates the strains of the laminate</span>
+<span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        epsilon0: numpy ndarray</span>
+<span class="sd">        epsilon0 : numpy ndarray</span>
 <span class="sd">            [epsilonx0, epsilony0, epsilonxy0, kappax0, kappay0, kappaxy0]</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">ABD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">ABD</span>
         <span class="n">abd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">ABD</span><span class="p">)</span> <span class="c1">#equivalent relations on pg 153 of Daniel</span>
-        <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">Nx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nxy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">My</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mxy</span><span class="p">])</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">Nxx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nyy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nxy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mxx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Myy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mxy</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">abd</span> <span class="o">@</span> <span class="n">N</span></div>
 
 
@@ -455,7 +457,7 @@ document.write(`
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">stressk</span>
 
-    <span class="k">def</span> <span class="nf">epsilonk_123</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_epsilonk_123</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="n">stacking</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">stacking</span>
         <span class="n">epsilonk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilonk</span><span class="p">()</span>
@@ -513,13 +515,15 @@ document.write(`
 
 <div class="viewcode-block" id="LaminateStrength.calculate_strain"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.calculate_strain">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_strain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculates strain ply by at laminate direction and material direction.</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        strains : pd.Dataframe</span>
 <span class="sd">            ply by ply strains in plate direction and material direction       </span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">epsilonk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilonk</span><span class="p">()</span>
-        <span class="n">epsilonk_123</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilonk_123</span><span class="p">()</span>
+        <span class="n">epsilonk_123</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilonk_123</span><span class="p">()</span>
         <span class="n">stacking</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">stacking</span>
 
         <span class="n">cur_ply</span> <span class="o">=</span> <span class="mi">1</span>
@@ -568,6 +572,8 @@ document.write(`
 
 <div class="viewcode-block" id="LaminateStrength.calculate_stress"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.calculate_stress">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_stress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculates stress ply by at laminate direction and material direction.</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        stress : pd.Dataframe</span>
