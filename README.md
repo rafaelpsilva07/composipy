@@ -13,14 +13,17 @@
 
 Composipy is a Python-based library designed to address the challenges of composite plate analysis and optimization in the aerospace industry. The library offers tools for laminate stress-strain, plate buckling analysis and lamination parameter optimization, helping engineers during the design process. Utilizing object-oriented programming and native Python structures, Composipy ensures a intuitive workflow and easy integration into existing engineering practices, such as defining material, defining properties, so on.
 
+The library is built using the most powerful Python numerical libraries, so users can think of using Composipy in the same way as Pandas, NumPy, and SciPy. In fact, Composipy is built using their objects and structures.
+
+It is especially useful for leveraging the data-driven culture in companies and can be used to build response surfaces, generate samples, and much more. Refer to the [Composipy Examples](https://rafaelpsilva07.github.io/composipy/notebooks/index.html)
 
 
-
-Composipy is able to perform buckling calculation considering different boundary conditions and in-plane load applications. See [Examples](https://rafaelpsilva07.github.io/composipy/notebooks/Examples_BCs.html).
-
-
-<img src="https://github.com/rafaelpsilva07/composipy/blob/main/doc/images/load_bcs_examples.PNG" width="700">
-
+## Main features
+- ABD Matrix
+- Laminate Stress and Strain
+- Lamination Parameters
+- Plate Buckling
+- Plate Optimization
 
 
 ## How to install
@@ -36,14 +39,6 @@ pip install composipy
 ```shell
 python setup.py install
 ```
-
-## Documentation
-
-- [Examples](https://rafaelpsilva07.github.io/composipy/notebooks/index.html)
-
-- [Code References](https://rafaelpsilva07.github.io/composipy/reference/index.html)
-
-- [Optitmization functions](https://rafaelpsilva07.github.io/composipy/reference/optimization_functions.html)
 
 ## Quick start
 
@@ -82,7 +77,21 @@ print(laminate1.xiA) # prints lamination parameters of extension as a np.ndarray
 print(laminate1.xiD) # prints lamination parameters of bending as a np.ndarray
 ```
 
-### Create a Plate Structure.
+
+### Create a Laminate Strength Analysis.
+```python
+from composipy import LaminateStrength
+
+laminate_strength = LaminateStrength(laminate1, Nxx=100, Mxx=10)
+laminate_strength.epsilon0() #strains at the midplane
+laminate_strength.calculate_strain() #strain ply by ply
+laminate_strength.calculate_strain() #stress ply by ply
+```
+See [LaminateStrength](https://rafaelpsilva07.github.io/composipy/reference/classes.html#laminatestrength) for reference.
+
+Also, check the [Stress Strain Calculation of a Laminate](https://rafaelpsilva07.github.io/composipy/notebooks/Stress_strain_of_laminate.html) to see a complete example.
+
+### Create a Plate Structure for Buckling Analysis
 
 ```python
 from composipy import PlateStructure
@@ -99,15 +108,20 @@ panel = PlateStructure(laminate1, 360, 360, m=10, n=10, Nxx=-1, constraints=cons
 See [PlateStructure](https://rafaelpsilva07.github.io/composipy/reference/classes.html#platestructure) for reference.
 
 
-### Calculate Buckling
+#### Calculate Buckling
 ```python
 print(panel.buckling_analysis()) # solve the eigenvalue problem.
 ```
 
-### Plot Buckling shape mode
+#### Plot Buckling shape mode
 ```python
 print(panel.plot_eigenvalue())
 ```
+
+Composipy is able to perform buckling calculation considering different boundary conditions and in-plane load applications. Check the [Critical Buckling Examples With Varying Boundary Conditions](https://rafaelpsilva07.github.io/composipy/notebooks/Critical_buckling_varying_BCs.html) to see a complete example.
+
+
+If you are interesting in plate optimization, you may want to check the [Optimization of a Plate Subjected to Buckling Loads](https://rafaelpsilva07.github.io/composipy/notebooks/Optimization_buckling.html)
 
 
 ## Theoretical References
