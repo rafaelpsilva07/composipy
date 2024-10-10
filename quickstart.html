@@ -356,8 +356,18 @@ document.write(`
 <div class="section" id="what-it-is">
 <h2>What it is<a class="headerlink" href="#what-it-is" title="Permalink to this heading">#</a></h2>
 <p>Composipy is a Python-based library designed to address the challenges of composite plate analysis and optimization in the aerospace industry. The library offers tools for laminate stress-strain, plate buckling analysis and lamination parameter optimization, helping engineers during the design process. Utilizing object-oriented programming and native Python structures, Composipy ensures a intuitive workflow and easy integration into existing engineering practices, such as defining material, defining properties, so on.</p>
-<p>Composipy is able to perform buckling calculation considering different boundary conditions and in-plane load applications. See <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/notebooks/Examples_BCs.html">Examples</a>.</p>
-<p><span class="raw-html-m2r"><img src="https://github.com/rafaelpsilva07/composipy/blob/main/doc/images/load_bcs_examples.PNG" width="700"></span></p>
+<p>The library is built using the most powerful Python numerical libraries, so users can think of using Composipy in the same way as Pandas, NumPy, and SciPy. In fact, Composipy is built using their objects and structures.</p>
+<p>It is especially useful for leveraging the data-driven culture in companies and can be used to build response surfaces, generate samples, and much more. Refer to the <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/notebooks/index.html">Composipy Examples</a></p>
+</div>
+<div class="section" id="main-features">
+<h2>Main features<a class="headerlink" href="#main-features" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>ABD Matrix</p></li>
+<li><p>Laminate Stress and Strain</p></li>
+<li><p>Lamination Parameters</p></li>
+<li><p>Plate Buckling</p></li>
+<li><p>Plate Optimization</p></li>
+</ul>
 </div>
 <div class="section" id="how-to-install">
 <h2>How to install<a class="headerlink" href="#how-to-install" title="Permalink to this heading">#</a></h2>
@@ -373,14 +383,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference external" href="https://rafaelpsilva07.github.io/composipy/notebooks/index.html">Examples</a></p></li>
-<li><p><a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/index.html">Code References</a></p></li>
-<li><p><a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/optimization_functions.html">Optitmization functions</a></p></li>
-</ul>
 </div>
 <div class="section" id="quick-start">
 <h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this heading">#</a></h2>
@@ -416,8 +418,21 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="section" id="create-a-plate-structure">
-<h3>Create a Plate Structure.<a class="headerlink" href="#create-a-plate-structure" title="Permalink to this heading">#</a></h3>
+<div class="section" id="create-a-laminate-strength-analysis">
+<h3>Create a Laminate Strength Analysis.<a class="headerlink" href="#create-a-laminate-strength-analysis" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">LaminateStrength</span>
+
+<span class="n">laminate_strength</span> <span class="o">=</span> <span class="n">LaminateStrength</span><span class="p">(</span><span class="n">laminate1</span><span class="p">,</span> <span class="n">Nxx</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">Mxx</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">laminate_strength</span><span class="o">.</span><span class="n">epsilon0</span><span class="p">()</span> <span class="c1">#strains at the midplane</span>
+<span class="n">laminate_strength</span><span class="o">.</span><span class="n">calculate_strain</span><span class="p">()</span> <span class="c1">#strain ply by ply</span>
+<span class="n">laminate_strength</span><span class="o">.</span><span class="n">calculate_strain</span><span class="p">()</span> <span class="c1">#stress ply by ply</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/classes.html#laminatestrength">LaminateStrength</a> for reference.</p>
+<p>Also, check the <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/notebooks/Stress_strain_of_laminate.html">Stress Strain Calculation of a Laminate</a> to see a complete example.</p>
+</div>
+<div class="section" id="create-a-plate-structure-for-buckling-analysis">
+<h3>Create a Plate Structure for Buckling Analysis<a class="headerlink" href="#create-a-plate-structure-for-buckling-analysis" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">PlateStructure</span>
 
 <span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
@@ -430,17 +445,19 @@ document.write(`
 </pre></div>
 </div>
 <p>See <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/reference/classes.html#platestructure">PlateStructure</a> for reference.</p>
-</div>
 <div class="section" id="calculate-buckling">
-<h3>Calculate Buckling<a class="headerlink" href="#calculate-buckling" title="Permalink to this heading">#</a></h3>
+<h4>Calculate Buckling<a class="headerlink" href="#calculate-buckling" title="Permalink to this heading">#</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">buckling_analysis</span><span class="p">())</span> <span class="c1"># solve the eigenvalue problem.</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="plot-buckling-shape-mode">
-<h3>Plot Buckling shape mode<a class="headerlink" href="#plot-buckling-shape-mode" title="Permalink to this heading">#</a></h3>
+<h4>Plot Buckling shape mode<a class="headerlink" href="#plot-buckling-shape-mode" title="Permalink to this heading">#</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">plot_eigenvalue</span><span class="p">())</span>
 </pre></div>
+</div>
+<p>Composipy is able to perform buckling calculation considering different boundary conditions and in-plane load applications. Check the <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/notebooks/Critical_buckling_varying_BCs.html">Critical Buckling Examples With Varying Boundary Conditions</a> to see a complete example.</p>
+<p>If you are interesting in plate optimization, you may want to check the <a class="reference external" href="https://rafaelpsilva07.github.io/composipy/notebooks/Optimization_buckling.html">Optimization of a Plate Subjected to Buckling Loads</a></p>
 </div>
 </div>
 </div>
@@ -502,19 +519,22 @@ document.write(`
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-it-is">What it is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-features">Main features</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-install">How to install</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#directly-from-pypi">Directly From PYPI</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#built-from-source">Built from source</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick start</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-material-properties">Create the Material Properties.</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-laminate">Define the Laminate.</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-stiffnnes-matrix-and-lamination-parameters">Calculate Stiffnnes Matrix and Lamination Parameters</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-plate-structure">Create a Plate Structure.</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-buckling">Calculate Buckling</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-buckling-shape-mode">Plot Buckling shape mode</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-laminate-strength-analysis">Create a Laminate Strength Analysis.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-plate-structure-for-buckling-analysis">Create a Plate Structure for Buckling Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-buckling">Calculate Buckling</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-buckling-shape-mode">Plot Buckling shape mode</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#theoretical-references">Theoretical References</a></li>
