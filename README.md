@@ -11,7 +11,10 @@
 
 ## What it is
 
-Composipy is a Python-based library designed to address the challenges of composite plate analysis and optimization in the aerospace industry, where weight reduction is crucial for efficient and profitable aircraft design. The library offers tools for plate buckling analysis and lamination parameter optimization, empowering engineers to streamline the design process and enhance structural performance. Utilizing object-oriented programming and native Python structures, Composipy ensures a seamless workflow and easy integration into existing engineering practices. Through continuous integration and delivery practices, Composipy maintains reliability and efficiency. 
+Composipy is a Python-based library designed to address the challenges of composite plate analysis and optimization in the aerospace industry. The library offers tools for laminate stress-strain, plate buckling analysis and lamination parameter optimization, helping engineers during the design process. Utilizing object-oriented programming and native Python structures, Composipy ensures a intuitive workflow and easy integration into existing engineering practices, such as defining material, defining properties, so on.
+
+
+
 
 Composipy is able to perform buckling calculation considering different boundary conditions and in-plane load applications. See [Examples](https://rafaelpsilva07.github.io/composipy/notebooks/Examples_BCs.html).
 

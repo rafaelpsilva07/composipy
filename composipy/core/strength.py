@@ -47,6 +47,7 @@ class LaminateStrength():
         self.Mxx = Mxx
         self.Myy = Myy
         self.Mxy = Mxy
+        self._positions = None #used for plotting.
 
 
     def epsilon0(self): #ok

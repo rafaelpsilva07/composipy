@@ -10,6 +10,7 @@ Check out some jupyter notebooks.
    :maxdepth: 1
    :caption: Contents:
    
-   Critical Buckling Examples <Ritz_verification.ipynb>
-   Sample Code Snippets <Code_snipets.ipynb>
+   Critical Buckling Examples With Varying Boundary Conditions <Critical_buckling_varying_BCs.ipynb>
+   Critical Buckling Verification Study <Critical_buckling_verification_study.ipynb>
+   Optimization of a plate subjected to buckling loads <Optimization_buckling.ipynb>
    Stress Strain verification <Stress_strain_check.ipynb>
