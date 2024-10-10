@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Boundary conditions and load cases examples &#8212; composipy 1.4.4 documentation</title>
+    <title>Critical Buckling Verification Study &#8212; composipy 1.4.4 documentation</title>
   
   
   
@@ -45,9 +45,11 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Examples_BCs';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Critical_buckling_verification_study';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Optimization of a plate subjected to buckling loads" href="Optimization_buckling.html" />
+    <link rel="prev" title="Critical Buckling Examples With Varying Boundary Conditions" href="Critical_buckling_varying_BCs.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -151,7 +153,7 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="index.html">
     Examples
   </a>
@@ -226,9 +228,7 @@ document.write(`
       
       
       
-        
-      
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -257,7 +257,7 @@ document.write(`
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="index.html">
     Examples
   </a>
@@ -288,6 +288,21 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Critical_buckling_varying_BCs.html">Critical Buckling Examples With Varying Boundary Conditions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Critical Buckling Verification Study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Optimization_buckling.html">Optimization of a plate subjected to buckling loads</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -321,7 +336,10 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Boundary...</li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Composipy Notebooks</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Critical...</li>
   </ul>
 </nav>
 </div>
@@ -338,294 +356,156 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="section" id="Boundary-conditions-and-load-cases-examples">
-<h1>Boundary conditions and load cases examples<a class="headerlink" href="#Boundary-conditions-and-load-cases-examples" title="Permalink to this heading">#</a></h1>
-<p>Thanks the Bardell equations implamentation, composipy is capable of simulating different boundary conditions and different combinations of load cases.</p>
-<div class="section" id="Importing-composipy-objects-and-creating-properties">
-<h2>Importing composipy objects and creating properties<a class="headerlink" href="#Importing-composipy-objects-and-creating-properties" title="Permalink to this heading">#</a></h2>
+  <div class="section" id="Critical-Buckling-Verification-Study">
+<h1>Critical Buckling Verification Study<a class="headerlink" href="#Critical-Buckling-Verification-Study" title="Permalink to this heading">#</a></h1>
+<p>Presented within Rafael’s master dissertation “COMPOSITE PLATE OPTIMIZATION COMBINING SEMIANALYTICAL MODEL, LAMINATION PARAMETERS AND A GRADIENT-BASED OPTIMIZER”.</p>
+<p>Access the full repository with complete study and NASTRAN FEM model at: <a class="github reference external" href="https://github.com/rafaelpsilva07/rafaelmscdissertation">rafaelpsilva07/rafaelmscdissertation</a></p>
+<p>The following examples are part of the Ritz verification against FEM model.</p>
+<div class="section" id="Simply-Supported-study-case-(SSSS)">
+<h2>Simply Supported study case (SSSS)<a class="headerlink" href="#Simply-Supported-study-case-(SSSS)" title="Permalink to this heading">#</a></h2>
+<p>This study case aims to verify the Rayleigh-Ritz implementation made with Composipy (Silva, R.P. 2023). Mathematical verification of the Rayleigh-Ritz implementation is made against analytical buckling equation and FEM model. The benchmarking example is a simply supported plate with biaxial load, which considers a quasi-isotropic layup [(45/-45)2/02/902]s and properties according Table below. This example came from Kassapoglou (2010).</p>
+<p><img alt="669bcc8d1fda4dc5a3a68f104e72bcdc" class="no-scaled-link" src="../_images/mechanical_prop_verification_problem.png" style="width: 400px; height: 200px;" /></p>
+<p>Dimension of the square plate is 100 mm and the load ratio (𝑁𝑦/𝑁𝑥) is 0.5. Analytical solution for this problem using Equation below is 234.7 N/mm.</p>
+<div class="math notranslate nohighlight">
+\[\lambda = \pi^2\frac{[D_{11}m^4 +2(D_{12}+2D_{66})m^2n^2(a/b)^2 + D_{22}n^4(a/b)^4  ]}{a^2 (m^2 + (N_{x}/N_{y}) n^2 (a/b)^2)}\]</div>
+<p>This problem using composipy results in 225.9 N/mm. See code below.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy import OrthotropicMaterial, LaminateProperty
-from composipy import PlateStructure
-import matplotlib
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#Ply Material Properties (MPa and mm)
-E1 = 60800
-E2 = 58250
-v12 = 0.07
-G12 = 4550
-t = 0.21
-
-# Plate Parameters (mm)
-a = 360.
-b = 360.
-m = 10 # discretization in x direction
-n = 10 # discretization in y direction
-
-
-# Stacking sequence
-stacking = [45,-45,0,90,45,-45,0,90,45,-45]
-stacking += stacking[::-1] # symmetry
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Ply material and laminate property objects
-
-ply_1 = OrthotropicMaterial(E1, E2, v12, G12, t)
-l1 = LaminateProperty(stacking, ply_1)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Pinned-Nxx">
-<h2>Pinned Nxx<a class="headerlink" href="#Pinned-Nxx" title="Permalink to this heading">#</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_SSSS = PlateStructure(l1, a, b, m=m, n=n, Nxx=-1,constraints=&#39;PINNED&#39;)
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>eigvals, eigvecs = panel_SSSS.buckling_analysis()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>eigvals
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>E1 = 137.9e3
+E2 = 11.7e3
+v12 = 0.31
+G12 = 4.82e3
+t = 0.1524
+
+a = 100
+b = 100
+
+Nxx = -1
+Nyy = -0.5
+
+m = 7
+n = 7
+
+mat = OrthotropicMaterial(E1, E2, v12, G12, t)
+stack = [45, -45]*2 + [0]*2 + [90]*2
+stack += stack[::-1]
+lam = LaminateProperty(stack, mat)
+plate = PlateStructure(lam, a, b, &quot;PINNED&quot;, Nxx=Nxx, Nyy=Nyy, m=m, n=n)
+
+eigenvalue, eigenvector = plate.buckling_analysis()
+print(f&#39;min eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
+
+plate.plot_eigenvalue()
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
-</pre></div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([ 97.04915682, 144.47730786, 246.83882036, 388.19669784,
-       393.21258067])
+min eigenvalue is  225.9 N/mm
 </pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_SSSS.plot_eigenvalue()
-</pre></div>
-</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Examples_BCs_9_0.png" src="../_images/notebooks_Examples_BCs_9_0.png" />
+<img alt="../_images/notebooks_Critical_buckling_verification_study_3_1.png" src="../_images/notebooks_Critical_buckling_verification_study_3_1.png" />
 </div>
 </div>
 </div>
-<div class="section" id="Clamped-Nxy-and-Nyy">
-<h2>Clamped Nxy and Nyy<a class="headerlink" href="#Clamped-Nxy-and-Nyy" title="Permalink to this heading">#</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[92]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_CCCC = PlateStructure(l1, a, 1.5*b, m=m, n=n, Nxy=-1, Nyy=-1, constraints=&#39;CLAMPED&#39;)
-</pre></div>
-</div>
-</div>
+<div class="section" id="Different-boundary-conditions">
+<h2>Different boundary conditions<a class="headerlink" href="#Different-boundary-conditions" title="Permalink to this heading">#</a></h2>
+<p>Table below extends the study for different boundary conditions in order to verify polynomial functions presented in section 2.1.3. The results are verified against a NASTRAN FEM model and the maximum difference is 0.7%. Table 6 presents the first buckling mode deformation shape.</p>
+<p><img alt="e3afe837069846cfbdd738ef2470cc68" class="no-scaled-link" src="../_images/first_eigenvalue_BC.png" style="height: 150px;" /></p>
+<div class="section" id="Clamped-study-case-(CCCC)">
+<h3>Clamped study case (CCCC)<a class="headerlink" href="#Clamped-study-case-(CCCC)" title="Permalink to this heading">#</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_CCCC.buckling_analysis()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lam = LaminateProperty(stack, mat)
+plate = PlateStructure(lam, a, b, &quot;CLAMPED&quot;, Nxx=Nxx, Nyy=Nyy, m=m, n=n)
+
+eigenvalue, eigenvector = plate.buckling_analysis()
+print(f&#39;min eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
+
+plate.plot_eigenvalue()
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
-</pre></div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(array([138.79310181, 146.27293322, 214.40196835, 235.95368935,
-        345.90300267]),
- array([[ 9.34248014e-16, -1.88156661e-14,  2.02134850e-14,
-          2.34440133e-15,  1.61245714e-14],
-        [-2.12462063e-14,  9.37191184e-14, -1.09651915e-13,
-          1.22922751e-15, -8.64977457e-14],
-        [-1.68030603e-14, -2.94928446e-15,  3.17565273e-15,
-          6.43801745e-15,  2.49531496e-15],
-        ...,
-        [ 1.48429879e-13, -6.09319462e-02,  5.26382491e-01,
-          6.94793823e-13,  8.03873977e-01],
-        [ 1.74056918e-01,  1.50428248e-13,  1.23757124e-13,
-         -1.99938292e-01,  1.44448141e-13],
-        [ 1.19772248e-13, -4.03658981e-02,  4.21566452e-01,
-          9.40855121e-13,  5.20345902e-01]]))
+min eigenvalue is  495.0 N/mm
 </pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[94]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_CCCC.plot_eigenvalue()
-%matplotlib inline
-</pre></div>
-</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Examples_BCs_13_0.png" src="../_images/notebooks_Examples_BCs_13_0.png" />
+<img alt="../_images/notebooks_Critical_buckling_verification_study_5_1.png" src="../_images/notebooks_Critical_buckling_verification_study_5_1.png" />
 </div>
 </div>
 </div>
-<div class="section" id="Free-edge-Nxx-(custom-boundary-condition)">
-<h2>Free edge Nxx (custom boundary condition)<a class="headerlink" href="#Free-edge-Nxx-(custom-boundary-condition)" title="Permalink to this heading">#</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>constraints={
-                &#39;x0&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-                &#39;xa&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-                &#39;y0&#39;: [],
-                &#39;yb&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-            }
-panel_SSFS = PlateStructure(l1, 1.5*a, b, m=m, n=n, Nxx=-1, constraints=constraints)
-</pre></div>
-</div>
-</div>
+<div class="section" id="Simply-supported-with-one-free-edge-study-case-(SSSC)">
+<h3>Simply supported with one free edge study case (SSSC)<a class="headerlink" href="#Simply-supported-with-one-free-edge-study-case-(SSSC)" title="Permalink to this heading">#</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_SSFS.buckling_analysis()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>constraints = {
+     &#39;x0&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
+     &#39;xa&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
+     &#39;y0&#39; : [],
+     &#39;yb&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;]
+ }
+
+plate = PlateStructure(lam, a, b, constraints, Nxx=Nxx, Nyy=Nyy)
+eigenvalue, eigenvector = plate.buckling_analysis()
+print(f&#39;min eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
+
+plate.plot_eigenvalue()
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
-</pre></div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(array([ 20.12080055,  47.13886913,  92.5739614 , 156.53663617,
-        185.19779529]),
- array([[-5.54254543e-15,  8.54682964e-15,  2.02336476e-15,
-          2.14117401e-14,  2.25590066e-14],
-        [ 2.70857705e-13, -3.87614772e-13,  1.33465332e-13,
-         -2.01037659e-12, -4.41333984e-13],
-        [-2.62755574e-14,  1.09823238e-13, -6.76289507e-15,
-          1.36766074e-13,  1.13523615e-14],
-        ...,
-        [ 6.90309193e-03,  6.95127053e-05, -5.12419786e-03,
-          3.38168226e-02, -1.43816796e-05],
-        [ 9.66068997e-04, -2.79805029e-05,  4.46813288e-04,
-         -2.74685452e-02, -3.51157619e-05],
-        [ 3.64137204e-03,  3.67529764e-05, -2.79731072e-03,
-          3.43269351e-02, -6.21653806e-06]]))
+min eigenvalue is  89.6 N/mm
 </pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[97]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_SSFS.plot_eigenvalue()
-</pre></div>
-</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Examples_BCs_17_0.png" src="../_images/notebooks_Examples_BCs_17_0.png" />
+<img alt="../_images/notebooks_Critical_buckling_verification_study_7_1.png" src="../_images/notebooks_Critical_buckling_verification_study_7_1.png" />
 </div>
 </div>
 </div>
-<div class="section" id="Nxy-Loading">
-<h2>Nxy Loading<a class="headerlink" href="#Nxy-Loading" title="Permalink to this heading">#</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_CCCC_nxy = PlateStructure(l1, a, b, m=m, n=n, Nxy=-1, constraints=&#39;CLAMPED&#39;)
-</pre></div>
+<div class="section" id="Comparison-with-NASTRAN-deformed-shape">
+<h3>Comparison with NASTRAN deformed shape<a class="headerlink" href="#Comparison-with-NASTRAN-deformed-shape" title="Permalink to this heading">#</a></h3>
+<p><img alt="ebd697a0fc5a4c838e0598dc7934a87d" class="no-scaled-link" src="../_images/Nastran_deformed.png" style="width: 600px;" /></p>
 </div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_CCCC_nxy.buckling_analysis()
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(array([338.84283307, 389.26571459, 776.82143839, 824.28455938,
-        882.94931083]),
- array([[-9.85787017e-14,  5.49320863e-14, -5.53627846e-14,
-         -5.47863549e-14, -1.63309599e-13],
-        [-1.14383443e-13,  4.82531544e-14, -2.16269855e-14,
-         -8.98291546e-14, -2.25169408e-13],
-        [-8.24080163e-15,  5.29270154e-14, -4.71651923e-15,
-         -9.11230373e-14, -1.89295317e-14],
-        ...,
-        [ 5.84301288e-01,  7.76122020e-13,  3.22800174e-01,
-          3.29448845e-12,  2.20803287e-12],
-        [-7.64092132e-13, -1.01135119e-01,  6.65989832e-12,
-         -1.79699680e-01, -3.68197373e-01],
-        [ 3.89453084e-01,  5.26513867e-13,  2.20302574e-01,
-          1.92960329e-12, -5.54281896e-14]]))
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_CCCC_nxy.plot_eigenvalue()
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_Examples_BCs_21_0.png" src="../_images/notebooks_Examples_BCs_21_0.png" />
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
+<div class="section" id="References">
+<h2>References<a class="headerlink" href="#References" title="Permalink to this heading">#</a></h2>
+<p>Kassapoglou, Christos. Design and Analysis of Composite Structures: With Applications to Aerospace Structures. John Wiley &amp; Sons, 2010.</p>
 </div>
 </div>
 
@@ -639,6 +519,24 @@ panel_SSFS = PlateStructure(l1, 1.5*a, b, m=m, n=n, Nxx=-1, constraints=constrai
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="Critical_buckling_varying_BCs.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Critical Buckling Examples With Varying Boundary Conditions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Optimization_buckling.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Optimization of a plate subjected to buckling loads</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -657,18 +555,21 @@ panel_SSFS = PlateStructure(l1, 1.5*a, b, m=m, n=n, Nxx=-1, constraints=constrai
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Importing-composipy-objects-and-creating-properties">Importing composipy objects and creating properties</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Pinned-Nxx">Pinned Nxx</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Clamped-Nxy-and-Nyy">Clamped Nxy and Nyy</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Free-edge-Nxx-(custom-boundary-condition)">Free edge Nxx (custom boundary condition)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Nxy-Loading">Nxy Loading</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Simply-Supported-study-case-(SSSS)">Simply Supported study case (SSSS)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Different-boundary-conditions">Different boundary conditions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Clamped-study-case-(CCCC)">Clamped study case (CCCC)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Simply-supported-with-one-free-edge-study-case-(SSSC)">Simply supported with one free edge study case (SSSC)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Comparison-with-NASTRAN-deformed-shape">Comparison with NASTRAN deformed shape</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#References">References</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/notebooks/Examples_BCs.ipynb.txt">
+    <a href="../_sources/notebooks/Critical_buckling_verification_study.ipynb.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

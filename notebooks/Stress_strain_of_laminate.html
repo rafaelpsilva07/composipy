@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Critical Buckling Examples &#8212; composipy 1.4.4 documentation</title>
+    <title>Stress Strain Calculation of a Laminate &#8212; composipy 1.4.4 documentation</title>
   
   
   
@@ -45,11 +45,9 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Ritz_verification';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Stress_strain_of_laminate';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Sample Code Snippets" href="Code_snipets.html" />
-    <link rel="prev" title="Composipy Notebooks" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -153,7 +151,7 @@
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="index.html">
     Examples
   </a>
@@ -228,7 +226,9 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -257,7 +257,7 @@ document.write(`
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="index.html">
     Examples
   </a>
@@ -288,20 +288,6 @@ document.write(`
       </div>
     
   </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<nav class="bd-docs-nav bd-links"
-     aria-label="Section Navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Critical Buckling Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Code_snipets.html">Sample Code Snippets</a></li>
-</ul>
-</div>
-</nav></div>
-    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -335,10 +321,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Composipy Notebooks</a></li>
-    
-    <li class="breadcrumb-item active" aria-current="page">Critical...</li>
+    <li class="breadcrumb-item active" aria-current="page">Stress...</li>
   </ul>
 </nav>
 </div>
@@ -355,156 +338,362 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="section" id="Critical-Buckling-Examples">
-<h1>Critical Buckling Examples<a class="headerlink" href="#Critical-Buckling-Examples" title="Permalink to this heading">#</a></h1>
-<p>Presented within Rafael’s master dissertation “COMPOSITE PLATE OPTIMIZATION COMBINING SEMIANALYTICAL MODEL, LAMINATION PARAMETERS AND A GRADIENT-BASED OPTIMIZER”.</p>
-<p>Access the full repository with complete study and NASTRAN FEM model at: <a class="github reference external" href="https://github.com/rafaelpsilva07/rafaelmscdissertation">rafaelpsilva07/rafaelmscdissertation</a></p>
-<p>The following examples are part of the Ritz verification against FEM model.</p>
-<div class="section" id="Simply-Supported-study-case-(SSSS)">
-<h2>Simply Supported study case (SSSS)<a class="headerlink" href="#Simply-Supported-study-case-(SSSS)" title="Permalink to this heading">#</a></h2>
-<p>This study case aims to verify the Rayleigh-Ritz implementation made with Composipy (Silva, R.P. 2023). Mathematical verification of the Rayleigh-Ritz implementation is made against analytical buckling equation and FEM model. The benchmarking example is a simply supported plate with biaxial load, which considers a quasi-isotropic layup [(45/-45)2/02/902]s and properties according Table below. This example came from Kassapoglou (2010).</p>
-<p><img alt="3f6685159cd74998a845fe861f8a4db7" class="no-scaled-link" src="../_images/mechanical_prop_verification_problem.png" style="width: 400px; height: 200px;" /></p>
-<p>Dimension of the square plate is 100 mm and the load ratio (𝑁𝑦/𝑁𝑥) is 0.5. Analytical solution for this problem using Equation below is 234.7 N/mm.</p>
-<div class="math notranslate nohighlight">
-\[\lambda = \pi^2\frac{[D_{11}m^4 +2(D_{12}+2D_{66})m^2n^2(a/b)^2 + D_{22}n^4(a/b)^4  ]}{a^2 (m^2 + (N_{x}/N_{y}) n^2 (a/b)^2)}\]</div>
-<p>This problem using composipy results in 225.9 N/mm. See code below.</p>
+  <div class="section" id="Stress-Strain-Calculation-of-a-Laminate">
+<h1>Stress Strain Calculation of a Laminate<a class="headerlink" href="#Stress-Strain-Calculation-of-a-Laminate" title="Permalink to this heading">#</a></h1>
+<p>This example presents the stress strain calculation of a Laminate using the CLT.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import matplotlib.pyplot as plt
+import pandas as pd
+
+from composipy import OrthotropicMaterial, LaminateProperty, LaminateStrength
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>E1 = 137.9e3
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Material
+E1 = 137.9e3
 E2 = 11.7e3
 v12 = 0.31
 G12 = 4.82e3
 t = 0.1524
 
-a = 100
-b = 100
+#Loads
+Nxx = 100
+Mxx = 20
 
-Nxx = -1
-Nyy = -0.5
+# Quasi laminate
+stacking = [45, -45, 90, 0]
+stacking += stacking[::-1]
 
-m = 7
-n = 7
-
-mat = OrthotropicMaterial(E1, E2, v12, G12, t)
-stack = [45, -45]*2 + [0]*2 + [90]*2
-stack += stack[::-1]
-lam = LaminateProperty(stack, mat)
-plate = PlateStructure(lam, a, b, &quot;PINNED&quot;, Nxx=Nxx, Nyy=Nyy, m=m, n=n)
-
-eigenvalue, eigenvector = plate.buckling_analysis()
-print(f&#39;min eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
-
-plate.plot_eigenvalue()
+# Object definition
+material = OrthotropicMaterial(E1, E2, v12, G12, t)
+laminate = LaminateProperty(stacking, material)
+strength_analysis = LaminateStrength(laminate, Nxx=Nxx, Mxx=Mxx)
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-min eigenvalue is  225.9 N/mm
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_Ritz_verification_3_1.png" src="../_images/notebooks_Ritz_verification_3_1.png" />
-</div>
-</div>
-</div>
-<div class="section" id="Different-boundary-conditions">
-<h2>Different boundary conditions<a class="headerlink" href="#Different-boundary-conditions" title="Permalink to this heading">#</a></h2>
-<p>Table below extends the study for different boundary conditions in order to verify polynomial functions presented in section 2.1.3. The results are verified against a NASTRAN FEM model and the maximum difference is 0.7%. Table 6 presents the first buckling mode deformation shape.</p>
-<p><img alt="782ac04427c847fba718a2c6efe55ab8" class="no-scaled-link" src="../_images/first_eigenvalue_BC.png" style="height: 150px;" /></p>
-<div class="section" id="Clamped-study-case-(CCCC)">
-<h3>Clamped study case (CCCC)<a class="headerlink" href="#Clamped-study-case-(CCCC)" title="Permalink to this heading">#</a></h3>
+<p>Calculating strains at the midplane <span class="math notranslate nohighlight">\(\varepsilon_{0x}\)</span>, <span class="math notranslate nohighlight">\(\varepsilon_{0y}\)</span> and <span class="math notranslate nohighlight">\(\gamma_{0xy}\)</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lam = LaminateProperty(stack, mat)
-plate = PlateStructure(lam, a, b, &quot;CLAMPED&quot;, Nxx=Nxx, Nyy=Nyy, m=m, n=n)
-
-eigenvalue, eigenvector = plate.buckling_analysis()
-print(f&#39;min eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
-
-plate.plot_eigenvalue()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>strength_analysis.epsilon0()
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-min eigenvalue is  495.0 N/mm
+array([ 1.52630215e-03, -4.89003289e-04, -1.67758599e-20,  5.46178270e-03,
+       -2.99304212e-03, -6.90268796e-04])
 </pre></div></div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_Ritz_verification_5_1.png" src="../_images/notebooks_Ritz_verification_5_1.png" />
-</div>
-</div>
-</div>
-<div class="section" id="Simply-supported-with-one-free-edge-study-case-(SSSC)">
-<h3>Simply supported with one free edge study case (SSSC)<a class="headerlink" href="#Simply-supported-with-one-free-edge-study-case-(SSSC)" title="Permalink to this heading">#</a></h3>
+<p>Calculating strains ply by ply in analysis direction and material direction.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>constraints = {
-     &#39;x0&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-     &#39;xa&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-     &#39;y0&#39; : [],
-     &#39;yb&#39; : [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;]
- }
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>df_strain = strength_analysis.calculate_strain()
+df_strain.head(6) #display the first 6
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-plate = PlateStructure(lam, a, b, constraints, Nxx=Nxx, Nyy=Nyy)
-eigenvalue, eigenvector = plate.buckling_analysis()
-print(f&#39;min eigenvalue is {eigenvalue[0]: .1f} N/mm&#39;)
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-plate.plot_eigenvalue()
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ply</th>
+      <th>position</th>
+      <th>angle</th>
+      <th>epsilonx</th>
+      <th>epsilony</th>
+      <th>gammaxy</th>
+      <th>epsilon1</th>
+      <th>epsilon2</th>
+      <th>gamma12</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>top</td>
+      <td>45</td>
+      <td>4.86e-03</td>
+      <td>-2.31e-03</td>
+      <td>-4.21e-04</td>
+      <td>1.06e-03</td>
+      <td>1.48e-03</td>
+      <td>-7.17e-03</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>bot</td>
+      <td>45</td>
+      <td>4.02e-03</td>
+      <td>-1.86e-03</td>
+      <td>-3.16e-04</td>
+      <td>9.25e-04</td>
+      <td>1.24e-03</td>
+      <td>-5.88e-03</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>top</td>
+      <td>-45</td>
+      <td>4.02e-03</td>
+      <td>-1.86e-03</td>
+      <td>-3.16e-04</td>
+      <td>1.24e-03</td>
+      <td>9.25e-04</td>
+      <td>5.88e-03</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2</td>
+      <td>bot</td>
+      <td>-45</td>
+      <td>3.19e-03</td>
+      <td>-1.40e-03</td>
+      <td>-2.10e-04</td>
+      <td>1.00e-03</td>
+      <td>7.90e-04</td>
+      <td>4.59e-03</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>top</td>
+      <td>90</td>
+      <td>3.19e-03</td>
+      <td>-1.40e-03</td>
+      <td>-2.10e-04</td>
+      <td>-1.40e-03</td>
+      <td>3.19e-03</td>
+      <td>2.10e-04</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>3</td>
+      <td>bot</td>
+      <td>90</td>
+      <td>2.36e-03</td>
+      <td>-9.45e-04</td>
+      <td>-1.05e-04</td>
+      <td>-9.45e-04</td>
+      <td>2.36e-03</td>
+      <td>1.05e-04</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>df_strain_top = df_strain[df_strain[&#39;position&#39;]==&#39;top&#39;] #filter the top position
+plt.grid()
+plt.xlabel(&#39;strain&#39;)
+plt.ylabel(&#39;ply number&#39;)
+plt.plot(df_strain_top[&#39;epsilonx&#39;], df_strain_top[&#39;ply&#39;], &#39;k&#39;)
 </pre></div>
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-min eigenvalue is  89.6 N/mm
+[&lt;matplotlib.lines.Line2D at 0x1dee71542e0&gt;]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Ritz_verification_7_1.png" src="../_images/notebooks_Ritz_verification_7_1.png" />
+<img alt="../_images/notebooks_Stress_strain_of_laminate_7_1.png" src="../_images/notebooks_Stress_strain_of_laminate_7_1.png" />
 </div>
 </div>
+<p>Calculating stresses ply by ply in analysis direction and material direction.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
 </div>
-<div class="section" id="Comparison-with-NASTRAN-deformed-shape">
-<h3>Comparison with NASTRAN deformed shape<a class="headerlink" href="#Comparison-with-NASTRAN-deformed-shape" title="Permalink to this heading">#</a></h3>
-<p><img alt="5f5ed1aa401f4131a35df71d553c1e98" class="no-scaled-link" src="../_images/Nastran_deformed.png" style="width: 600px;" /></p>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>df_stress = strength_analysis.calculate_stress()
+df_stress.head(6) #display the first 6
+</pre></div>
 </div>
 </div>
-<div class="section" id="References">
-<h2>References<a class="headerlink" href="#References" title="Permalink to this heading">#</a></h2>
-<p>Kassapoglou, Christos. Design and Analysis of Composite Structures: With Applications to Aerospace Structures. John Wiley &amp; Sons, 2010.</p>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ply</th>
+      <th>position</th>
+      <th>angle</th>
+      <th>sigmax</th>
+      <th>sigmay</th>
+      <th>tauxy</th>
+      <th>sigma1</th>
+      <th>sigma2</th>
+      <th>tau12</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>top</td>
+      <td>45</td>
+      <td>121.68</td>
+      <td>52.57</td>
+      <td>65.77</td>
+      <td>152.89</td>
+      <td>21.36</td>
+      <td>-34.56</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>bot</td>
+      <td>45</td>
+      <td>103.94</td>
+      <td>47.25</td>
+      <td>57.58</td>
+      <td>133.17</td>
+      <td>18.02</td>
+      <td>-28.35</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>top</td>
+      <td>-45</td>
+      <td>124.02</td>
+      <td>67.33</td>
+      <td>-80.22</td>
+      <td>175.90</td>
+      <td>15.45</td>
+      <td>28.35</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2</td>
+      <td>bot</td>
+      <td>-45</td>
+      <td>99.59</td>
+      <td>55.32</td>
+      <td>-64.48</td>
+      <td>141.93</td>
+      <td>12.97</td>
+      <td>22.14</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>top</td>
+      <td>90</td>
+      <td>32.52</td>
+      <td>-183.16</td>
+      <td>-1.01</td>
+      <td>-183.16</td>
+      <td>32.52</td>
+      <td>1.01</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>3</td>
+      <td>bot</td>
+      <td>90</td>
+      <td>24.37</td>
+      <td>-122.78</td>
+      <td>-0.51</td>
+      <td>-122.78</td>
+      <td>24.37</td>
+      <td>0.51</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>df_stress_top = df_stress[df_stress[&#39;position&#39;]==&#39;top&#39;] #filter the top position
+plt.grid()
+plt.xlabel(&#39;stress MPa&#39;)
+plt.ylabel(&#39;ply number&#39;)
+plt.plot(df_stress_top[&#39;sigmax&#39;], df_stress_top[&#39;ply&#39;], &#39;k&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;matplotlib.lines.Line2D at 0x1dee72b1790&gt;]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Stress_strain_of_laminate_10_1.png" src="../_images/notebooks_Stress_strain_of_laminate_10_1.png" />
+</div>
 </div>
 </div>
 
@@ -518,24 +707,6 @@ min eigenvalue is  89.6 N/mm
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="index.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Composipy Notebooks</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="Code_snipets.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Sample Code Snippets</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -547,28 +718,9 @@ min eigenvalue is  89.6 N/mm
 
 
   <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Simply-Supported-study-case-(SSSS)">Simply Supported study case (SSSS)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Different-boundary-conditions">Different boundary conditions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Clamped-study-case-(CCCC)">Clamped study case (CCCC)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Simply-supported-with-one-free-edge-study-case-(SSSC)">Simply supported with one free edge study case (SSSC)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Comparison-with-NASTRAN-deformed-shape">Comparison with NASTRAN deformed shape</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#References">References</a></li>
-</ul>
-  </nav></div>
-
-  <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/notebooks/Ritz_verification.ipynb.txt">
+    <a href="../_sources/notebooks/Stress_strain_of_laminate.ipynb.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

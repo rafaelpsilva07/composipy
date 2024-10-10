@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sample Code Snippets &#8212; composipy 1.4.4 documentation</title>
+    <title>Optimization of a plate subjected to buckling loads &#8212; composipy 1.4.4 documentation</title>
   
   
   
@@ -45,10 +45,10 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Code_snipets';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/Optimization_buckling';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Critical Buckling Examples" href="Ritz_verification.html" />
+    <link rel="prev" title="Critical Buckling Verification Study" href="Critical_buckling_verification_study.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -295,8 +295,9 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="Ritz_verification.html">Critical Buckling Examples</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Sample Code Snippets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Critical_buckling_varying_BCs.html">Critical Buckling Examples With Varying Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Critical_buckling_verification_study.html">Critical Buckling Verification Study</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Optimization of a plate subjected to buckling loads</a></li>
 </ul>
 </div>
 </nav></div>
@@ -337,7 +338,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Composipy Notebooks</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Sample Code Snippets</li>
+    <li class="breadcrumb-item active" aria-current="page">Optimization...</li>
   </ul>
 </nav>
 </div>
@@ -354,9 +355,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="section" id="Sample-Code-Snippets">
-<h1>Sample Code Snippets<a class="headerlink" href="#Sample-Code-Snippets" title="Permalink to this heading">#</a></h1>
-<p>The code snipets are supposed to present the major functionalities of composipy. They are supposed to be published within SoftwareX Elselvier Journal.</p>
+  <div class="section" id="Optimization-of-a-plate-subjected-to-buckling-loads">
+<h1>Optimization of a plate subjected to buckling loads<a class="headerlink" href="#Optimization-of-a-plate-subjected-to-buckling-loads" title="Permalink to this heading">#</a></h1>
+<p>The code snipets are supposed to present the major functionalities of composipy.</p>
 <div class="section" id="Plate-buckling-analysis">
 <h2>Plate buckling analysis<a class="headerlink" href="#Plate-buckling-analysis" title="Permalink to this heading">#</a></h2>
 <p>The buckling_analysis() core method solves a eigenvalue problem like</p>
@@ -422,7 +423,7 @@ Critical eigenvalue is  26.6 N/mm
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Code_snipets_1_1.png" src="../_images/notebooks_Code_snipets_1_1.png" />
+<img alt="../_images/notebooks_Optimization_buckling_1_1.png" src="../_images/notebooks_Optimization_buckling_1_1.png" />
 </div>
 </div>
 </div>
@@ -477,7 +478,7 @@ generating plot...
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Code_snipets_4_1.png" src="../_images/notebooks_Code_snipets_4_1.png" />
+<img alt="../_images/notebooks_Optimization_buckling_4_1.png" src="../_images/notebooks_Optimization_buckling_4_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -518,7 +519,7 @@ penalty False
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Code_snipets_6_1.png" src="../_images/notebooks_Code_snipets_6_1.png" />
+<img alt="../_images/notebooks_Optimization_buckling_6_1.png" src="../_images/notebooks_Optimization_buckling_6_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -591,12 +592,12 @@ T= 4.190 W1= 0.487 and W3=-0.026
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="Ritz_verification.html"
+       href="Critical_buckling_verification_study.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Critical Buckling Examples</p>
+        <p class="prev-next-title">Critical Buckling Verification Study</p>
       </div>
     </a>
 </div>
@@ -631,7 +632,7 @@ T= 4.190 W1= 0.487 and W3=-0.026
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/notebooks/Code_snipets.ipynb.txt">
+    <a href="../_sources/notebooks/Optimization_buckling.ipynb.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

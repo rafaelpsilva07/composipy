@@ -4,7 +4,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Critical Buckling Examples\n",
+    "# Critical Buckling Verification Study\n",
     "\n",
     "Presented within Rafael's master dissertation \"COMPOSITE PLATE OPTIMIZATION COMBINING SEMIANALYTICAL MODEL, LAMINATION PARAMETERS AND A GRADIENT-BASED OPTIMIZER\". \n",
     "\n",
