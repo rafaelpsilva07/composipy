@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Critical Buckling Verification Study &#8212; composipy 1.4.4 documentation</title>
+    <title>Critical Buckling Verification Study &#8212; composipy 1.5.4 documentation</title>
   
   
   
@@ -125,7 +125,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.4.4 documentation</p>
+    <p class="title logo__title">composipy 1.5.4 documentation</p>
   
 </a></div>
     
@@ -365,7 +365,7 @@ document.write(`
 <div class="section" id="Simply-Supported-study-case-(SSSS)">
 <h2>Simply Supported study case (SSSS)<a class="headerlink" href="#Simply-Supported-study-case-(SSSS)" title="Permalink to this heading">#</a></h2>
 <p>This study case aims to verify the Rayleigh-Ritz implementation made with Composipy (Silva, R.P. 2023). Mathematical verification of the Rayleigh-Ritz implementation is made against analytical buckling equation and FEM model. The benchmarking example is a simply supported plate with biaxial load, which considers a quasi-isotropic layup [(45/-45)2/02/902]s and properties according Table below. This example came from Kassapoglou (2010).</p>
-<p><img alt="8a48f55f592e43f1a74bfc90c1263028" class="no-scaled-link" src="../_images/mechanical_prop_verification_problem.png" style="width: 400px; height: 200px;" /></p>
+<p><img alt="90b51a770eea4751bf97c6c0c7a33b03" class="no-scaled-link" src="../_images/mechanical_prop_verification_problem.png" style="width: 400px; height: 200px;" /></p>
 <p>Dimension of the square plate is 100 mm and the load ratio (𝑁𝑦/𝑁𝑥) is 0.5. Analytical solution for this problem using Equation below is 234.7 N/mm.</p>
 <div class="math notranslate nohighlight">
 \[\lambda = \pi^2\frac{[D_{11}m^4 +2(D_{12}+2D_{66})m^2n^2(a/b)^2 + D_{22}n^4(a/b)^4  ]}{a^2 (m^2 + (N_{x}/N_{y}) n^2 (a/b)^2)}\]</div>
@@ -429,7 +429,7 @@ min eigenvalue is  225.9 N/mm
 <div class="section" id="Different-boundary-conditions">
 <h2>Different boundary conditions<a class="headerlink" href="#Different-boundary-conditions" title="Permalink to this heading">#</a></h2>
 <p>Table below extends the study for different boundary conditions in order to verify polynomial functions presented in section 2.1.3. The results are verified against a NASTRAN FEM model and the maximum difference is 0.7%. Table 6 presents the first buckling mode deformation shape.</p>
-<p><img alt="0d77f1ef14604d3e84b72fc65d2cab53" class="no-scaled-link" src="../_images/first_eigenvalue_BC.png" style="height: 150px;" /></p>
+<p><img alt="84be93ac76f4491989719a289047a2f9" class="no-scaled-link" src="../_images/first_eigenvalue_BC.png" style="height: 150px;" /></p>
 <div class="section" id="Clamped-study-case-(CCCC)">
 <h3>Clamped study case (CCCC)<a class="headerlink" href="#Clamped-study-case-(CCCC)" title="Permalink to this heading">#</a></h3>
 <div class="nbinput docutils container">
@@ -501,7 +501,7 @@ min eigenvalue is  89.6 N/mm
 </div>
 <div class="section" id="Comparison-with-NASTRAN-deformed-shape">
 <h3>Comparison with NASTRAN deformed shape<a class="headerlink" href="#Comparison-with-NASTRAN-deformed-shape" title="Permalink to this heading">#</a></h3>
-<p><img alt="d913b607f40f44c897286fb9376f1f61" class="no-scaled-link" src="../_images/Nastran_deformed.png" style="width: 600px;" /></p>
+<p><img alt="5647b1728fc54adda944146fc63e3973" class="no-scaled-link" src="../_images/Nastran_deformed.png" style="width: 600px;" /></p>
 </div>
 </div>
 <div class="section" id="References">
