@@ -171,7 +171,24 @@ class LaminateProperty(Property):
         '''[A] Matrix as numpy.ndarray '''
 
         if not self._xiA is None:
-            raise NotImplementedError
+
+            U1, U2, U3, U4, U5 = self.plies.Invariants()
+            xi1, xi2, xi3, xi4 = self._xiA
+            T = self._total_thickness
+            A11 = T*(U1 + U2*xi1 + U3*xi3)
+            A12 = T*(-U3*xi3 + U4)
+            A13 = T*(U2*xi2/2 + U3*xi4)
+            A21 = T*(-U3*xi3 + U4)
+            A22 = T*(U1 - U2*xi1 + U3*xi3)
+            A23 = T*(U2*xi2/2 - U3*xi4)
+            A31 = T*(U2*xi2/2 + U3*xi4)
+            A32 = T*(U2*xi2/2 - U3*xi4)
+            A33 = T*(-U3*xi3 + U5)
+
+            self._A = np.array([[A11, A12, A13],
+                                [A21, A22, A23],
+                                [A31, A32, A33]])
+
         if self._A is None:
             self._A = np.zeros(9).reshape(3,3)
 
@@ -183,9 +200,18 @@ class LaminateProperty(Property):
     
     @property
     def B(self):
-        '''[B] Matrix as numpy.ndarray '''
-        if not self._xiB is None:
-            raise NotImplementedError
+        '''[B] Matrix as numpy.ndarray
+
+        Note
+        ----
+        Matrix [B] will be zero if defined using lamination parameters.       
+        '''
+        if (not self._xiA is None
+                and not self._xiD is None):
+            self._A = np.array([[0., 0., 0.],
+                                [0., 0., 0.],
+                                [0., 0., 0.]])
+
         if self._B is None:
             self._B = np.zeros(9).reshape(3,3)
 
