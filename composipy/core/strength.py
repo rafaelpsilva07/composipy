@@ -184,6 +184,11 @@ class LaminateStrength():
         -------
         strains : pd.Dataframe
             ply by ply strains in plate direction and material direction       
+
+        Note
+        ----
+        The sequence of the DataFrame starts from the TOP OF THE LAYUP to the BOTTOM OF THE LAYUP, which is the reverse of the definition order.
+        When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.
         '''
         epsilonk = self._epsilonk()
         epsilonk_123 = self._epsilonk_123()
@@ -241,6 +246,11 @@ class LaminateStrength():
         -------
         stress : pd.Dataframe
             ply by ply stress in plate direction and material direction       
+
+        Note
+        ----
+        The sequence of the DataFrame starts from the TOP OF THE LAYUP to the BOTTOM OF THE LAYUP, which is the reverse of the definition order.
+        When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.
         '''
 
         stressk = self._stressk()

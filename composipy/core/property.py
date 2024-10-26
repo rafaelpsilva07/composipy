@@ -13,10 +13,10 @@ class Property(ComposipyValidator):
 
 class LaminateProperty(Property):
     '''
-    This class creates laminate object. It needs Material objects (to define plies) and the angle information.
+    This class creates a LaminateProperty object. It requires Material objects (to define plies) and angle information.
     Some formulation characteristics are:
-    Laminate formulations ares used (see References)
-    Main reference is the chapter 4 of reference 2.
+    - Laminate formulations are used (see References).
+    - The main reference is Chapter 4 of Reference 2.
 
     Parameters
     ----------
@@ -49,6 +49,13 @@ class LaminateProperty(Property):
     >>> laminate_2.ABD # retunrs an array containing bending stiffness matrix [D] of the laminate
     >>> laminate_2.xiA # lamination parameters of extension
     >>> laminate_2.xiA # lamination parameters of bending
+
+    Note
+    -----
+    The first element of the stacking list corresponds to the BOTTOM OF THE LAYUP, and the last element corresponds to the
+    TOP OF THE LAYUP. This is important for non-symmetric laminates.
+
+    Refer to https://github.com/rafaelpsilva07/composipy/issues/28.
     '''
 
     def __init__(self, stacking, plies):
