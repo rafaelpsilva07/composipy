@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>composipy.core.property &#8212; composipy 1.5.0 documentation</title>
+    <title>composipy.core.property &#8212; composipy 1.5.1 documentation</title>
   
   
   
@@ -120,7 +120,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.5.0 documentation</p>
+    <p class="title logo__title">composipy 1.5.1 documentation</p>
   
 </a></div>
     
@@ -508,7 +508,24 @@ document.write(`
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;[A] Matrix as numpy.ndarray &#39;&#39;&#39;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xiA</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+            <span class="n">U1</span><span class="p">,</span> <span class="n">U2</span><span class="p">,</span> <span class="n">U3</span><span class="p">,</span> <span class="n">U4</span><span class="p">,</span> <span class="n">U5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plies</span><span class="o">.</span><span class="n">Invariants</span><span class="p">()</span>
+            <span class="n">xi1</span><span class="p">,</span> <span class="n">xi2</span><span class="p">,</span> <span class="n">xi3</span><span class="p">,</span> <span class="n">xi4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xiA</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_thickness</span>
+            <span class="n">A11</span> <span class="o">=</span> <span class="n">T</span><span class="o">*</span><span class="p">(</span><span class="n">U1</span> <span class="o">+</span> <span class="n">U2</span><span class="o">*</span><span class="n">xi1</span> <span class="o">+</span> <span class="n">U3</span><span class="o">*</span><span class="n">xi3</span><span class="p">)</span>
+            <span class="n">A12</span> <span class="o">=</span> <span class="n">T</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">U3</span><span class="o">*</span><span class="n">xi3</span> <span class="o">+</span> <span class="n">U4</span><span class="p">)</span>
+            <span class="n">A13</span> <span class="o">=</span> <span class="n">T</span><span class="o">*</span><span class="p">(</span><span class="n">U2</span><span class="o">*</span><span class="n">xi2</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">U3</span><span class="o">*</span><span class="n">xi4</span><span class="p">)</span>
+            <span class="n">A21</span> <span class="o">=</span> <span class="n">T</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">U3</span><span class="o">*</span><span class="n">xi3</span> <span class="o">+</span> <span class="n">U4</span><span class="p">)</span>
+            <span class="n">A22</span> <span class="o">=</span> <span class="n">T</span><span class="o">*</span><span class="p">(</span><span class="n">U1</span> <span class="o">-</span> <span class="n">U2</span><span class="o">*</span><span class="n">xi1</span> <span class="o">+</span> <span class="n">U3</span><span class="o">*</span><span class="n">xi3</span><span class="p">)</span>
+            <span class="n">A23</span> <span class="o">=</span> <span class="n">T</span><span class="o">*</span><span class="p">(</span><span class="n">U2</span><span class="o">*</span><span class="n">xi2</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="n">U3</span><span class="o">*</span><span class="n">xi4</span><span class="p">)</span>
+            <span class="n">A31</span> <span class="o">=</span> <span class="n">T</span><span class="o">*</span><span class="p">(</span><span class="n">U2</span><span class="o">*</span><span class="n">xi2</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">U3</span><span class="o">*</span><span class="n">xi4</span><span class="p">)</span>
+            <span class="n">A32</span> <span class="o">=</span> <span class="n">T</span><span class="o">*</span><span class="p">(</span><span class="n">U2</span><span class="o">*</span><span class="n">xi2</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="n">U3</span><span class="o">*</span><span class="n">xi4</span><span class="p">)</span>
+            <span class="n">A33</span> <span class="o">=</span> <span class="n">T</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">U3</span><span class="o">*</span><span class="n">xi3</span> <span class="o">+</span> <span class="n">U5</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">A11</span><span class="p">,</span> <span class="n">A12</span><span class="p">,</span> <span class="n">A13</span><span class="p">],</span>
+                                <span class="p">[</span><span class="n">A21</span><span class="p">,</span> <span class="n">A22</span><span class="p">,</span> <span class="n">A23</span><span class="p">],</span>
+                                <span class="p">[</span><span class="n">A31</span><span class="p">,</span> <span class="n">A32</span><span class="p">,</span> <span class="n">A33</span><span class="p">]])</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_A</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 
@@ -520,9 +537,18 @@ document.write(`
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">B</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;[B] Matrix as numpy.ndarray &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xiB</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;[B] Matrix as numpy.ndarray</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        Matrix [B] will be zero if defined using lamination parameters.       </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xiA</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xiD</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+                                <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+                                <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_B</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 
