@@ -78,7 +78,7 @@ class LaminateStrength():
             For reference refer to page 145 of Daniel equation 5.8
         '''
         nplies = len(self.dproperty.stacking)
-        z = self.dproperty.z_position[::-1] #so bot is negative and top is positive
+        z = self.dproperty.z_position
         zmid = [(z[i], z[i+1]) #tuple with top and bot
                for i in range(nplies)]
         epsilon0 = self.epsilon0()
