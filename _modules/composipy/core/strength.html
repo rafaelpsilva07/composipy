@@ -335,8 +335,8 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for composipy.core.strength</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1">#TODO:</span>
 <span class="c1"># strength criteria</span>
@@ -344,7 +344,7 @@ document.write(`
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;LaminateStrength&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="LaminateStrength"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength">[docs]</a><span class="k">class</span> <span class="nc">LaminateStrength</span><span class="p">():</span>
+<div class="viewcode-block" id="LaminateStrength"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">LaminateStrength</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Creates a LaminateStrength object to evaluate strength.</span>
 <span class="sd">    The class is capable of calculating strain and stress at the midplane, as well</span>
@@ -368,7 +368,7 @@ document.write(`
 <span class="sd">        Moment in xy direction.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
             <span class="n">dproperty</span><span class="p">,</span> 
             <span class="n">Nxx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -387,7 +387,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_positions</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1">#used for plotting.</span>
 
 
-<div class="viewcode-block" id="LaminateStrength.epsilon0"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.epsilon0">[docs]</a>    <span class="k">def</span> <span class="nf">epsilon0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#ok</span>
+<div class="viewcode-block" id="LaminateStrength.epsilon0"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.epsilon0">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">epsilon0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#ok</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Calculates the strains of the laminate</span>
 <span class="sd">        </span>
@@ -403,7 +403,7 @@ document.write(`
         <span class="k">return</span> <span class="n">abd</span> <span class="o">@</span> <span class="n">N</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_epsilonk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#ok</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_epsilonk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#ok</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Calculates the strains for each lamina</span>
 <span class="sd">        Returns</span>
@@ -434,7 +434,7 @@ document.write(`
         <span class="k">return</span> <span class="n">epsilonk</span>
 
 
-    <span class="k">def</span> <span class="nf">_stressk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_stressk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Calculates the strains for each lamina</span>
 <span class="sd">        Returns</span>
@@ -457,7 +457,7 @@ document.write(`
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">stressk</span>
 
-    <span class="k">def</span> <span class="nf">_epsilonk_123</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_epsilonk_123</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="n">stacking</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">stacking</span>
         <span class="n">epsilonk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilonk</span><span class="p">()</span>
@@ -485,7 +485,7 @@ document.write(`
         <span class="k">return</span> <span class="n">epsilonk_123</span>
 
 
-    <span class="k">def</span> <span class="nf">_stressk_123</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_stressk_123</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="n">stacking</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">stacking</span>
         <span class="n">stressk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stressk</span><span class="p">()</span>
@@ -513,7 +513,7 @@ document.write(`
         <span class="k">return</span> <span class="n">stressk_123</span>
 
 
-<div class="viewcode-block" id="LaminateStrength.calculate_strain"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.calculate_strain">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_strain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LaminateStrength.calculate_strain"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.calculate_strain">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_strain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Calculates strain ply by at laminate direction and material direction.</span>
 
@@ -521,6 +521,11 @@ document.write(`
 <span class="sd">        -------</span>
 <span class="sd">        strains : pd.Dataframe</span>
 <span class="sd">            ply by ply strains in plate direction and material direction       </span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        The sequence of the DataFrame starts from the TOP OF THE LAYUP to the BOTTOM OF THE LAYUP, which is the reverse of the definition order.</span>
+<span class="sd">        When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">epsilonk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilonk</span><span class="p">()</span>
         <span class="n">epsilonk_123</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilonk_123</span><span class="p">()</span>
@@ -570,7 +575,7 @@ document.write(`
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="LaminateStrength.calculate_stress"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.calculate_stress">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_stress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LaminateStrength.calculate_stress"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.calculate_stress">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_stress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Calculates stress ply by at laminate direction and material direction.</span>
 
@@ -578,6 +583,11 @@ document.write(`
 <span class="sd">        -------</span>
 <span class="sd">        stress : pd.Dataframe</span>
 <span class="sd">            ply by ply stress in plate direction and material direction       </span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        The sequence of the DataFrame starts from the TOP OF THE LAYUP to the BOTTOM OF THE LAYUP, which is the reverse of the definition order.</span>
+<span class="sd">        When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">stressk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stressk</span><span class="p">()</span>

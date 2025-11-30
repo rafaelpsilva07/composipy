@@ -389,7 +389,7 @@ document.write(`
 <h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this heading">#</a></h2>
 <div class="section" id="create-the-material-properties">
 <h3>Create the Material Properties.<a class="headerlink" href="#create-the-material-properties" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrthotropicMaterial</span>
 
 <span class="n">E1</span> <span class="o">=</span> <span class="mi">60800</span>
 <span class="n">E2</span> <span class="o">=</span> <span class="mi">58250</span>
@@ -404,8 +404,8 @@ document.write(`
 </div>
 <div class="section" id="define-the-laminate">
 <h3>Define the Laminate.<a class="headerlink" href="#define-the-laminate" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">LaminateProperty</span>
-          <span class="c1">#PlyN --------------------------- Ply1]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">LaminateProperty</span>
+          <span class="c1">#[Ply1 --------------------------- PlyN]</span>
           <span class="c1">#[BOTTOM  ------------------------ TOP]</span>
 <span class="n">stacking</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">]</span>
 <span class="n">laminate1</span> <span class="o">=</span> <span class="n">LaminateProperty</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">mat_1</span><span class="p">)</span>
@@ -423,7 +423,7 @@ document.write(`
 </div>
 <div class="section" id="create-a-laminate-strength-analysis">
 <h3>Create a Laminate Strength Analysis.<a class="headerlink" href="#create-a-laminate-strength-analysis" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">LaminateStrength</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">LaminateStrength</span>
 
 <span class="n">laminate_strength</span> <span class="o">=</span> <span class="n">LaminateStrength</span><span class="p">(</span><span class="n">laminate1</span><span class="p">,</span> <span class="n">Nxx</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">Mxx</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">laminate_strength</span><span class="o">.</span><span class="n">epsilon0</span><span class="p">()</span> <span class="c1">#strains at the midplane</span>
@@ -436,7 +436,7 @@ document.write(`
 </div>
 <div class="section" id="create-a-plate-structure-for-buckling-analysis">
 <h3>Create a Plate Structure for Buckling Analysis<a class="headerlink" href="#create-a-plate-structure-for-buckling-analysis" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">PlateStructure</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlateStructure</span>
 
 <span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
      <span class="s1">&#39;x0&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TX&#39;</span><span class="p">,</span> <span class="s1">&#39;TY&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">,</span> <span class="s1">&#39;RX&#39;</span><span class="p">,</span> <span class="s1">&#39;RY&#39;</span><span class="p">,</span> <span class="s1">&#39;RZ&#39;</span><span class="p">],</span>

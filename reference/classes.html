@@ -380,7 +380,7 @@ document.write(`
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">composipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrthotropicMaterial</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ply_1</span> <span class="o">=</span> <span class="n">OrthotropicMaterial</span><span class="p">(</span><span class="mi">129500</span><span class="p">,</span> <span class="mi">9370</span><span class="p">,</span> <span class="mf">0.38</span><span class="p">,</span> <span class="mi">5240</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ply_1</span><span class="o">.</span><span class="n">Q_0</span> <span class="c1"># get the compliance matrix of the lamina</span>
 <span class="go">Out:</span>
@@ -425,10 +425,10 @@ document.write(`
 <dl class="py class">
 <dt class="sig sig-object py" id="composipy.LaminateProperty">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composipy.</span></span><span class="sig-name descname"><span class="pre">LaminateProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stacking</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plies</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/property.html#LaminateProperty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.LaminateProperty" title="Permalink to this definition">#</a></dt>
-<dd><p>This class creates laminate object. It needs Material objects (to define plies) and the angle information.
+<dd><p>This class creates a LaminateProperty object. It requires Material objects (to define plies) and angle information.
 Some formulation characteristics are:
-Laminate formulations ares used (see References)
-Main reference is the chapter 4 of reference 2.</p>
+- Laminate formulations are used (see References).
+- The main reference is Chapter 4 of Reference 2.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -447,7 +447,7 @@ T: thickness}</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span><span class="p">,</span> <span class="n">LaminateProperty</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">composipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrthotropicMaterial</span><span class="p">,</span> <span class="n">LaminateProperty</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ply_1</span> <span class="o">=</span> <span class="n">OrthotropicMaterial</span><span class="p">(</span><span class="mi">129500</span><span class="p">,</span> <span class="mi">9370</span><span class="p">,</span> <span class="mf">0.38</span><span class="p">,</span> <span class="mi">5240</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stacking</span> <span class="o">=</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_1</span> <span class="o">=</span> <span class="n">Laminate</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">ply_1</span><span class="p">)</span>
@@ -463,6 +463,12 @@ T: thickness}</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_2</span><span class="o">.</span><span class="n">xiA</span> <span class="c1"># lamination parameters of extension</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_2</span><span class="o">.</span><span class="n">xiA</span> <span class="c1"># lamination parameters of bending</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The first element of the stacking list corresponds to the BOTTOM OF THE LAYUP, and the last element corresponds to the
+TOP OF THE LAYUP. This is important for non-symmetric laminates.</p>
+<p>Refer to <a class="github reference external" href="https://github.com/rafaelpsilva07/composipy/issues/28">rafaelpsilva07/composipy#28</a>.</p>
 </div>
 <dl class="py property">
 <dt class="sig sig-object py" id="composipy.LaminateProperty.A">
@@ -529,7 +535,7 @@ T: thickness}</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">composipy</span> <span class="kn">import</span> <span class="n">OrthotropicMaterial</span><span class="p">,</span> <span class="n">LaminateProperty</span><span class="p">,</span> <span class="n">PlateStructure</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">composipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrthotropicMaterial</span><span class="p">,</span> <span class="n">LaminateProperty</span><span class="p">,</span> <span class="n">PlateStructure</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ply_1</span> <span class="o">=</span> <span class="n">OrthotropicMaterial</span><span class="p">(</span><span class="mi">129500</span><span class="p">,</span> <span class="mi">9370</span><span class="p">,</span> <span class="mf">0.38</span><span class="p">,</span> <span class="mi">5240</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stacking</span> <span class="o">=</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">laminate</span> <span class="o">=</span> <span class="n">Laminate</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">ply_1</span><span class="p">)</span>
@@ -634,6 +640,11 @@ as ply-by-ply at the top and bottom, both in the laminate and material direction
 <dd class="field-even"><p>pd.Dataframe</p>
 </dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The sequence of the DataFrame starts from the TOP OF THE LAYUP to the BOTTOM OF THE LAYUP, which is the reverse of the definition order.
+When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -648,6 +659,11 @@ as ply-by-ply at the top and bottom, both in the laminate and material direction
 <dd class="field-even"><p>pd.Dataframe</p>
 </dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The sequence of the DataFrame starts from the TOP OF THE LAYUP to the BOTTOM OF THE LAYUP, which is the reverse of the definition order.
+When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">

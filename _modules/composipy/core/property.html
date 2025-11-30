@@ -335,25 +335,25 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for composipy.core.property</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numbers</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numbers</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
 
-<span class="kn">from</span> <span class="nn">composipy.utils</span> <span class="kn">import</span> <span class="n">ComposipyValidator</span>
-<span class="kn">from</span> <span class="nn">composipy.core.material</span> <span class="kn">import</span> <span class="n">Material</span><span class="p">,</span> <span class="n">OrthotropicMaterial</span><span class="p">,</span> <span class="n">IsotropicMaterial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">composipy.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComposipyValidator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">composipy.core.material</span><span class="w"> </span><span class="kn">import</span> <span class="n">Material</span><span class="p">,</span> <span class="n">OrthotropicMaterial</span><span class="p">,</span> <span class="n">IsotropicMaterial</span>
 
 
-<span class="k">class</span> <span class="nc">Property</span><span class="p">(</span><span class="n">ComposipyValidator</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Property</span><span class="p">(</span><span class="n">ComposipyValidator</span><span class="p">):</span>
     <span class="k">pass</span>
 
 
-<div class="viewcode-block" id="LaminateProperty"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateProperty">[docs]</a><span class="k">class</span> <span class="nc">LaminateProperty</span><span class="p">(</span><span class="n">Property</span><span class="p">):</span>
+<div class="viewcode-block" id="LaminateProperty"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateProperty">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">LaminateProperty</span><span class="p">(</span><span class="n">Property</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    This class creates laminate object. It needs Material objects (to define plies) and the angle information.</span>
+<span class="sd">    This class creates a LaminateProperty object. It requires Material objects (to define plies) and angle information.</span>
 <span class="sd">    Some formulation characteristics are:</span>
-<span class="sd">    Laminate formulations ares used (see References)</span>
-<span class="sd">    Main reference is the chapter 4 of reference 2.</span>
+<span class="sd">    - Laminate formulations are used (see References).</span>
+<span class="sd">    - The main reference is Chapter 4 of Reference 2.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -386,9 +386,16 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; laminate_2.ABD # retunrs an array containing bending stiffness matrix [D] of the laminate</span>
 <span class="sd">    &gt;&gt;&gt; laminate_2.xiA # lamination parameters of extension</span>
 <span class="sd">    &gt;&gt;&gt; laminate_2.xiA # lamination parameters of bending</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    -----</span>
+<span class="sd">    The first element of the stacking list corresponds to the BOTTOM OF THE LAYUP, and the last element corresponds to the</span>
+<span class="sd">    TOP OF THE LAYUP. This is important for non-symmetric laminates.</span>
+
+<span class="sd">    Refer to https://github.com/rafaelpsilva07/composipy/issues/28.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stacking</span><span class="p">,</span> <span class="n">plies</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stacking</span><span class="p">,</span> <span class="n">plies</span><span class="p">):</span>
         <span class="c1"># Checking layup</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span> <span class="c1"># implements angle stacking sequence</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">plies</span><span class="p">,</span> <span class="n">Material</span><span class="p">):</span>
@@ -438,7 +445,7 @@ document.write(`
 
 <span class="c1">#Properties</span>
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">z_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">z_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     
         <span class="n">total_thickness</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layup</span><span class="p">:</span>
@@ -453,7 +460,7 @@ document.write(`
         <span class="k">return</span> <span class="n">ply_position</span>
     
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">Q_layup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>    
+    <span class="k">def</span><span class="w"> </span><span class="nf">Q_layup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>    
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q_layup</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             
             <span class="bp">self</span><span class="o">.</span><span class="n">_Q_layup</span> <span class="o">=</span> <span class="p">[]</span>
@@ -480,7 +487,7 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q_layup</span>
      
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">T_layup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">T_layup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_T_layup</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             
             <span class="bp">self</span><span class="o">.</span><span class="n">_T_layup</span> <span class="o">=</span> <span class="p">[]</span>
@@ -504,7 +511,7 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_T_layup</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">A</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;[A] Matrix as numpy.ndarray &#39;&#39;&#39;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xiA</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -536,7 +543,7 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_A</span>
     
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">B</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">B</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;[B] Matrix as numpy.ndarray</span>
 
 <span class="sd">        Note</span>
@@ -559,7 +566,7 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_B</span>
     
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">D</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">D</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;[D] Matrix as numpy.ndarray &#39;&#39;&#39;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xiD</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -592,7 +599,7 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_D</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ABD</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ABD</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;[ABD] Matrices as numpy.ndarray&#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ABD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
               <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">]),</span>
@@ -601,7 +608,7 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ABD</span>
    
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">xiA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">xiA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;Lamination parameter xiA&#39;&#39;&#39;</span>
         <span class="n">xiA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
         <span class="n">T</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">ply</span><span class="o">.</span><span class="n">thickness</span> <span class="k">for</span> <span class="n">ply</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plies</span><span class="p">])</span>        
@@ -619,7 +626,7 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xiA</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">xiD</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">xiD</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;Lamination parameter xiD&#39;&#39;&#39;</span>
         <span class="n">xiD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
         <span class="n">T</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">ply</span><span class="o">.</span><span class="n">thickness</span> <span class="k">for</span> <span class="n">ply</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plies</span><span class="p">])</span>        
@@ -635,14 +642,14 @@ document.write(`
         <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">xiD</span> <span class="o">/</span> <span class="n">T</span><span class="o">**</span><span class="mi">3</span>
 
        <span class="c1">#Representation</span>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                     
         <span class="n">representation</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;composipy.LaminateProperty</span><span class="se">\n</span><span class="s1">&#39;</span>
         <span class="n">representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;stacking = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">stacking</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="k">return</span> <span class="n">representation</span>
 
 <span class="c1">#Comparisons</span>
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">LaminateProperty</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layup</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">layup</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span></div>

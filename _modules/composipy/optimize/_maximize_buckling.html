@@ -335,19 +335,19 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for composipy.optimize._maximize_buckling</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">NonlinearConstraint</span><span class="p">,</span> <span class="n">Bounds</span><span class="p">,</span> <span class="n">minimize</span><span class="p">,</span> <span class="n">LinearConstraint</span>
-<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">ArpackError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">NonlinearConstraint</span><span class="p">,</span> <span class="n">Bounds</span><span class="p">,</span> <span class="n">minimize</span><span class="p">,</span> <span class="n">LinearConstraint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.sparse.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArpackError</span>
 
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">Ncr_from_lp</span><span class="p">,</span> <span class="n">normalize_critical_load</span><span class="p">,</span> <span class="n">penalty_g1</span><span class="p">,</span> <span class="n">penalty_g2</span><span class="p">,</span> <span class="n">check_loads</span><span class="p">,</span> <span class="n">natural_constraint_g</span><span class="p">,</span> <span class="n">plot_optimization</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ncr_from_lp</span><span class="p">,</span> <span class="n">normalize_critical_load</span><span class="p">,</span> <span class="n">penalty_g1</span><span class="p">,</span> <span class="n">penalty_g2</span><span class="p">,</span> <span class="n">check_loads</span><span class="p">,</span> <span class="n">natural_constraint_g</span><span class="p">,</span> <span class="n">plot_optimization</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;maximize_buckling_load&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="maximize_buckling_load"><a class="viewcode-back" href="../../../reference/optimization_functions.html#composipy.optimize.maximize_buckling_load">[docs]</a><span class="k">def</span> <span class="nf">maximize_buckling_load</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span>
+<div class="viewcode-block" id="maximize_buckling_load"><a class="viewcode-back" href="../../../reference/optimization_functions.html#composipy.optimize.maximize_buckling_load">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">maximize_buckling_load</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span>
                    <span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span>
                    <span class="n">Nxx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">Nyy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">Nxy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                    <span class="n">m</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
@@ -407,7 +407,7 @@ document.write(`
     <span class="n">Nxx_norm</span><span class="p">,</span> <span class="n">Nyy_norm</span><span class="p">,</span> <span class="n">Nxy_norm</span><span class="p">,</span> <span class="n">max_load</span> <span class="o">=</span> <span class="n">normalize_critical_load</span><span class="p">(</span><span class="n">Nxx</span><span class="p">,</span> <span class="n">Nyy</span><span class="p">,</span> <span class="n">Nxy</span><span class="p">)</span>
 
     <span class="c1"># Critical load error handling</span>
-    <span class="k">def</span> <span class="nf">critical_load</span><span class="p">(</span><span class="n">y0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">critical_load</span><span class="p">(</span><span class="n">y0</span><span class="p">):</span>
         <span class="n">xi1</span><span class="p">,</span> <span class="n">xi3</span> <span class="o">=</span> <span class="n">y0</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">eig</span> <span class="o">=</span> <span class="n">Ncr_from_lp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">xi1</span><span class="p">,</span> <span class="n">xi3</span><span class="p">,</span> <span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">v12</span><span class="p">,</span> <span class="n">G12</span><span class="p">,</span> <span class="n">Nxx_norm</span><span class="p">,</span> <span class="n">Nyy_norm</span><span class="p">,</span> <span class="n">Nxy_norm</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">panel_constraint</span><span class="p">)</span>
