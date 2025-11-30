@@ -67,7 +67,7 @@ See [OrthotropicMaterial](https://rafaelpsilva07.github.io/composipy/reference/c
 
 ```python
 from composipy import LaminateProperty
-          #PlyN --------------------------- Ply1]
+          #[Ply1 --------------------------- PlyN]
           #[BOTTOM  ------------------------ TOP]
 stacking = [-45, 45, 90, 0, 0, 0, 0, 90, 45, -45]
 laminate1 = LaminateProperty(stacking, mat_1)

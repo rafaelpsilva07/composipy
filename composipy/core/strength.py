@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 #TODO:
-# strength criteria
+# add more advanced strength criteria
 
 __all__ = ['LaminateStrength']
 
@@ -78,7 +78,7 @@ class LaminateStrength():
             For reference refer to page 145 of Daniel equation 5.8
         '''
         nplies = len(self.dproperty.stacking)
-        z = self.dproperty.z_position[::-1] #so bot is negative and top is positive
+        z = self.dproperty.z_position
         zmid = [(z[i], z[i+1]) #tuple with top and bot
                for i in range(nplies)]
         epsilon0 = self.epsilon0()
@@ -175,6 +175,29 @@ class LaminateStrength():
         
         return stressk_123
 
+    def _allowablek_123(self):
+        '''
+        Finds the allowable stresses for each lamina
+        Returns
+        -------
+        allowablek_123: list
+            [allowable1, allowable2, ..., allowablek], with allowable as np.ndarray()
+            For each allowable we have
+            allowablek = np.ndarray([T1, C1, T2, C2, S])k
+        '''
+        laminate = self.dproperty.layup
+
+        allowablek_123 = []
+        for layer in laminate:
+            angle,ply = layer
+            maxstresses = np.array([ply.t1,
+                                    ply.c1,
+                                    ply.t2,
+                                    ply.c2,
+                                    ply.s,])
+            allowablek_123.append(maxstresses)
+
+        return allowablek_123
 
     def calculate_strain(self):
         '''
@@ -187,7 +210,7 @@ class LaminateStrength():
 
         Note
         ----
-        The sequence of the DataFrame starts from the TOP OF THE LAYUP to the BOTTOM OF THE LAYUP, which is the reverse of the definition order.
+        The sequence of the DataFrame starts from the BOTTOM OF THE LAYUP to the TOP  OF THE LAYUP.
         When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.
         '''
         epsilonk = self._epsilonk()
@@ -249,7 +272,7 @@ class LaminateStrength():
 
         Note
         ----
-        The sequence of the DataFrame starts from the TOP OF THE LAYUP to the BOTTOM OF THE LAYUP, which is the reverse of the definition order.
+        The sequence of the DataFrame starts from the BOTTOM OF THE LAYUP to the TOP  OF THE LAYUP.
         When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.
         '''
 
@@ -299,3 +322,95 @@ class LaminateStrength():
             cur_ply += 1
         pd.set_option('display.precision', 2)
         return pd.DataFrame(data)
+
+    def _calculate_maxstressallowable(self):
+        '''
+        Calculates max stress allowable for each ply.
+
+        Returns
+        -------
+        allowable : pd.Dataframe
+            ply by ply max stress allowables     
+
+        Note
+        ----
+        The sequence of the DataFrame starts from the BOTTOM OF THE LAYUP to the TOP  OF THE LAYUP.
+        When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.
+        '''
+
+        allowablek_123 = self._allowablek_123()
+        stacking = self.dproperty.stacking
+
+        cur_ply = 1
+        data = {}
+        data['ply'] = []
+        data['position'] = []
+        data['angle'] = []
+        data['angle'] = []
+        data['t1'] = []
+        data['t1'] = []
+        data['c1'] = []
+        data['c1'] = []
+        data['t2'] = []
+        data['t2'] = []
+        data['c2'] = []
+        data['c2'] = []
+        data['s'] = []
+        data['s'] = []
+        for allowable123, theta in zip(allowablek_123, stacking):
+            data['ply'].append(cur_ply)
+            data['ply'].append(cur_ply)
+            data['position'].append('top')
+            data['position'].append('bot')
+            data['angle'].append(theta)
+            data['angle'].append(theta)
+            data['t1'].append(allowable123[0])
+            data['t1'].append(allowable123[0])
+            data['c1'].append(allowable123[1])
+            data['c1'].append(allowable123[1])
+            data['t2'].append(allowable123[2])
+            data['t2'].append(allowable123[2])
+            data['c2'].append(allowable123[3])
+            data['c2'].append(allowable123[3])
+            data['s'].append(allowable123[4])
+            data['s'].append(allowable123[4])
+            cur_ply += 1
+        pd.set_option('display.precision', 2)
+        return pd.DataFrame(data)
+
+    def calculate_maxstressmargin(self):
+        '''
+        Calculates margin of safety for each ply according to the max stress criteria.
+
+        Returns
+        -------
+        margin : pd.Dataframe
+            ply by ply max stress margin of safety     
+
+        Note
+        ----
+        The sequence of the DataFrame starts from the BOTTOM OF THE LAYUP to the TOP  OF THE LAYUP.
+        When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.
+        '''
+        df_allowable = self._calculate_maxstressallowable()
+        df_stress = self.calculate_stress()
+
+        margin_t1 = df_allowable['t1'] / df_stress['sigma1'].mask(df_stress['sigma1'] < 0, 0) - 1 # replace negative stress with zero to yield infinite margins in tension
+        margin_c1 = df_allowable['c1'] / df_stress['sigma1'].mask(df_stress['sigma1'] > 0, 0).abs() - 1 # replace positive stress with zero to yield infinite margins in compression. Also flip stress sign since allowables are all positive
+        margin_t2 = df_allowable['t2'] / df_stress['sigma2'].mask(df_stress['sigma2'] < 0, 0) - 1
+        margin_c2 = df_allowable['c2'] / df_stress['sigma2'].mask(df_stress['sigma2'] > 0, 0).abs() - 1
+        margin_s = df_allowable['s'] / df_stress['tau12'].abs() - 1
+
+        df_margin = pd.DataFrame({})
+        df_margin['ply'] = df_allowable['ply']
+        df_margin['position'] = df_allowable['position']
+        df_margin['angle'] = df_allowable['angle']
+        df_margin['margin_t1'] = margin_t1
+        df_margin['margin_c1'] = margin_c1
+        df_margin['margin_t2'] = margin_t2
+        df_margin['margin_c2'] = margin_c2
+        df_margin['margin_s'] = margin_s
+        df_margin['critical'] = df_margin[['margin_t1','margin_c1','margin_t2','margin_c2','margin_s']].idxmin(axis=1) # find the critical failure mode of each ply
+        pd.set_option('display.precision', 2)
+
+        return df_margin
