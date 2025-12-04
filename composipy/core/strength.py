@@ -284,10 +284,12 @@ class LaminateStrength():
         stressk = self._stressk()
         stressk_123 = self._stressk_123()
         stacking = self.dproperty.stacking
+        z = self.dproperty.z_position
 
         cur_ply = 1
         data = {}
         data['ply'] = []
+        data['z'] = []
         data['position'] = []
         data['angle'] = []
         data['sigmax'] = []
@@ -302,14 +304,17 @@ class LaminateStrength():
         data['sigma2'] = []
         data['tau12'] = []
         data['tau12'] = []
-        for sigma, sigma123, theta in zip(stressk, stressk_123, stacking):
+        for i, sig_sig123_theta in enumerate(zip(stressk, stressk_123, stacking)):
+            sigma, sigma123, theta = sig_sig123_theta
             sigmatop, sigmabot = sigma
             sigma123top, sigma123bot = sigma123
 
             data['ply'].append(cur_ply)
             data['ply'].append(cur_ply)
-            data['position'].append('top')
+            data['z'].append(z[i])
+            data['z'].append(z[i+1])
             data['position'].append('bot')
+            data['position'].append('top')
             data['angle'].append(theta)
             data['angle'].append(theta)
             data['sigmax'].append(sigmatop[0]) #plate direction
