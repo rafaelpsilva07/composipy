@@ -216,10 +216,12 @@ class LaminateStrength():
         epsilonk = self._epsilonk()
         epsilonk_123 = self._epsilonk_123()
         stacking = self.dproperty.stacking
+        z = self.dproperty.z_position
 
         cur_ply = 1
         data = {}
         data['ply'] = []
+        data['z'] = [] # so the user can check and plot ply position
         data['position'] = []
         data['angle'] = []       
         data['epsilonx'] = []
@@ -234,14 +236,17 @@ class LaminateStrength():
         data['epsilon2'] = []
         data['gamma12'] = []
         data['gamma12'] = []
-        for epsilon, epsilon123, theta in zip(epsilonk, epsilonk_123, stacking):
+        for i, epsk_eps123_stck in  enumerate(zip(epsilonk, epsilonk_123, stacking)):
+            epsilon, epsilon123, theta = epsk_eps123_stck
             epsilontop, epsilonbot = epsilon
             epsilon123top, epsilon123bot = epsilon123
 
             data['ply'].append(cur_ply)
             data['ply'].append(cur_ply)
-            data['position'].append('top')
+            data['z'].append(z[i])
+            data['z'].append(z[i+1])
             data['position'].append('bot')
+            data['position'].append('top')
             data['angle'].append(theta)
             data['angle'].append(theta)            
             data['epsilonx'].append(epsilontop[0]) #plate direction
