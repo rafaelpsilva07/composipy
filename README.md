@@ -103,11 +103,12 @@ Also, check the [Stress Strain Calculation of a Laminate](https://rafaelpsilva07
 from composipy import PlateStructure
  
 constraints = {    
-     'x0' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ'],
-     'xa' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ'],
-     'y0' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ'],
-     'yb' : ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+     'x0' : 'pinned',
+     'xa' : 'pinned',
+     'y0' : 'free',
+     'yb' : 'pinned'
 }
+# Edges among 'x0', 'xa', 'y0', 'yb' can be 'clamped', 'pinned' or 'free'.
 panel = PlateStructure(laminate1, 360, 360, m=10, n=10, Nxx=-1, constraints=constraints)
 ```
 

@@ -57,10 +57,18 @@ class PlateStructure(Structure):
     Or a dictionary like described below:
 
     >>> constraints = {    
-    ---     x0 = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
-    ---     xa = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
-    ---     y0 = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
-    ---     yb = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+    ---     'x0' = 'clamped'
+    ---     'xa' = 'clamped'
+    ---     'y0' = 'pinned'
+    ---     'yb' = 'free'
+    --- }
+    Edges among 'x0', 'xa', 'y0', 'yb' can be 'clamped', 'pinned' or 'free'.
+    
+    >>> constraints = {    # Note, this format will be deprecated in the future!.
+    ---     'x0' = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+    ---     'xa' = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+    ---     'y0' = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+    ---     'yb' = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
     --- }
 
     Attention, the rotations aren't considered around the axis. They are related to the shape function.
@@ -148,6 +156,32 @@ class PlateStructure(Structure):
             xa = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
             y0 = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
             yb = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+
+        elif (
+            isinstance(self.constraints['x0'], str)
+            and isinstance(self.constraints['xa'], str)
+            and isinstance(self.constraints['y0'], str)
+            and isinstance(self.constraints['yb'], str)
+        ):
+            boundary_conditions = {
+                 'free': [],
+                 'pinned': ['TX', 'TY', 'TZ'],
+                 'simply_supported': ['TX', 'TY', 'TZ'],
+                 'fixed': ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ'],
+                 'clamped': ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']
+            }
+            x0 = boundary_conditions[
+                 self.constraints['x0'].lower()
+            ]
+            xa = boundary_conditions[
+                 self.constraints['xa'].lower()
+            ]
+            y0 = boundary_conditions[
+                 self.constraints['y0'].lower()
+            ]
+            yb = boundary_conditions[
+                 self.constraints['yb'].lower()
+            ]
         else:
             x0 = self.constraints['x0']
             xa = self.constraints['xa']
