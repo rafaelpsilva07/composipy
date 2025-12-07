@@ -285,8 +285,7 @@ class LaminateProperty(Property):
             xiA[2] += (zk1-zk0) * np.cos(4*angle)
             xiA[3] += (zk1-zk0) * np.sin(4*angle)                        
         
-        self._xiA = xiA / T
-        return self._xiA
+        return xiA / T
 
     @property
     def xiD(self):
