@@ -87,34 +87,47 @@ def test_example_6_midplane(example_6_setup):
     np.testing.assert_allclose(calculated_strains, reference_result, rtol=1e-2, atol=1e-4)
 
 
-def test_example_6_strain_top_ply1(example_6_setup):
-    '''This test check the stains at the top of ply 1 in laminate direction'''
+def test_example_6_strain_top_ply4(example_6_setup):
+    '''
+    This test check the stains at the top of ply 4 in laminate direction    
+    Please note that ply 4 in composipy is ply 1 in NASA reference document.
+    Composipy table starts from the bottom to the top.   
+    '''
     df_strains = example_6_setup.calculate_strain()
-    epsilonx = df_strains.iloc[0]['epsilonx']
-    epsilony = df_strains.iloc[0]['epsilony']
-    gammaxy = df_strains.iloc[0]['gammaxy']
+    epsilonx = df_strains.loc[7, 'epsilonx']
+    epsilony = df_strains.loc[7, 'epsilony']
+    gammaxy = df_strains.loc[7, 'gammaxy']
     assert np.isclose(epsilonx, 0.00418, rtol=1e-3, atol=1e-4)
     assert np.isclose(epsilony, -0.00165, rtol=1e-3, atol=1e-4)
     assert np.isclose(gammaxy, -0.000975, rtol=1e-3, atol=1e-4)
 
 
-def test_example_6_strain_top_ply2(example_6_setup):
-    '''This test check the stains at the top of ply 1 in material direction'''
+def test_example_6_strain_top_ply3(example_6_setup):
+    '''
+    This test check the stains at the top of ply 3 in material direction
+    Please note that ply 3 in composipy is ply 2 in NASA reference document.
+    Composipy table starts from the bottom to the top.   
+    '''
+
     df_strains = example_6_setup.calculate_strain()
-    epsilon1 = df_strains.iloc[2]['epsilon1']
-    epsilon2 = df_strains.iloc[2]['epsilon2']
-    gamma12 = df_strains.iloc[2]['gamma12']
+    epsilon1 = df_strains.loc[5, 'epsilon1']
+    epsilon2 = df_strains.loc[5, 'epsilon2']
+    gamma12 = df_strains.loc[5, 'gamma12']
     assert np.isclose(epsilon1, 0.00039, rtol=1e-3, atol=1e-4)
     assert np.isclose(epsilon2, 0.00088, rtol=1e-3, atol=1e-4)
     assert np.isclose(gamma12, -0.00292, rtol=1e-3, atol=1e-4)
 
 
-def test_example_6_stress_bot_ply3(example_6_setup):
-    '''This test check the stresses for the ply 3 in material direction E6.12'''
+def test_example_6_stress_bot_ply2(example_6_setup):
+    '''
+    This test check the stresses for the ply 3 in material direction E6.12
+    Please note that ply 2 in composipy is ply 3 in NASA reference document.
+    Composipy table starts from the bottom to the top.  
+    '''
     df_stresses = example_6_setup.calculate_stress()
-    sigma1 = df_stresses.iloc[5]['sigma1']
-    sigma2 = df_stresses.iloc[5]['sigma2']
-    tau12 = df_stresses.iloc[5]['tau12']
+    sigma1 = df_stresses.loc[2, 'sigma1']
+    sigma2 = df_stresses.loc[2, 'sigma2']
+    tau12 = df_stresses.loc[2, 'tau12']
     assert np.isclose(sigma1, -8094, rtol=1e-3, atol=100)
     assert np.isclose(sigma2, -1296, rtol=1e-3, atol=100)
     assert np.isclose(tau12, 2923, rtol=1e-3, atol=100)
