@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Critical Buckling Examples With Varying Boundary Conditions &#8212; composipy 1.6.0 documentation</title>
+    <title>Critical Buckling Examples With Varying Boundary Conditions &#8212; composipy 1.7.0 documentation</title>
   
   
   
@@ -125,7 +125,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.6.0 documentation</p>
+    <p class="title logo__title">composipy 1.7.0 documentation</p>
   
 </a></div>
     
@@ -414,7 +414,7 @@ l1 = LaminateProperty(stacking, ply_1)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_SSSS = PlateStructure(l1, a, b, m=m, n=n, Nxx=-1,constraints=&#39;PINNED&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_SSSS = PlateStructure(l1, a, b, m=m, n=n, Nxx=-1,constraints='PINNED')
 </pre></div>
 </div>
 </div>
@@ -466,7 +466,7 @@ array([ 97.04915682, 144.47730786, 246.83882036, 388.19669784,
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_CCCC = PlateStructure(l1, a, 1.5*b, m=m, n=n, Nxy=-1, Nyy=-1, constraints=&#39;CLAMPED&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_CCCC = PlateStructure(l1, a, 1.5*b, m=m, n=n, Nxy=-1, Nyy=-1, constraints='CLAMPED')
 </pre></div>
 </div>
 </div>
@@ -712,10 +712,10 @@ array([ 97.04915682, 144.47730786, 246.83882036, 388.19669784,
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>constraints={
-                &#39;x0&#39;: &#39;pinned&#39;,
-                &#39;xa&#39;: &#39;pinned&#39;,
-                &#39;y0&#39;: &#39;free&#39;,
-                &#39;yb&#39;: &#39;pinned&#39;,
+                'x0': 'pinned',
+                'xa': 'pinned',
+                'y0': 'free',
+                'yb': 'pinned',
             }
 panel_SSFS = PlateStructure(l1, 1.5*a, b, m=m, n=n, Nxx=-1, constraints=constraints)
 </pre></div>
@@ -961,7 +961,7 @@ panel_SSFS = PlateStructure(l1, 1.5*a, b, m=m, n=n, Nxx=-1, constraints=constrai
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_CCCC_nxy = PlateStructure(l1, a, b, m=m, n=n, Nxy=-1, constraints=&#39;CLAMPED&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>panel_CCCC_nxy = PlateStructure(l1, a, b, m=m, n=n, Nxy=-1, constraints='CLAMPED')
 </pre></div>
 </div>
 </div>

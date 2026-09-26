@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>composipy.core.strength &#8212; composipy 1.6.0 documentation</title>
+    <title>composipy.core.strength &#8212; composipy 1.7.0 documentation</title>
   
   
   
@@ -120,7 +120,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.6.0 documentation</p>
+    <p class="title logo__title">composipy 1.7.0 documentation</p>
   
 </a></div>
     
@@ -339,13 +339,13 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1">#TODO:</span>
-<span class="c1"># strength criteria</span>
+<span class="c1"># add more advanced strength criteria</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;LaminateStrength&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'LaminateStrength'</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="LaminateStrength"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">LaminateStrength</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">'''</span>
 <span class="sd">    Creates a LaminateStrength object to evaluate strength.</span>
 <span class="sd">    The class is capable of calculating strain and stress at the midplane, as well</span>
 <span class="sd">    as ply-by-ply at the top and bottom, both in the laminate and material directions.</span>
@@ -366,7 +366,7 @@ document.write(`
 <span class="sd">        Moment in y direction.</span>
 <span class="sd">    Mxy : float, int, optional, default 0</span>
 <span class="sd">        Moment in xy direction.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
@@ -388,14 +388,14 @@ document.write(`
 
 
 <div class="viewcode-block" id="LaminateStrength.epsilon0"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.epsilon0">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">epsilon0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#ok</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">        Calculates the strains of the laminate</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        epsilon0 : numpy ndarray</span>
 <span class="sd">            [epsilonx0, epsilony0, epsilonxy0, kappax0, kappay0, kappaxy0]</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
 
         <span class="n">ABD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">ABD</span>
         <span class="n">abd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">ABD</span><span class="p">)</span> <span class="c1">#equivalent relations on pg 153 of Daniel</span>
@@ -404,7 +404,7 @@ document.write(`
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_epsilonk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#ok</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">        Calculates the strains for each lamina</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -413,9 +413,9 @@ document.write(`
 <span class="sd">            For each epsilon we have</span>
 <span class="sd">            epsilonk = np.ndarray([epsilonx, epsilony, gammas])k, coordinate directions</span>
 <span class="sd">            For reference refer to page 145 of Daniel equation 5.8</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
         <span class="n">nplies</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">stacking</span><span class="p">)</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">z_position</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#so bot is negative and top is positive</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">z_position</span>
         <span class="n">zmid</span> <span class="o">=</span> <span class="p">[(</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="c1">#tuple with top and bot</span>
                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nplies</span><span class="p">)]</span>
         <span class="n">epsilon0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon0</span><span class="p">()</span>
@@ -435,7 +435,7 @@ document.write(`
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_stressk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">        Calculates the strains for each lamina</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -444,7 +444,7 @@ document.write(`
 <span class="sd">            For each epsilon we have</span>
 <span class="sd">            epsilonk = np.ndarray([epsilonx, epsilony, gammas])k, coordinate directions</span>
 <span class="sd">            For reference refer to page 145 of Daniel equation 5.8</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
         <span class="n">Qk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">Q_layup</span>
         <span class="n">epsilonk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilonk</span><span class="p">()</span>
         
@@ -512,9 +512,32 @@ document.write(`
         
         <span class="k">return</span> <span class="n">stressk_123</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_allowablek_123</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Finds the allowable stresses for each lamina</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        allowablek_123: list</span>
+<span class="sd">            [allowable1, allowable2, ..., allowablek], with allowable as np.ndarray()</span>
+<span class="sd">            For each allowable we have</span>
+<span class="sd">            allowablek = np.ndarray([T1, C1, T2, C2, S])k</span>
+<span class="sd">        '''</span>
+        <span class="n">laminate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">layup</span>
+
+        <span class="n">allowablek_123</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">laminate</span><span class="p">:</span>
+            <span class="n">angle</span><span class="p">,</span><span class="n">ply</span> <span class="o">=</span> <span class="n">layer</span>
+            <span class="n">maxstresses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ply</span><span class="o">.</span><span class="n">t1</span><span class="p">,</span>
+                                    <span class="n">ply</span><span class="o">.</span><span class="n">c1</span><span class="p">,</span>
+                                    <span class="n">ply</span><span class="o">.</span><span class="n">t2</span><span class="p">,</span>
+                                    <span class="n">ply</span><span class="o">.</span><span class="n">c2</span><span class="p">,</span>
+                                    <span class="n">ply</span><span class="o">.</span><span class="n">s</span><span class="p">,])</span>
+            <span class="n">allowablek_123</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">maxstresses</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">allowablek_123</span>
 
 <div class="viewcode-block" id="LaminateStrength.calculate_strain"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.calculate_strain">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_strain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">        Calculates strain ply by at laminate direction and material direction.</span>
 
 <span class="sd">        Returns</span>
@@ -524,59 +547,64 @@ document.write(`
 
 <span class="sd">        Note</span>
 <span class="sd">        ----</span>
-<span class="sd">        The sequence of the DataFrame starts from the TOP OF THE LAYUP to the BOTTOM OF THE LAYUP, which is the reverse of the definition order.</span>
+<span class="sd">        The sequence of the DataFrame starts from the BOTTOM OF THE LAYUP to the TOP  OF THE LAYUP.</span>
 <span class="sd">        When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
         <span class="n">epsilonk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilonk</span><span class="p">()</span>
         <span class="n">epsilonk_123</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilonk_123</span><span class="p">()</span>
         <span class="n">stacking</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">stacking</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">z_position</span>
 
         <span class="n">cur_ply</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ply&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;angle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>       
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilonx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilonx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilony&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilony&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;gammaxy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;gammaxy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilon1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilon1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilon2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilon2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;gamma12&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;gamma12&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">epsilon123</span><span class="p">,</span> <span class="n">theta</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">epsilonk</span><span class="p">,</span> <span class="n">epsilonk_123</span><span class="p">,</span> <span class="n">stacking</span><span class="p">):</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'ply'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># so the user can check and plot ply position</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'position'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'angle'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>       
+        <span class="n">data</span><span class="p">[</span><span class="s1">'epsilonx'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'epsilonx'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'epsilony'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'epsilony'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'gammaxy'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'gammaxy'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'epsilon1'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'epsilon1'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'epsilon2'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'epsilon2'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'gamma12'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'gamma12'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">epsk_eps123_stck</span> <span class="ow">in</span>  <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">epsilonk</span><span class="p">,</span> <span class="n">epsilonk_123</span><span class="p">,</span> <span class="n">stacking</span><span class="p">)):</span>
+            <span class="n">epsilon</span><span class="p">,</span> <span class="n">epsilon123</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">epsk_eps123_stck</span>
             <span class="n">epsilontop</span><span class="p">,</span> <span class="n">epsilonbot</span> <span class="o">=</span> <span class="n">epsilon</span>
             <span class="n">epsilon123top</span><span class="p">,</span> <span class="n">epsilon123bot</span> <span class="o">=</span> <span class="n">epsilon123</span>
 
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ply&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_ply</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ply&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_ply</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;bot&#39;</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;angle&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;angle&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>            
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilonx&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilontop</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#plate direction</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilonx&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilonbot</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilony&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilontop</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilony&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilonbot</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;gammaxy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilontop</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;gammaxy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilonbot</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilon1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon123top</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#material direction</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilon1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon123bot</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilon2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon123top</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;epsilon2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon123bot</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;gamma12&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon123top</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;gamma12&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon123bot</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'ply'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_ply</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'ply'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_ply</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'position'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'bot'</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'position'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'top'</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'angle'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'angle'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>            
+            <span class="n">data</span><span class="p">[</span><span class="s1">'epsilonx'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilontop</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#plate direction</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'epsilonx'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilonbot</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'epsilony'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilontop</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'epsilony'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilonbot</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'gammaxy'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilontop</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'gammaxy'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilonbot</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'epsilon1'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon123top</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#material direction</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'epsilon1'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon123bot</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'epsilon2'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon123top</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'epsilon2'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon123bot</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'gamma12'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon123top</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'gamma12'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epsilon123bot</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
             <span class="n">cur_ply</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.precision&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">'display.precision'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="LaminateStrength.calculate_stress"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.calculate_stress">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_stress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">        Calculates stress ply by at laminate direction and material direction.</span>
 
 <span class="sd">        Returns</span>
@@ -586,56 +614,153 @@ document.write(`
 
 <span class="sd">        Note</span>
 <span class="sd">        ----</span>
-<span class="sd">        The sequence of the DataFrame starts from the TOP OF THE LAYUP to the BOTTOM OF THE LAYUP, which is the reverse of the definition order.</span>
+<span class="sd">        The sequence of the DataFrame starts from the BOTTOM OF THE LAYUP to the TOP  OF THE LAYUP.</span>
 <span class="sd">        When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
 
         <span class="n">stressk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stressk</span><span class="p">()</span>
         <span class="n">stressk_123</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stressk_123</span><span class="p">()</span>
         <span class="n">stacking</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">stacking</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">z_position</span>
 
         <span class="n">cur_ply</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ply&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;angle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigmax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigmax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigmay&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigmay&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;tauxy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;tauxy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigma1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigma1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigma2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigma2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;tau12&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;tau12&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">sigma123</span><span class="p">,</span> <span class="n">theta</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">stressk</span><span class="p">,</span> <span class="n">stressk_123</span><span class="p">,</span> <span class="n">stacking</span><span class="p">):</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'ply'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'position'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'angle'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'sigmax'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'sigmax'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'sigmay'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'sigmay'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'tauxy'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'tauxy'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'sigma1'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'sigma1'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'sigma2'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'sigma2'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'tau12'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'tau12'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sig_sig123_theta</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">stressk</span><span class="p">,</span> <span class="n">stressk_123</span><span class="p">,</span> <span class="n">stacking</span><span class="p">)):</span>
+            <span class="n">sigma</span><span class="p">,</span> <span class="n">sigma123</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">sig_sig123_theta</span>
             <span class="n">sigmatop</span><span class="p">,</span> <span class="n">sigmabot</span> <span class="o">=</span> <span class="n">sigma</span>
             <span class="n">sigma123top</span><span class="p">,</span> <span class="n">sigma123bot</span> <span class="o">=</span> <span class="n">sigma123</span>
 
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ply&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_ply</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ply&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_ply</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;bot&#39;</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;angle&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;angle&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigmax&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigmatop</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#plate direction</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigmax&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigmabot</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigmay&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigmatop</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigmay&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigmabot</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;tauxy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigmatop</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;tauxy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigmabot</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigma1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma123top</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#material direction</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigma1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma123bot</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigma2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma123top</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;sigma2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma123bot</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;tau12&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma123top</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;tau12&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma123bot</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'ply'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_ply</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'ply'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_ply</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'position'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'bot'</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'position'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'top'</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'angle'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'angle'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'sigmax'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigmatop</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#plate direction</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'sigmax'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigmabot</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'sigmay'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigmatop</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'sigmay'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigmabot</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'tauxy'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigmatop</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'tauxy'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigmabot</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'sigma1'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma123top</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#material direction</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'sigma1'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma123bot</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'sigma2'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma123top</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'sigma2'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma123bot</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'tau12'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma123top</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'tau12'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sigma123bot</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
             <span class="n">cur_ply</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.precision&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div></div>
+        <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">'display.precision'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_maxstressallowable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Calculates max stress allowable for each ply.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        allowable : pd.Dataframe</span>
+<span class="sd">            ply by ply max stress allowables     </span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        The sequence of the DataFrame starts from the BOTTOM OF THE LAYUP to the TOP  OF THE LAYUP.</span>
+<span class="sd">        When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.</span>
+<span class="sd">        '''</span>
+
+        <span class="n">allowablek_123</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allowablek_123</span><span class="p">()</span>
+        <span class="n">stacking</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dproperty</span><span class="o">.</span><span class="n">stacking</span>
+
+        <span class="n">cur_ply</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'ply'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'position'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'angle'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'angle'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'t1'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'t1'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'c1'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'c1'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'t2'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'t2'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'c2'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'c2'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'s'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'s'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">allowable123</span><span class="p">,</span> <span class="n">theta</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">allowablek_123</span><span class="p">,</span> <span class="n">stacking</span><span class="p">):</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'ply'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_ply</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'ply'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_ply</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'position'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'top'</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'position'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'bot'</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'angle'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'angle'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'t1'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">allowable123</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'t1'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">allowable123</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'c1'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">allowable123</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'c1'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">allowable123</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'t2'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">allowable123</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'t2'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">allowable123</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'c2'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">allowable123</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'c2'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">allowable123</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'s'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">allowable123</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'s'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">allowable123</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+            <span class="n">cur_ply</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">'display.precision'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LaminateStrength.calculate_maxstressmargin"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.calculate_maxstressmargin">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_maxstressmargin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Calculates margin of safety for each ply according to the max stress criteria.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        margin : pd.Dataframe</span>
+<span class="sd">            ply by ply max stress margin of safety     </span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        The sequence of the DataFrame starts from the BOTTOM OF THE LAYUP to the TOP  OF THE LAYUP.</span>
+<span class="sd">        When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.</span>
+<span class="sd">        '''</span>
+        <span class="n">df_allowable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_maxstressallowable</span><span class="p">()</span>
+        <span class="n">df_stress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_stress</span><span class="p">()</span>
+
+        <span class="n">margin_t1</span> <span class="o">=</span> <span class="n">df_allowable</span><span class="p">[</span><span class="s1">'t1'</span><span class="p">]</span> <span class="o">/</span> <span class="n">df_stress</span><span class="p">[</span><span class="s1">'sigma1'</span><span class="p">]</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">df_stress</span><span class="p">[</span><span class="s1">'sigma1'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># replace negative stress with zero to yield infinite margins in tension</span>
+        <span class="n">margin_c1</span> <span class="o">=</span> <span class="n">df_allowable</span><span class="p">[</span><span class="s1">'c1'</span><span class="p">]</span> <span class="o">/</span> <span class="n">df_stress</span><span class="p">[</span><span class="s1">'sigma1'</span><span class="p">]</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">df_stress</span><span class="p">[</span><span class="s1">'sigma1'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># replace positive stress with zero to yield infinite margins in compression. Also flip stress sign since allowables are all positive</span>
+        <span class="n">margin_t2</span> <span class="o">=</span> <span class="n">df_allowable</span><span class="p">[</span><span class="s1">'t2'</span><span class="p">]</span> <span class="o">/</span> <span class="n">df_stress</span><span class="p">[</span><span class="s1">'sigma2'</span><span class="p">]</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">df_stress</span><span class="p">[</span><span class="s1">'sigma2'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">margin_c2</span> <span class="o">=</span> <span class="n">df_allowable</span><span class="p">[</span><span class="s1">'c2'</span><span class="p">]</span> <span class="o">/</span> <span class="n">df_stress</span><span class="p">[</span><span class="s1">'sigma2'</span><span class="p">]</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">df_stress</span><span class="p">[</span><span class="s1">'sigma2'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">margin_s</span> <span class="o">=</span> <span class="n">df_allowable</span><span class="p">[</span><span class="s1">'s'</span><span class="p">]</span> <span class="o">/</span> <span class="n">df_stress</span><span class="p">[</span><span class="s1">'tau12'</span><span class="p">]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="n">df_margin</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({})</span>
+        <span class="n">df_margin</span><span class="p">[</span><span class="s1">'ply'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_allowable</span><span class="p">[</span><span class="s1">'ply'</span><span class="p">]</span>
+        <span class="n">df_margin</span><span class="p">[</span><span class="s1">'position'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_allowable</span><span class="p">[</span><span class="s1">'position'</span><span class="p">]</span>
+        <span class="n">df_margin</span><span class="p">[</span><span class="s1">'angle'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_allowable</span><span class="p">[</span><span class="s1">'angle'</span><span class="p">]</span>
+        <span class="n">df_margin</span><span class="p">[</span><span class="s1">'margin_t1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">margin_t1</span>
+        <span class="n">df_margin</span><span class="p">[</span><span class="s1">'margin_c1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">margin_c1</span>
+        <span class="n">df_margin</span><span class="p">[</span><span class="s1">'margin_t2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">margin_t2</span>
+        <span class="n">df_margin</span><span class="p">[</span><span class="s1">'margin_c2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">margin_c2</span>
+        <span class="n">df_margin</span><span class="p">[</span><span class="s1">'margin_s'</span><span class="p">]</span> <span class="o">=</span> <span class="n">margin_s</span>
+        <span class="n">df_margin</span><span class="p">[</span><span class="s1">'critical'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_margin</span><span class="p">[[</span><span class="s1">'margin_t1'</span><span class="p">,</span><span class="s1">'margin_c1'</span><span class="p">,</span><span class="s1">'margin_t2'</span><span class="p">,</span><span class="s1">'margin_c2'</span><span class="p">,</span><span class="s1">'margin_s'</span><span class="p">]]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># find the critical failure mode of each ply</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">'display.precision'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df_margin</span></div></div>
 </pre></div>
 
                 </article>

@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>comparison with compmech &#8212; composipy 1.6.0 documentation</title>
+    <title>comparison with compmech &#8212; composipy 1.7.0 documentation</title>
   
   
   
@@ -123,7 +123,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.6.0 documentation</p>
+    <p class="title logo__title">composipy 1.7.0 documentation</p>
   
 </a></div>
     
@@ -350,7 +350,7 @@ from scipy.sparse import csc_matrix
 from scipy.sparse.linalg import eigs
 from numpy import allclose
 
-path = &#39;D:/repositories/composipy&#39;
+path = 'D:/repositories/composipy'
 
 sys.path.append(path)
 
@@ -394,23 +394,23 @@ b = 360.
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ply_1 = OrthotropicMaterial(E1, E2, v12, G12, t)
 l1 = LaminateProperty(stacking, ply_1)
 constraints={
-                &#39;x0&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-                &#39;xa&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-                &#39;y0&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
-                &#39;yb&#39;: [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;],
+                'x0': ['TX', 'TY', 'TZ'],
+                'xa': ['TX', 'TY', 'TZ'],
+                'y0': ['TX', 'TY', 'TZ'],
+                'yb': ['TX', 'TY', 'TZ'],
             }
 panel = PlateStructure(l1, a, b, m=m, n=n, Nxx=-1, Nyy=-1, constraints=constraints)
 
 ti = time()
-print(&#39;calculating K and KG&#39;)
+print('calculating K and KG')
 K_KG = panel.calc_K_KG()
-K = K_KG[&#39;K&#39;]
-KG = K_KG[&#39;KG&#39;]
-print(f&#39;calculation done in {time()-ti} seconds&#39;)
-print(&#39;calculating panel eig value&#39;)
+K = K_KG['K']
+KG = K_KG['KG']
+print(f'calculation done in {time()-ti} seconds')
+print('calculating panel eig value')
 ti = time()
 print(panel.buckling_analysis())
-print(f&#39;calculation done in {time()-ti} seconds&#39;)
+print(f'calculation done in {time()-ti} seconds')
 </pre></div>
 </div>
 </div>
@@ -485,7 +485,7 @@ from compmech.analysis import lb, static
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># skin panels
 laminaprop = (E1, E2, v12, G12, G12, G12)
-p1 = Panel(group=&#39;skin&#39;, Nxx=-1, Nyy=-1, x0=0, y0=0., a=a, b=b,m=12, n=12, plyt=t, stack=stacking, laminaprop=laminaprop)
+p1 = Panel(group='skin', Nxx=-1, Nyy=-1, x0=0, y0=0., a=a, b=b,m=12, n=12, plyt=t, stack=stacking, laminaprop=laminaprop)
 </pre></div>
 </div>
 </div>

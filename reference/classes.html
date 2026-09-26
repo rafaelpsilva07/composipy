@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Composipy Classes &#8212; composipy 1.6.0 documentation</title>
+    <title>Composipy Classes &#8212; composipy 1.7.0 documentation</title>
   
   
   
@@ -122,7 +122,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.6.0 documentation</p>
+    <p class="title logo__title">composipy 1.7.0 documentation</p>
   
 </a></div>
     
@@ -457,7 +457,7 @@ T: thickness}</p>
 </pre></div>
 </div>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stacking</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;xiD&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span> <span class="c1">#using lamination parameters to define D</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stacking</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'xiD'</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="s1">'T'</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span> <span class="c1">#using lamination parameters to define D</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_2</span> <span class="o">=</span> <span class="n">Laminate</span><span class="p">(</span><span class="n">stacking</span><span class="p">,</span> <span class="n">ply_1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_2</span><span class="o">.</span><span class="n">ABD</span> <span class="c1"># retunrs an array containing bending stiffness matrix [D] of the laminate</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">laminate_2</span><span class="o">.</span><span class="n">xiA</span> <span class="c1"># lamination parameters of extension</span>
@@ -547,10 +547,19 @@ TOP OF THE LAYUP. This is important for non-symmetric laminates.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">constraint</span></code> argument can be a str type ‘PINNED’ or ‘CLAMPED’.
 Or a dictionary like described below:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
-<span class="go">---     x0 = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
-<span class="go">---     xa = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
-<span class="go">---     y0 = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
-<span class="go">---     yb = [&#39;TX&#39;, &#39;TY&#39;, &#39;TZ&#39;, &#39;RX&#39;, &#39;RY&#39;, &#39;RZ&#39;]</span>
+<span class="go">---     'x0' = 'clamped'</span>
+<span class="go">---     'xa' = 'clamped'</span>
+<span class="go">---     'y0' = 'pinned'</span>
+<span class="go">---     'yb' = 'free'</span>
+<span class="go">--- }</span>
+<span class="go">Edges among 'x0', 'xa', 'y0', 'yb' can be 'clamped', 'pinned' or 'free'.</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>    <span class="c1"># Note, this format will be deprecated in the future!.</span>
+<span class="go">---     'x0' = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']</span>
+<span class="go">---     'xa' = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']</span>
+<span class="go">---     'y0' = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']</span>
+<span class="go">---     'yb' = ['TX', 'TY', 'TZ', 'RX', 'RY', 'RZ']</span>
 <span class="go">--- }</span>
 </pre></div>
 </div>
@@ -629,6 +638,25 @@ as ply-by-ply at the top and bottom, both in the laminate and material direction
 </dd>
 </dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="composipy.LaminateStrength.calculate_maxstressmargin">
+<span class="sig-name descname"><span class="pre">calculate_maxstressmargin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/strength.html#LaminateStrength.calculate_maxstressmargin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.LaminateStrength.calculate_maxstressmargin" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates margin of safety for each ply according to the max stress criteria.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>margin</strong> – ply by ply max stress margin of safety</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pd.Dataframe</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The sequence of the DataFrame starts from the BOTTOM OF THE LAYUP to the TOP  OF THE LAYUP.
+When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="composipy.LaminateStrength.calculate_strain">
 <span class="sig-name descname"><span class="pre">calculate_strain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/strength.html#LaminateStrength.calculate_strain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.LaminateStrength.calculate_strain" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates strain ply by at laminate direction and material direction.</p>
@@ -642,7 +670,7 @@ as ply-by-ply at the top and bottom, both in the laminate and material direction
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The sequence of the DataFrame starts from the TOP OF THE LAYUP to the BOTTOM OF THE LAYUP, which is the reverse of the definition order.
+<p>The sequence of the DataFrame starts from the BOTTOM OF THE LAYUP to the TOP  OF THE LAYUP.
 When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.</p>
 </div>
 </dd></dl>
@@ -661,7 +689,7 @@ When defining the laminate, the first element of the list corresponds to the bot
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The sequence of the DataFrame starts from the TOP OF THE LAYUP to the BOTTOM OF THE LAYUP, which is the reverse of the definition order.
+<p>The sequence of the DataFrame starts from the BOTTOM OF THE LAYUP to the TOP  OF THE LAYUP.
 When defining the laminate, the first element of the list corresponds to the bottom-most layer. This is especially important for non-symmetric laminates.</p>
 </div>
 </dd></dl>
@@ -762,6 +790,7 @@ When defining the laminate, the first element of the list corresponds to the bot
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#laminatestrength">LaminateStrength</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateStrength"><code class="docutils literal notranslate"><span class="pre">LaminateStrength</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateStrength.calculate_maxstressmargin"><code class="docutils literal notranslate"><span class="pre">LaminateStrength.calculate_maxstressmargin()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateStrength.calculate_strain"><code class="docutils literal notranslate"><span class="pre">LaminateStrength.calculate_strain()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateStrength.calculate_stress"><code class="docutils literal notranslate"><span class="pre">LaminateStrength.calculate_stress()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateStrength.epsilon0"><code class="docutils literal notranslate"><span class="pre">LaminateStrength.epsilon0()</span></code></a></li>

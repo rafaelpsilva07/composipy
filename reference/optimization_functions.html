@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Composipy Optimization Functions &#8212; composipy 1.6.0 documentation</title>
+    <title>Composipy Optimization Functions &#8212; composipy 1.7.0 documentation</title>
   
   
   
@@ -122,7 +122,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.6.0 documentation</p>
+    <p class="title logo__title">composipy 1.7.0 documentation</p>
   
 </a></div>
     
@@ -355,10 +355,13 @@ document.write(`
                   
   <div class="section" id="composipy-optimization-functions">
 <h1>Composipy Optimization Functions<a class="headerlink" href="#composipy-optimization-functions" title="Permalink to this heading">#</a></h1>
-<p>This page contains functiosn used to optimize the composite plate.
-Optimization algorithms are gradient based and they use Scipy and optimization engine.</p>
-<p>Since optimization is in continuous they result in Lamination Parameters as result.
-Then, Lamination Parameters are supposed to be convereted into stacking sequences somehow by the user.</p>
+<p>This page contains functions used to optimize the composite plate.
+Optimization algorithms are gradient based and they use Scipy as optimization engine.</p>
+<p>Since optimization is continuous they result in Lamination Parameters as output.
+Lamination Parameters are then supposed to be converted into stacking sequences by the user.</p>
+<p>The two minimize functions address different failure modes independently.
+To size a panel, run both and take the result with the larger thickness T — that
+is the governing constraint.</p>
 <div class="section" id="maximize-buckling-load">
 <h2>Maximize Buckling Load<a class="headerlink" href="#maximize-buckling-load" title="Permalink to this heading">#</a></h2>
 <dl class="py function">
@@ -398,8 +401,8 @@ If penalty is False, the boundary conditions is the parabola that defines the na
 </dd></dl>
 
 </div>
-<div class="section" id="minimize-panel-weight">
-<h2>Minimize panel weight<a class="headerlink" href="#minimize-panel-weight" title="Permalink to this heading">#</a></h2>
+<div class="section" id="minimize-panel-weight-buckling">
+<h2>Minimize Panel Weight (Buckling)<a class="headerlink" href="#minimize-panel-weight-buckling" title="Permalink to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="composipy.optimize.minimize_panel_weight">
 <span class="sig-prename descclassname"><span class="pre">composipy.optimize.</span></span><span class="sig-name descname"><span class="pre">minimize_panel_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nxx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nyy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nxy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.1,</span> <span class="pre">0.0,</span> <span class="pre">0.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">panel_constraint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PINNED'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/optimize/_minimize_panel_weight.html#minimize_panel_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.optimize.minimize_panel_weight" title="Permalink to this definition">#</a></dt>
@@ -434,6 +437,9 @@ If penalty is False, the boundary conditions is the parabola that defines the na
 </dl>
 </dd></dl>
 
+</div>
+<div class="section" id="minimize-panel-weight-strain">
+<h2>Minimize Panel Weight (Strain)<a class="headerlink" href="#minimize-panel-weight-strain" title="Permalink to this heading">#</a></h2>
 </div>
 </div>
 
@@ -487,10 +493,11 @@ If penalty is False, the boundary conditions is the parabola that defines the na
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.optimize.maximize_buckling_load"><code class="docutils literal notranslate"><span class="pre">maximize_buckling_load()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-panel-weight">Minimize panel weight</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-panel-weight-buckling">Minimize Panel Weight (Buckling)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.optimize.minimize_panel_weight"><code class="docutils literal notranslate"><span class="pre">minimize_panel_weight()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-panel-weight-strain">Minimize Panel Weight (Strain)</a></li>
 </ul>
   </nav></div>
 

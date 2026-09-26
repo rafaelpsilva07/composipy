@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stress Strain Calculation of a Laminate &#8212; composipy 1.6.0 documentation</title>
+    <title>Stress Strain Calculation of a Laminate &#8212; composipy 1.7.0 documentation</title>
   
   
   
@@ -124,7 +124,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.6.0 documentation</p>
+    <p class="title logo__title">composipy 1.7.0 documentation</p>
   
 </a></div>
     
@@ -603,9 +603,9 @@ df_strain.head(10) #display the first 6
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.grid()
-plt.xlabel(&#39;strain&#39;)
-plt.ylabel(&#39;ply number&#39;)
-plt.plot(df_strain[&#39;epsilonx&#39;], df_strain[&#39;z&#39;], &#39;k&#39;)
+plt.xlabel('strain')
+plt.ylabel('ply number')
+plt.plot(df_strain['epsilonx'], df_strain['z'], 'k')
 </pre></div>
 </div>
 </div>
@@ -892,9 +892,9 @@ df_stress.head(30) #display the first 6
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.grid()
-plt.xlabel(&#39;stress MPa&#39;)
-plt.ylabel(&#39;ply number&#39;)
-plt.plot(df_stress[&#39;sigmax&#39;], df_stress[&#39;z&#39;], &#39;k&#39;)
+plt.xlabel('stress MPa')
+plt.ylabel('ply number')
+plt.plot(df_stress['sigmax'], df_stress['z'], 'k')
 </pre></div>
 </div>
 </div>

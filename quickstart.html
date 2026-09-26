@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Composipy &#8212; composipy 1.6.0 documentation</title>
+    <title>Composipy &#8212; composipy 1.7.0 documentation</title>
   
   
   
@@ -122,7 +122,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.6.0 documentation</p>
+    <p class="title logo__title">composipy 1.7.0 documentation</p>
   
 </a></div>
     
@@ -367,7 +367,9 @@ document.write(`
 <li><p>Laminate Stress and Strain</p></li>
 <li><p>Lamination Parameters</p></li>
 <li><p>Plate Buckling</p></li>
-<li><p>Plate Optimization</p></li>
+<li><p>Plate Buckling Optimization</p></li>
+<li><p>Plate Strain Optimization</p></li>
+<li><p>Principal Strain Analysis at Midplane</p></li>
 </ul>
 </div>
 <div class="section" id="how-to-install">
@@ -439,12 +441,12 @@ document.write(`
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlateStructure</span>
 
 <span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
-     <span class="s1">&#39;x0&#39;</span> <span class="p">:</span> <span class="s1">&#39;pinned&#39;</span><span class="p">,</span>
-     <span class="s1">&#39;xa&#39;</span> <span class="p">:</span> <span class="s1">&#39;pinned&#39;</span><span class="p">,</span>
-     <span class="s1">&#39;y0&#39;</span> <span class="p">:</span> <span class="s1">&#39;free&#39;</span><span class="p">,</span>
-     <span class="s1">&#39;yb&#39;</span> <span class="p">:</span> <span class="s1">&#39;pinned&#39;</span>
+     <span class="s1">'x0'</span> <span class="p">:</span> <span class="s1">'pinned'</span><span class="p">,</span>
+     <span class="s1">'xa'</span> <span class="p">:</span> <span class="s1">'pinned'</span><span class="p">,</span>
+     <span class="s1">'y0'</span> <span class="p">:</span> <span class="s1">'free'</span><span class="p">,</span>
+     <span class="s1">'yb'</span> <span class="p">:</span> <span class="s1">'pinned'</span>
 <span class="p">}</span>
-<span class="c1"># Edges among &#39;x0&#39;, &#39;xa&#39;, &#39;y0&#39;, &#39;yb&#39; can be &#39;clamped&#39;, &#39;pinned&#39; or &#39;free&#39;.</span>
+<span class="c1"># Edges among 'x0', 'xa', 'y0', 'yb' can be 'clamped', 'pinned' or 'free'.</span>
 <span class="n">panel</span> <span class="o">=</span> <span class="n">PlateStructure</span><span class="p">(</span><span class="n">laminate1</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">Nxx</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">constraints</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -473,6 +475,22 @@ document.write(`
 <li><p>rafaelpsilva07. (2024). rafaelpsilva07/rafaelmscdissertation: v1.0.0 (1.0.0). Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.10546621">https://doi.org/10.5281/zenodo.10546621</a></p></li>
 <li><p>Application repository: <a class="github reference external" href="https://github.com/rafaelpsilva07/rafaelmscdissertation">rafaelpsilva07/rafaelmscdissertation</a></p></li>
 </ul>
+</div>
+<div class="section" id="changelog">
+<h2>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading">#</a></h2>
+<div class="section" id="id1">
+<h3>1.7.0<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">LaminateStrength.midplane_principal_strains()</span></code>: returns maximum principal strain, minimum principal strain, and maximum shear strain at the laminate midplane using Mohr’s circle.</p></li>
+<li><p>Added <cite>minimize_panel_weight_strain()</cite>: new optimization function that minimizes panel weight (objective: T) subject to a minimum principal midplane strain constraint (typical allowable: −3500 microstrain). Addresses the strain failure mode independently from buckling. Available via <code class="docutils literal notranslate"><span class="pre">composipy.optimize</span></code>.</p></li>
+</ul>
+</div>
+<div class="section" id="and-earlier">
+<h3>1.6.0 and earlier<a class="headerlink" href="#and-earlier" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>See commit history on <a class="reference external" href="https://github.com/rafaelpsilva07/composipy">GitHub</a>.</p></li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -542,6 +560,11 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#theoretical-references">Theoretical References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#changelog">Changelog</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.7.0</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#and-earlier">1.6.0 and earlier</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

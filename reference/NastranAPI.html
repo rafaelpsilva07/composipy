@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nastran API functions &#8212; composipy 1.6.0 documentation</title>
+    <title>Nastran API functions &#8212; composipy 1.7.0 documentation</title>
   
   
   
@@ -122,7 +122,7 @@
   
   
   
-    <p class="title logo__title">composipy 1.6.0 documentation</p>
+    <p class="title logo__title">composipy 1.7.0 documentation</p>
   
 </a></div>
     
@@ -398,7 +398,7 @@ If FIBER is used, then only the first and the last plies will be set as YES</p><
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stack</span> <span class="o">=</span> <span class="s1">&#39;[\pm45_</span><span class="si">{1}</span><span class="s1">/0_2/90/(0/90)_1]s&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stack</span> <span class="o">=</span> <span class="s1">'[\pm45_</span><span class="si">{1}</span><span class="s1">/0_2/90/(0/90)_1]s'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">build_sequence</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span>
 <span class="go">out :</span>
 <span class="go">    [45.0, -45.0, 0.0, 90.0, 0.0, 90.0, 90.0, 0.0, 90.0, 0.0, -45.0, 45.0]</span>
