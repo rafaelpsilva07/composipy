@@ -440,6 +440,87 @@ If penalty is False, the boundary conditions is the parabola that defines the na
 </div>
 <div class="section" id="minimize-panel-weight-strain">
 <h2>Minimize Panel Weight (Strain)<a class="headerlink" href="#minimize-panel-weight-strain" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="composipy.optimize.minimize_panel_weight_strain">
+<span class="sig-prename descclassname"><span class="pre">composipy.optimize.</span></span><span class="sig-name descname"><span class="pre">minimize_panel_weight_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nxx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nyy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nxy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_allow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-0.0035</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">panel_constraint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PINNED'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/optimize/_minimize_panel_weight_strain.html#minimize_panel_weight_strain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.optimize.minimize_panel_weight_strain" title="Permalink to this definition">#</a></dt>
+<dd><p>Minimizes composite panel weight subject to a minimum principal midplane
+strain constraint.</p>
+<p>The optimization problem is:</p>
+<blockquote>
+<div><p>minimize    T
+subject to  epsilon_min(T, xi1, xi3) &gt;= epsilon_allow   (strain)</p>
+<blockquote>
+<div><p>xi3 + 2*xi1 + 1          &gt;= 0              (LP feasibility g1)
+xi3 - 2*xi1 + 1          &gt;= 0              (LP feasibility g2)
+T &gt; 0,  -1 &lt;= xi1 &lt;= 1,  -1 &lt;= xi3 &lt;= 1</p>
+</div></blockquote>
+</div></blockquote>
+<p>where epsilon_min is the minimum (most compressive) principal strain at the
+laminate midplane, computed via Mohr’s circle from the applied membrane loads.</p>
+<p>The objective is T (not T^3) because the membrane stiffness A scales linearly
+with thickness, making T the natural objective for strain-driven sizing.
+Compare with <code class="docutils literal notranslate"><span class="pre">minimize_panel_weight</span></code> which uses T^3 because bending
+stiffness D scales with T^3 for buckling-driven sizing.</p>
+<p>This function addresses the strain failure mode independently from buckling.
+To also check buckling, run <code class="docutils literal notranslate"><span class="pre">minimize_panel_weight</span></code> separately and compare
+the two results — the governing (thicker) solution drives the final design.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>float</em>) – Plate dimension along x axis (mm or consistent length unit).</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Plate dimension along y axis.</p></li>
+<li><p><strong>E1</strong> (<em>float</em>) – Young modulus in the fibre direction.</p></li>
+<li><p><strong>E2</strong> (<em>float</em>) – Young modulus transverse to the fibre.</p></li>
+<li><p><strong>v12</strong> (<em>float</em>) – Poisson ratio.</p></li>
+<li><p><strong>G12</strong> (<em>float</em>) – In-plane shear modulus.</p></li>
+<li><p><strong>Nxx</strong> (<em>float</em><em>, </em><em>default 0</em>) – Membrane load in x direction (N/mm or consistent force/length unit).</p></li>
+<li><p><strong>Nyy</strong> (<em>float</em><em>, </em><em>default 0</em>) – Membrane load in y direction.</p></li>
+<li><p><strong>Nxy</strong> (<em>float</em><em>, </em><em>default 0</em>) – Membrane shear load.</p></li>
+<li><p><strong>epsilon_allow</strong> (<em>float</em><em>, </em><em>default -3500e-6</em>) – Minimum principal strain allowable (negative for compression).
+The constraint enforces epsilon_min &gt;= epsilon_allow.
+Default is -3500 microstrain, a typical industry value for composite
+laminates under compression-dominated loading.</p></li>
+<li><p><strong>x0</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – Initial guess [T, xi1, xi3]. If None, defaults to [0.1, 0.0, 0.0].</p></li>
+<li><p><strong>panel_constraint</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>default 'PINNED'</em>) – Plate boundary conditions in composipy format. Kept for API consistency
+with other optimization functions; not used in the strain calculation
+(strains depend only on ABD and loads, not plate geometry or BCs).</p></li>
+<li><p><strong>options</strong> (<em>dict</em><em> or </em><em>None</em>) – Options passed directly to <code class="docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code>.</p></li>
+<li><p><strong>tol</strong> (<em>float</em><em> or </em><em>None</em>) – Tolerance passed directly to <code class="docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>res</strong> – Optimization result. Key fields:
+- <code class="docutils literal notranslate"><span class="pre">res.x</span></code>       -&gt; [T_opt, xi1_opt, xi3_opt]
+- <code class="docutils literal notranslate"><span class="pre">res.fun</span></code>     -&gt; optimized objective T
+- <code class="docutils literal notranslate"><span class="pre">res.success</span></code> -&gt; True if converged</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>scipy.optimize.OptimizeResult</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The minimum principal strain is computed at the laminate midplane using
+the membrane loads only (moments = 0). For bending-dominated cases a more
+detailed through-thickness analysis would be needed.</p>
+<p>The strain allowable <code class="docutils literal notranslate"><span class="pre">epsilon_allow</span></code> should be provided as a dimensionless
+strain value (e.g. -3500e-6, not -3500). Typical aerospace industry values
+for carbon/epoxy laminates range from -3000e-6 to -4000e-6 for compression.</p>
+<p>To obtain the final panel design, run both this function and
+<code class="docutils literal notranslate"><span class="pre">minimize_panel_weight</span></code> (buckling) and take the result with the larger
+thickness T — that is the governing constraint.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">composipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize_panel_weight_strain</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span> <span class="o">=</span> <span class="n">minimize_panel_weight_strain</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">a</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">E1</span><span class="o">=</span><span class="mi">128000</span><span class="p">,</span> <span class="n">E2</span><span class="o">=</span><span class="mi">13000</span><span class="p">,</span> <span class="n">v12</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">G12</span><span class="o">=</span><span class="mi">6400</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">Nxx</span><span class="o">=-</span><span class="mi">200</span><span class="p">,</span> <span class="n">Nyy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">Nxy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">epsilon_allow</span><span class="o">=-</span><span class="mf">3500e-6</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">T_opt</span><span class="p">,</span> <span class="n">xi1_opt</span><span class="p">,</span> <span class="n">xi3_opt</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 </div>
 
@@ -497,7 +578,10 @@ If penalty is False, the boundary conditions is the parabola that defines the na
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.optimize.minimize_panel_weight"><code class="docutils literal notranslate"><span class="pre">minimize_panel_weight()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-panel-weight-strain">Minimize Panel Weight (Strain)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-panel-weight-strain">Minimize Panel Weight (Strain)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.optimize.minimize_panel_weight_strain"><code class="docutils literal notranslate"><span class="pre">minimize_panel_weight_strain()</span></code></a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

@@ -402,6 +402,48 @@ document.write(`
         <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">Nxx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nyy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nxy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mxx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Myy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mxy</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">abd</span> <span class="o">@</span> <span class="n">N</span></div>
 
+<div class="viewcode-block" id="LaminateStrength.midplane_principal_strains"><a class="viewcode-back" href="../../../reference/classes.html#composipy.LaminateStrength.midplane_principal_strains">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">midplane_principal_strains</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Calculates the maximum principal strain, minimum principal strain, and</span>
+<span class="sd">        maximum shear strain at the laminate midplane using Mohr's circle.</span>
+
+<span class="sd">        The midplane strains (epsilonx0, epsilony0, gammaxy0) are obtained from</span>
+<span class="sd">        epsilon0() and transformed to principal directions.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        epsilon_max : float</span>
+<span class="sd">            Maximum principal strain at the midplane.</span>
+<span class="sd">        epsilon_min : float</span>
+<span class="sd">            Minimum principal strain at the midplane.</span>
+<span class="sd">        gamma_max : float</span>
+<span class="sd">            Maximum engineering shear strain at the midplane (epsilon_max - epsilon_min).</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The principal strains are coordinate-system independent and represent</span>
+<span class="sd">        the extreme normal strain values. They are commonly used as global</span>
+<span class="sd">        laminate-level strain allowables in industry (e.g. 3500 microstrain limit).</span>
+
+<span class="sd">        Formulae (Mohr's circle):</span>
+<span class="sd">            center   = (epsilonx0 + epsilony0) / 2</span>
+<span class="sd">            radius   = sqrt(((epsilonx0 - epsilony0) / 2)**2 + (gammaxy0 / 2)**2)</span>
+<span class="sd">            epsilon1 = center + radius  (maximum principal)</span>
+<span class="sd">            epsilon2 = center - radius  (minimum principal)</span>
+<span class="sd">            gamma_max = epsilon1 - epsilon2 = 2 * radius</span>
+<span class="sd">        '''</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon0</span><span class="p">()</span>
+        <span class="n">ex</span><span class="p">,</span> <span class="n">ey</span><span class="p">,</span> <span class="n">gxy</span> <span class="o">=</span> <span class="n">eps</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">eps</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">eps</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">ex</span> <span class="o">+</span> <span class="n">ey</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">ex</span> <span class="o">-</span> <span class="n">ey</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">gxy</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">epsilon_max</span> <span class="o">=</span> <span class="n">center</span> <span class="o">+</span> <span class="n">radius</span>
+        <span class="n">epsilon_min</span> <span class="o">=</span> <span class="n">center</span> <span class="o">-</span> <span class="n">radius</span>
+        <span class="n">gamma_max</span> <span class="o">=</span> <span class="n">epsilon_max</span> <span class="o">-</span> <span class="n">epsilon_min</span>  <span class="c1"># = 2 * radius</span>
+
+        <span class="k">return</span> <span class="n">epsilon_max</span><span class="p">,</span> <span class="n">epsilon_min</span><span class="p">,</span> <span class="n">gamma_max</span></div>
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_epsilonk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#ok</span>
 <span class="w">        </span><span class="sd">'''</span>

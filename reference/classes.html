@@ -708,6 +708,37 @@ When defining the laminate, the first element of the list corresponds to the bot
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="composipy.LaminateStrength.midplane_principal_strains">
+<span class="sig-name descname"><span class="pre">midplane_principal_strains</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/composipy/core/strength.html#LaminateStrength.midplane_principal_strains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#composipy.LaminateStrength.midplane_principal_strains" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the maximum principal strain, minimum principal strain, and
+maximum shear strain at the laminate midplane using Mohr’s circle.</p>
+<p>The midplane strains (epsilonx0, epsilony0, gammaxy0) are obtained from
+epsilon0() and transformed to principal directions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>epsilon_max</strong> (<em>float</em>) – Maximum principal strain at the midplane.</p></li>
+<li><p><strong>epsilon_min</strong> (<em>float</em>) – Minimum principal strain at the midplane.</p></li>
+<li><p><strong>gamma_max</strong> (<em>float</em>) – Maximum engineering shear strain at the midplane (epsilon_max - epsilon_min).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The principal strains are coordinate-system independent and represent
+the extreme normal strain values. They are commonly used as global
+laminate-level strain allowables in industry (e.g. 3500 microstrain limit).</p>
+<dl class="simple">
+<dt>Formulae (Mohr’s circle):</dt><dd><p>center   = (epsilonx0 + epsilony0) / 2
+radius   = sqrt(((epsilonx0 - epsilony0) / 2)**2 + (gammaxy0 / 2)**2)
+epsilon1 = center + radius  (maximum principal)
+epsilon2 = center - radius  (minimum principal)
+gamma_max = epsilon1 - epsilon2 = 2 * radius</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -794,6 +825,7 @@ When defining the laminate, the first element of the list corresponds to the bot
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateStrength.calculate_strain"><code class="docutils literal notranslate"><span class="pre">LaminateStrength.calculate_strain()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateStrength.calculate_stress"><code class="docutils literal notranslate"><span class="pre">LaminateStrength.calculate_stress()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateStrength.epsilon0"><code class="docutils literal notranslate"><span class="pre">LaminateStrength.epsilon0()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#composipy.LaminateStrength.midplane_principal_strains"><code class="docutils literal notranslate"><span class="pre">LaminateStrength.midplane_principal_strains()</span></code></a></li>
 </ul>
 </li>
 </ul>
