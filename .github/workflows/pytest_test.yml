@@ -40,6 +40,7 @@ jobs:
         python -m pip install wheel
         python setup.py install
     - name: Test execution
+      working-directory: tests
       run: |
         pytest
     - name: Final messages
