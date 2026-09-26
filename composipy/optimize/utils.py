@@ -5,7 +5,7 @@ import warnings
 import numpy as np
 import matplotlib.pyplot as plt
 
-from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure
+from composipy import OrthotropicMaterial, LaminateProperty, PlateStructure, LaminateStrength
 
 
 def Ncr_from_lp(a, b, T, m, n, xi1, xi3, E1, E2, v12, G12, Nxx, Nyy, Nxy, constraints):
@@ -82,6 +82,55 @@ def check_loads(Nxx, Nyy, Nxy):
     #Non normalized loads warning
     if abs(Nxx) > 1 or abs(Nyy) > 1 or abs(Nxy) > 1:
         warnings.warn(f'Loads will be normalized, prefer to use loads between -1 and 1 (Nxx = {Nxx}, Nyy = {Nyy}, Nxy = {Nxy})')
+
+
+def epsilon_min_from_lp(T, xi1, xi3, E1, E2, v12, G12, Nxx, Nyy, Nxy):
+    '''
+    Returns the minimum principal midplane strain for a laminate defined by
+    lamination parameters, thickness, and applied membrane loads.
+
+    The laminate is assumed symmetric and balanced (B = 0, xiA terms with W2=W4=0).
+    Both the A and D matrices are built from the lamination parameter dict so that
+    the full ABD inversion yields physically correct midplane strains.
+
+    Parameters
+    ----------
+    T : float
+        Total laminate thickness.
+    xi1 : float
+        In-plane lamination parameter W1 (xi1 for both xiA and xiD).
+    xi3 : float
+        In-plane lamination parameter W3 (xi3 for both xiA and xiD).
+    E1 : float
+        Young modulus in fibre direction.
+    E2 : float
+        Young modulus transverse to fibre.
+    v12 : float
+        Poisson ratio.
+    G12 : float
+        Shear modulus.
+    Nxx : float
+        Membrane load in x direction (physical units, not normalised).
+    Nyy : float
+        Membrane load in y direction.
+    Nxy : float
+        Membrane shear load.
+
+    Returns
+    -------
+    epsilon_min : float
+        Minimum principal strain at the laminate midplane.
+    '''
+    stacking = {
+        'xiA': [xi1, 0.0, xi3, 0.0],
+        'xiD': [xi1, 0.0, xi3, 0.0],
+        'T': T,
+    }
+    mat = OrthotropicMaterial(E1, E2, v12, G12, thickness=0.1)
+    laminate = LaminateProperty(stacking, mat)
+    strength = LaminateStrength(laminate, Nxx=Nxx, Nyy=Nyy, Nxy=Nxy)
+    _, epsilon_min, _ = strength.midplane_principal_strains()
+    return epsilon_min
 
 
 def _constraint(xi1, xi3, silent=True, penalty=True):

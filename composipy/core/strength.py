@@ -65,6 +65,48 @@ class LaminateStrength():
         N = np.array([self.Nxx, self.Nyy, self.Nxy, self.Mxx, self.Myy, self.Mxy])
         return abd @ N
 
+    def midplane_principal_strains(self):
+        '''
+        Calculates the maximum principal strain, minimum principal strain, and
+        maximum shear strain at the laminate midplane using Mohr's circle.
+
+        The midplane strains (epsilonx0, epsilony0, gammaxy0) are obtained from
+        epsilon0() and transformed to principal directions.
+
+        Returns
+        -------
+        epsilon_max : float
+            Maximum principal strain at the midplane.
+        epsilon_min : float
+            Minimum principal strain at the midplane.
+        gamma_max : float
+            Maximum engineering shear strain at the midplane (epsilon_max - epsilon_min).
+
+        Notes
+        -----
+        The principal strains are coordinate-system independent and represent
+        the extreme normal strain values. They are commonly used as global
+        laminate-level strain allowables in industry (e.g. 3500 microstrain limit).
+
+        Formulae (Mohr's circle):
+            center   = (epsilonx0 + epsilony0) / 2
+            radius   = sqrt(((epsilonx0 - epsilony0) / 2)**2 + (gammaxy0 / 2)**2)
+            epsilon1 = center + radius  (maximum principal)
+            epsilon2 = center - radius  (minimum principal)
+            gamma_max = epsilon1 - epsilon2 = 2 * radius
+        '''
+        eps = self.epsilon0()
+        ex, ey, gxy = eps[0], eps[1], eps[2]
+
+        center = (ex + ey) / 2.0
+        radius = np.sqrt(((ex - ey) / 2.0) ** 2 + (gxy / 2.0) ** 2)
+
+        epsilon_max = center + radius
+        epsilon_min = center - radius
+        gamma_max = epsilon_max - epsilon_min  # = 2 * radius
+
+        return epsilon_max, epsilon_min, gamma_max
+
 
     def _epsilonk(self): #ok
         '''

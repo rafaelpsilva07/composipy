@@ -27,7 +27,9 @@ It is especially useful for leveraging the data-driven culture in companies and 
 - Laminate Stress and Strain
 - Lamination Parameters
 - Plate Buckling
-- Plate Optimization
+- Plate Buckling Optimization
+- Plate Strain Optimization
+- Principal Strain Analysis at Midplane
 
 
 ## How to install
@@ -138,3 +140,13 @@ The implementation of composipy is based on the following reference:
 - SILVA, Rafael Pereira da. Composite Plate optimization combining semi-analytical model, Lamination Parameters and a Gradient-Based Optimizer. 2023. 82f. Dissertation of Master of Science – Instituto Tecnológico de Aeronáutica, São José dos Campos.
 - rafaelpsilva07. (2024). rafaelpsilva07/rafaelmscdissertation: v1.0.0 (1.0.0). Zenodo. https://doi.org/10.5281/zenodo.10546621
 - Application repository: https://github.com/rafaelpsilva07/rafaelmscdissertation
+
+
+## Changelog
+
+### 1.7.0
+- Added `LaminateStrength.midplane_principal_strains()`: returns maximum principal strain, minimum principal strain, and maximum shear strain at the laminate midplane using Mohr's circle.
+- Added `minimize_panel_weight_strain()`: new optimization function that minimizes panel weight (objective: T) subject to a minimum principal midplane strain constraint (typical allowable: −3500 microstrain). Addresses the strain failure mode independently from buckling. Available via `composipy.optimize`.
+
+### 1.6.0 and earlier
+- See commit history on [GitHub](https://github.com/rafaelpsilva07/composipy).
