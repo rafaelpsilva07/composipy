@@ -18,12 +18,10 @@ def _objective_function(y0):
 
 
 def minimize_panel_weight_strain(
-        a, b,
         E1, E2, v12, G12,
         Nxx=0, Nyy=0, Nxy=0,
         epsilon_allow=-3500e-6,
         x0=None,
-        panel_constraint='PINNED',
         options=None,
         tol=None,
 ):
@@ -53,10 +51,6 @@ def minimize_panel_weight_strain(
 
     Parameters
     ----------
-    a : float
-        Plate dimension along x axis (mm or consistent length unit).
-    b : float
-        Plate dimension along y axis.
     E1 : float
         Young modulus in the fibre direction.
     E2 : float
@@ -78,10 +72,6 @@ def minimize_panel_weight_strain(
         laminates under compression-dominated loading.
     x0 : list or None, default None
         Initial guess [T, xi1, xi3]. If None, defaults to [0.1, 0.0, 0.0].
-    panel_constraint : str or dict, default \'PINNED\'
-        Plate boundary conditions in composipy format. Kept for API consistency
-        with other optimization functions; not used in the strain calculation
-        (strains depend only on ABD and loads, not plate geometry or BCs).
     options : dict or None
         Options passed directly to ``scipy.optimize.minimize``.
     tol : float or None
@@ -113,7 +103,6 @@ def minimize_panel_weight_strain(
     --------
     >>> from composipy.optimize import minimize_panel_weight_strain
     >>> res = minimize_panel_weight_strain(
-    ...     a=500, b=250,
     ...     E1=128000, E2=13000, v12=0.3, G12=6400,
     ...     Nxx=-200, Nyy=0, Nxy=0,
     ...     epsilon_allow=-3500e-6,
